@@ -554,6 +554,10 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 .task-amount-label.secondary{font-size:10.5px}
 .mark-all-row{display:flex;justify-content:flex-end;margin:-2px 0 9px}
 .mark-all-row .btn{min-height:36px;font-size:12.5px}
+.leader-badge{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700;background:color-mix(in srgb,var(--yellow) 20%,transparent);color:var(--text);vertical-align:1px;white-space:nowrap}
+.task-person.leader-person{display:flex;flex-direction:column;align-items:stretch;gap:5px;cursor:default;background:color-mix(in srgb,var(--yellow) 10%,var(--panel))!important;border-color:color-mix(in srgb,var(--yellow) 45%,transparent)!important}
+.task-person.leader-person small{color:var(--muted);font-size:11px}
+.btn.leader-on{border-color:var(--yellow);background:color-mix(in srgb,var(--yellow) 16%,var(--panel))}
 </style>
 <style></style><style>
   .imageye-selected {
@@ -745,9 +749,9 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     <div class="page-head"><div><h2>Настройки</h2><p>Управляйте составом родительского комитета и связью родителей с детьми.</p></div></div><div class="panel safety-panel" id="safetyPanel"><h3>🛟 Сохранность данных</h3><p class="muted small-text">Данные живут только в браузере этого устройства. Их можно потерять: очистка браузера, режим инкогнито, сброс телефона, нехватка памяти или потеря телефона. Единственная надёжная копия — скачанный HTML-файл.</p><p style="margin:8px 0">Последняя копия: <strong id="safetyLast">сегодня</strong></p><ol class="small-text muted" style="margin:0 0 12px;padding-left:18px"><li>Нажмите «Сохранить» — скачается файл.</li><li>Отправьте его себе в Telegram/Viber, на почту или в облако.</li><li>Делайте это после каждого сбора денег и раз в неделю.</li></ol><button type="button" class="btn primary" id="safetyNow">⇩ Сохранить копию сейчас</button></div><div class="panel" id="themePanel" style="margin-bottom:14px"><h3>🎨 Цветовая тема</h3><p class="muted small-text" style="margin:0 0 10px">Выбор запоминается на этом устройстве и сохраняется в скачанном файле.</p><div class="theme-grid"><button type="button" class="theme-swatch active" data-theme-pick="auto" style="--sb:#fbf6ee;--sa:#171419"><span class="dot"></span>Авто</button><button type="button" class="theme-swatch" data-theme-pick="mono" style="--sb:#0a0a0a;--sa:#f4f4f4"><span class="dot"></span>Чёрно-белая</button><button type="button" class="theme-swatch" data-theme-pick="violet" style="--sb:#0f0a1a;--sa:#9d8fcf"><span class="dot"></span>Фиолет</button><button type="button" class="theme-swatch" data-theme-pick="midnight" style="--sb:#0a101c;--sa:#7a9fd1"><span class="dot"></span>Полночь</button><button type="button" class="theme-swatch" data-theme-pick="emerald" style="--sb:#08130f;--sa:#6bb59a"><span class="dot"></span>Изумруд</button><button type="button" class="theme-swatch" data-theme-pick="amber" style="--sb:#130f0a;--sa:#d1ac5e"><span class="dot"></span>Янтарь</button><button type="button" class="theme-swatch" data-theme-pick="light" style="--sb:#fbf6ee;--sa:#3d958b"><span class="dot"></span>Светлая</button></div></div>
     <h3 class="section-title">Состав группы</h3>
     <div class="panel">
-      <div class="page-head" style="margin-bottom:10px"><div><h3 style="margin:0">Родители и дети</h3><p>Здесь можно изменить имена, связь в семье, добавить новую пару или удалить семью. Даты рождения и подарочные предпочтения редактируются во вкладке «Дети».</p></div></div>
+      <div class="page-head" style="margin-bottom:10px"><div><h3 style="margin:0">Родители и дети</h3><p>Здесь можно изменить имена, связь в семье, добавить новую пару или удалить семью. Даты рождения и подарочные предпочтения редактируются во вкладке «Дети».</p><p>👑 Руководитель комитета собирает деньги, поэтому во всех задачах он автоматически отмечен выполнившим и не входит в сумму сбора.</p></div></div>
       <div class="table-wrap"><table><thead><tr><th>Родитель</th><th>Ребёнок</th><th>Действия</th></tr></thead><tbody id="rosterBody"><tr><td data-label="Родитель">Лялько Лидия</td><td data-label="Ребёнок">Лялько Матвей</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="00e70aa6-2287-44fe-8814-bbf002c3934a">Изменить</button><button type="button" class="btn small danger" data-delete-family="00e70aa6-2287-44fe-8814-bbf002c3934a">Удалить</button></div></td></tr><tr><td data-label="Родитель">Бондаренко Алина</td><td data-label="Ребёнок">Бондаренко Алексей</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="8c832e8d-b5f7-494b-8f46-b8fa47b38c0f">Изменить</button><button type="button" class="btn small danger" data-delete-family="8c832e8d-b5f7-494b-8f46-b8fa47b38c0f">Удалить</button></div></td></tr><tr><td data-label="Родитель">Каменченко Людмила</td><td data-label="Ребёнок">Каменченко Даня</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="8f469ff3-81dc-4e64-be08-5c6e8c4b89e2">Изменить</button><button type="button" class="btn small danger" data-delete-family="8f469ff3-81dc-4e64-be08-5c6e8c4b89e2">Удалить</button></div></td></tr><tr><td data-label="Родитель">Савельева Алёна</td><td data-label="Ребёнок">Савельев Ринат</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="0b178fba-38d4-4e83-809d-f73511629960">Изменить</button><button type="button" class="btn small danger" data-delete-family="0b178fba-38d4-4e83-809d-f73511629960">Удалить</button></div></td></tr><tr><td data-label="Родитель">Ширкина Анна</td><td data-label="Ребёнок">Ширкин Михаил</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6">Изменить</button><button type="button" class="btn small danger" data-delete-family="756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6">Удалить</button></div></td></tr><tr><td data-label="Родитель">Кашпур Мила</td><td data-label="Ребёнок">Самоишенко Даниил</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="d656e9e6-ab31-4732-b4a3-4080a2081705">Изменить</button><button type="button" class="btn small danger" data-delete-family="d656e9e6-ab31-4732-b4a3-4080a2081705">Удалить</button></div></td></tr><tr><td data-label="Родитель">Вовненко Юлия</td><td data-label="Ребёнок">Вовненко Назар</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="4cdfd1f7-7e99-40ae-a549-ae9587acb3d0">Изменить</button><button type="button" class="btn small danger" data-delete-family="4cdfd1f7-7e99-40ae-a549-ae9587acb3d0">Удалить</button></div></td></tr><tr><td data-label="Родитель">Гула Таисия</td><td data-label="Ребёнок">Иськов Артём</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="f619160f-4540-4bd2-b1fc-b38edc61d2ad">Изменить</button><button type="button" class="btn small danger" data-delete-family="f619160f-4540-4bd2-b1fc-b38edc61d2ad">Удалить</button></div></td></tr><tr><td data-label="Родитель">Онуфриенко Каролина</td><td data-label="Ребёнок">Онуфриенко Роман</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="5ef7aa70-ff59-41b2-96b9-62ad133f6480">Изменить</button><button type="button" class="btn small danger" data-delete-family="5ef7aa70-ff59-41b2-96b9-62ad133f6480">Удалить</button></div></td></tr></tbody></table></div>
-      <div class="form-actions"><button type="button" class="btn" id="addFamilyBtn">＋ Добавить пару</button></div>
+      <div class="form-actions"><button type="button" class="btn" id="addFamilyBtn">＋ Добавить участника</button></div>
     </div>
   </section>
 </main>
@@ -794,7 +798,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     return !!s && s.version === 1 && Array.isArray(s.parents) && Array.isArray(s.children) && Array.isArray(s.tasks) && Array.isArray(s.transactions);
   }
   function normalizeState(s) {
-    const p = s.parents.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),childId:String(x.childId||'')}));
+    const p = s.parents.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),childId:String(x.childId||''),leader:x.leader===true}));
     const c = s.children.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),birthday:/^\d{4}-\d{2}-\d{2}$/.test(x.birthday||'')?x.birthday:'',giftPreferences:String(x.giftPreferences||''),foodPreferences:String(x.foodPreferences||'')}));
     const tasks = s.tasks.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,month:/^\d{4}-\d{2}$/.test(x.month||'')?x.month:monthKey(),title:String(x.title||'Без названия'),description:String(x.description||''),dueDate:/^\d{4}-\d{2}-\d{2}$/.test(x.dueDate||'')?x.dueDate:'',amountPerPerson:Number.isFinite(Number(x.amountPerPerson))&&x.amountPerPerson!==''?Math.max(0,Number(x.amountPerPerson)):0,statuses:x.statuses&&typeof x.statuses==='object'?x.statuses:{},excluded:Array.isArray(x.excluded)?x.excluded.filter(v=>typeof v==='string'):[],repeat:x.repeat===true,series:typeof x.series==='string'?x.series:'',carried:cleanMoneyMap(x.carried),credited:cleanMoneyMap(x.credited),customAmounts:cleanAmountMap(x.customAmounts),createdAt:String(x.createdAt||'')}));
     const transactions = s.transactions.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,date:/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:localDate(),type:x.type==='expense'?'expense':'income',amount:Math.max(0,Number(x.amount)||0),description:String(x.description||''),parentId:String(x.parentId||''),createdAt:String(x.createdAt||'')}));
@@ -865,7 +869,10 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     if(!(Number(task.amountPerPerson)>0)) return 0;
     return Math.max(0,taskRawPaid(task,parentId)+(task.credited?.[parentId]||0)-(task.carried?.[parentId]||0));
   }
+  // Руководитель комитета сам собирает деньги — у него каждая задача считается выполненной.
+  function isLeader(parentId) { return !!getParent(parentId)?.leader; }
   function taskParentDone(task,parentId) {
+    if(isLeader(parentId)) return true;
     if(Number(task.amountPerPerson)>0) return taskPaidAmount(task,parentId)>=taskRequired(task,parentId);
     return task.statuses?.[parentId]===true;
   }
@@ -878,7 +885,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     const done=parts.filter(p=>taskParentDone(task,p.id)).length;
     const amount=Math.max(0,Number(task.amountPerPerson)||0);
     const collected=amount>0?state.parents.reduce((sum,p)=>sum+taskPaidAmount(task,p.id),0):0;
-    const target=amount>0?parts.reduce((sum,p)=>sum+taskRequired(task,p.id),0):0;
+    const target=amount>0?parts.filter(p=>!p.leader).reduce((sum,p)=>sum+taskRequired(task,p.id),0):0;
     const ratio=amount>0?(target>0?Math.min(100,collected/target*100):0):(total?done/total*100:0);
     return {done,total,ratio,collected,target};
   }
@@ -997,7 +1004,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       ? `<div class="parent-tx-list">${parentTxs.map(tx=>`<div class="parent-tx-item"><div class="parent-tx-main"><div class="parent-tx-title">${esc(tx.description)}</div><div class="parent-tx-meta">${formatDate(tx.date)}</div></div><div class="parent-tx-amount amount ${tx.type}">${tx.type==='income'?'+':'−'}${money(tx.amount)}</div></div>`).join('')}</div>`
       : '<div class="muted small-text">Операций с привязкой к этому родителю за выбранный месяц нет.</div>';
     grid.innerHTML=`<article class="panel parent-detail">
-      <div class="parent-detail-head"><div class="person-head"><div class="avatar">${esc(String(state.parents.indexOf(p)+1).padStart(2,'0'))}</div><div class="person-main"><div class="person-name">${esc(p.name)}</div><div class="person-sub">Ребёнок: ${esc(child?.name||'не указан')}</div></div></div><div class="card-actions"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">✎ Изменить данные</button><button type="button" class="btn small" data-add-contribution="${esc(p.id)}">＋ Взнос</button></div></div>
+      <div class="parent-detail-head"><div class="person-head"><div class="avatar">${esc(String(state.parents.indexOf(p)+1).padStart(2,'0'))}</div><div class="person-main"><div class="person-name">${esc(p.name)}${p.leader?'<span class="leader-badge">👑 Руководитель</span>':''}</div><div class="person-sub">${p.leader?'Все задачи отмечаются выполненными автоматически · ':''}Ребёнок: ${esc(child?.name||'не указан')}</div></div></div><div class="card-actions"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">✎ Изменить данные</button><button type="button" class="btn small" data-add-contribution="${esc(p.id)}">＋ Взнос</button></div></div>
       <div class="parent-stats"><div class="mini-stat"><span>Внесено за выбранный месяц</span><b>${money(contributed)}</b></div><div class="mini-stat"><span>Внесено за всё время</span><b>${money(contributedAll)}</b></div><div class="mini-stat"><span>Открытые задачи</span><b style="color:${pending.length?'var(--yellow)':'var(--green)'}">${pending.length}</b></div><div class="mini-stat"><span>Задач выполнено за месяц</span><b>${completed.length} из ${tasksInMonth.length}</b></div>${debts.length?`<div class="mini-stat"><span>Долг прошлых месяцев</span><b style="color:var(--red)">${debtSum>0?money(debtSum):debts.length+' '+plural(debts.length,['задача','задачи','задач'])}</b></div>`:''}${credit>0?`<div class="mini-stat"><span>Аванс на следующий сбор</span><b style="color:var(--accent)">${money(credit)}</b></div>`:''}</div><p class="parent-contribution-note">Итог включает поступления из «Финансов» и взносы, указанные в задачах со сбором средств. Один платёж учитывайте только в одном месте, иначе статистика сложит его дважды.</p>
       <div class="parent-detail-columns">
         <section class="parent-detail-section"><div class="parent-section-head"><h3>Открытые задачи</h3><span class="pill ${pending.length?'warn':'good'}">${pending.length?`${pending.length} ${plural(pending.length,['задача','задачи','задач'])}`:'Нет открытых задач'}</span></div>${pendingHtml}${debts.length?`<h3 style="color:var(--red)">Долги прошлых месяцев</h3><ul class="parent-task-list">${debts.map(t=>renderParentTask(t,false)).join('')}</ul>`:''}<h3>Выполненные задачи за месяц</h3>${completedHtml}${excludedTasks.length?`<h3>Не касаются этой семьи</h3><ul class="parent-excluded-list">${excludedTasks.map(t=>`<li><span>${esc(t.title)}</span><button type="button" class="mini-link" data-parent-include="${esc(t.id)}" data-parent-id="${esc(p.id)}">Вернуть</button></li>`).join('')}</ul>`:''}</section>
@@ -1042,6 +1049,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       let people='';
       if(amount>0){
         people=taskParticipants(task).map(p=>{
+          if(p.leader) return `<div class="task-person leader-person completed"><div class="task-person-top"><span class="task-person-name">👑 ${esc(p.name)}</span><span class="pill good">Выполнено</span></div><small>Руководитель комитета — собирает взносы, отмечен автоматически</small>${taskRawPaid(task,p.id)>0?`<small>Своих денег внесено ${money(taskRawPaid(task,p.id))} — учтено в кассе</small>`:''}</div>`;
           const amount=taskRequired(task,p.id), custom=taskHasCustom(task,p.id);
           const paid=taskPaidAmount(task,p.id), parentDone=taskParentDone(task,p.id), remaining=Math.max(0,amount-paid);
           const statusLabel=parentDone?(paid>amount?'Переплата':'Выполнено'):(paid>0?'Частично':'Не внесено');
@@ -1050,6 +1058,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
         }).join('');
       } else {
         people=taskParticipants(task).map(p=>{
+          if(p.leader) return `<div class="task-person leader-person completed"><div class="task-person-top"><span class="task-person-name">👑 ${esc(p.name)}</span><span class="pill good">Выполнено</span></div><small>Руководитель комитета — собирает взносы, отмечен автоматически</small>${taskRawPaid(task,p.id)>0?`<small>Своих денег внесено ${money(taskRawPaid(task,p.id))} — учтено в кассе</small>`:''}</div>`;
           const parentDone=taskParentDone(task,p.id);
           return `<label class="task-person ${parentDone?'completed':''}"><input type="checkbox" data-task-check="${esc(task.id)}" data-parent-id="${esc(p.id)}" ${parentDone?'checked':''} aria-label="Отметить исполнение: ${esc(p.name)}"><span>${esc(p.name)}<small>${parentDone?'Выполнено':'Не выполнено'}</small></span></label>`;
         }).join('');
@@ -1070,7 +1079,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   function renderRoster() {
     const tbody=$('rosterBody');
     if(!state.parents.length){tbody.innerHTML='<tr><td colspan="3" class="empty-cell">Состав группы пока пуст.</td></tr>';return;}
-    tbody.innerHTML=state.parents.map(p=>`<tr><td data-label="Родитель">${esc(p.name)}</td><td data-label="Ребёнок">${esc(childForParent(p)?.name||'—')}</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">Изменить</button><button type="button" class="btn small danger" data-delete-family="${esc(p.id)}">Удалить</button></div></td></tr>`).join('');
+    tbody.innerHTML=state.parents.map(p=>`<tr><td data-label="Родитель">${esc(p.name)}${p.leader?'<span class="leader-badge">👑 Руководитель</span>':''}</td><td data-label="Ребёнок">${esc(childForParent(p)?.name||'—')}</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">Изменить</button><button type="button" class="btn small ${p.leader?'leader-on':''}" data-toggle-leader="${esc(p.id)}" aria-pressed="${p.leader?'true':'false'}">${p.leader?'👑 Снять руководителя':'👑 Сделать руководителем'}</button><button type="button" class="btn small danger" data-delete-family="${esc(p.id)}">Удалить</button></div></td></tr>`).join('');
   }
   function renderParentSelect() {
     const select=$('txParent'); const current=select.value;
@@ -1099,11 +1108,11 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     $('overviewCollections').innerHTML=collectionTasks.length?collectionTasks.map(t=>{
       const required=Math.max(0,Number(t.amountPerPerson)||0), pr=taskProgress(t);
       const rows=state.parents.map(p=>({parent:p,paid:taskPaidAmount(t,p.id)})).filter(x=>x.paid>0).map(x=>{
-        const delta=x.paid-taskRequired(t,x.parent.id);
-        const status=delta>0.000001?`Переплата: ${money(delta)}`:delta< -0.000001?`Осталось: ${money(-delta)}`:'Взнос выполнен';
+        const delta=x.parent.leader?0:x.paid-taskRequired(t,x.parent.id);
+        const status=x.parent.leader?'👑 Руководитель':delta>0.000001?`Переплата: ${money(delta)}`:delta< -0.000001?`Осталось: ${money(-delta)}`:'Взнос выполнен';
         return `<div class="overview-collection-person"><span class="overview-collection-person-name">${esc(x.parent.name)} · внесено ${money(x.paid)}</span><span class="overview-collection-person-value ${delta>0.000001?'overpaid':''}">${esc(status)}</span></div>`;
       }).join('');
-      const noPayment=taskParticipants(t).filter(p=>taskPaidAmount(t,p.id)<=0).map(p=>p.name);
+      const noPayment=taskParticipants(t).filter(p=>!p.leader&&taskPaidAmount(t,p.id)<=0).map(p=>p.name);
       const foot=noPayment.length?`Пока не внесли: ${noPayment.map(esc).join(', ')}`:(taskParticipants(t).every(p=>taskParentDone(t,p.id))?'Все участники внесли необходимую сумму':'У всех есть взнос, но часть сумм ещё не набрана');
       return `<article class="overview-collection-card"><div class="overview-collection-head"><div class="overview-row-title">${esc(t.title)}</div><span class="overview-collection-total">${money(pr.collected)} / ${money(pr.target)}</span></div><div class="overview-row-meta">Сумма на человека: ${money(required)}</div><div class="overview-collection-people">${rows}</div><div class="overview-collection-foot">${foot}</div></article>`;
     }).join(''):'<div class="empty"><strong>Взносов по задачам пока нет</strong>Когда вы укажете сумму, внесённую родителем, здесь появятся взносы, остатки и переплаты.</div>';
@@ -1157,8 +1166,27 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     $('childEditForm').addEventListener('submit',e=>{e.preventDefault();c.name=$('editKidName').value.trim()||'Без имени';c.birthday=$('editKidBirthday').value;c.giftPreferences=$('editKidGift').value.trim();c.foodPreferences=$('editKidFood').value.trim();closeModal();markChanged('Данные ребёнка обновлены');showToast('Данные ребёнка сохранены');});
   }
   function addFamily() {
-    openModal('Добавить семью',`<form id="familyAddForm"><div class="form-grid"><div class="field span-all"><label for="newParentName">Имя родителя *</label><input id="newParentName" required maxlength="100" placeholder="Имя и фамилия"></div><div class="field span-all"><label for="newChildName">Имя ребёнка *</label><input id="newChildName" required maxlength="100" placeholder="Имя и фамилия"></div><div class="field span-all"><label for="newChildBirthday">Дата рождения</label><input id="newChildBirthday" type="date"></div></div><div class="form-actions"><button class="btn" type="button" data-modal-cancel>Отмена</button><button class="btn primary" type="submit">Добавить</button></div></form>`);
-    $('familyAddForm').addEventListener('submit',e=>{e.preventDefault();const pName=$('newParentName').value.trim(), cName=$('newChildName').value.trim();if(!pName||!cName)return;const c={id:makeId(),name:cName,birthday:$('newChildBirthday').value,giftPreferences:'',foodPreferences:''};const p={id:makeId(),name:pName,childId:c.id};state.children.push(c);state.parents.push(p);closeModal();markChanged('Состав группы обновлён');showToast('Семья добавлена');});
+    const hasTasks=state.tasks.length>0;
+    openModal('Добавить участника',`<form id="familyAddForm"><div class="form-grid">
+      <div class="field span-all"><label for="newParentName">Имя родителя *</label><input id="newParentName" required maxlength="100" placeholder="Имя и фамилия"></div>
+      <div class="field span-all"><label class="inline-check" style="color:var(--text);margin:0"><input type="checkbox" id="newIsLeader"> 👑 Руководитель комитета</label><div class="hint">Руководитель собирает деньги: во всех задачах он отмечен выполнившим и не входит в сумму сбора.</div></div>
+      <div class="field span-all"><label for="newChildName" id="newChildLabel">Имя ребёнка *</label><input id="newChildName" required maxlength="100" placeholder="Имя и фамилия"></div>
+      <div class="field span-all"><label for="newChildBirthday">Дата рождения ребёнка</label><input id="newChildBirthday" type="date"></div>
+      ${hasTasks?`<div class="field span-all"><label class="inline-check" style="color:var(--text);margin:0"><input type="checkbox" id="newInOldTasks"> Добавить в уже созданные задачи</label><div class="hint" id="newOldTasksHint">Если не отмечать, у новой семьи не будет долгов по задачам, созданным до её появления.</div></div>`:''}
+    </div><div class="form-actions"><button class="btn" type="button" data-modal-cancel>Отмена</button><button class="btn primary" type="submit">Добавить</button></div></form>`);
+    const syncLeader=()=>{const lead=$('newIsLeader').checked;$('newChildName').required=!lead;$('newChildLabel').textContent=lead?'Имя ребёнка (если есть в группе)':'Имя ребёнка *';
+      const old=$('newInOldTasks');if(old){if(lead){old.checked=true;old.disabled=true;$('newOldTasksHint').textContent='Руководитель появится во всех задачах сразу выполнившим.';}else{old.disabled=false;$('newOldTasksHint').textContent='Если не отмечать, у новой семьи не будет долгов по задачам, созданным до её появления.';}}};
+    $('newIsLeader').addEventListener('change',syncLeader);
+    $('familyAddForm').addEventListener('submit',e=>{e.preventDefault();
+      const pName=$('newParentName').value.trim(), cName=$('newChildName').value.trim(), lead=$('newIsLeader').checked;
+      if(!pName||(!cName&&!lead))return;
+      let childId='';
+      if(cName){const c={id:makeId(),name:cName,birthday:$('newChildBirthday').value,giftPreferences:'',foodPreferences:''};state.children.push(c);childId=c.id;}
+      const p={id:makeId(),name:pName,childId,leader:lead};state.parents.push(p);
+      const inOld=lead||!!$('newInOldTasks')?.checked;
+      state.tasks.forEach(t=>{t.statuses=t.statuses||{};if(!(p.id in t.statuses))t.statuses[p.id]=false;if(!inOld){t.excluded=[...new Set([...(t.excluded||[]),p.id])];}});
+      closeModal();markChanged('Состав группы обновлён');
+      showToast(lead?`👑 ${pName} добавлен(а) руководителем — во всех задачах отмечен(а) выполнившим`:`Семья добавлена${inOld?' и включена в созданные задачи':' · в старых задачах её нет'}`);});
   }
   function quickContribution(parentId) {
     if(!state.parents.length){showToast('Сначала добавьте семьи в «Настройках»',true);return;}
@@ -1532,7 +1560,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 
   /* ===== Долги прошлых месяцев ===== */
   function cleanMoneyMap(o){const r={};if(o&&typeof o==='object')Object.entries(o).forEach(([k,v])=>{const n=Number(v);if(typeof k==='string'&&Number.isFinite(n)&&n>0)r[k]=Math.round(n*100)/100;});return r;}
-  function taskOwed(task,pid){const a=taskRequired(task,pid);return a>0?Math.max(0,a-taskPaidAmount(task,pid)):0;}
+  function taskOwed(task,pid){if(isLeader(pid))return 0;const a=taskRequired(task,pid);return a>0?Math.max(0,a-taskPaidAmount(task,pid)):0;}
   function pastDebtTasksForParent(pid,month=currentMonth()){return state.tasks.filter(t=>t.month<month&&!taskExcluded(t,pid)&&!taskParentDone(t,pid)).sort((a,b)=>a.month.localeCompare(b.month)||(a.dueDate||'').localeCompare(b.dueDate||''));}
   function pastDebts(month=currentMonth()){
     return state.tasks.filter(t=>t.month<month).map(t=>({task:t,debtors:taskParticipants(t).filter(p=>!taskParentDone(t,p.id)).map(p=>({p,owed:taskOwed(t,p.id)}))}))
@@ -1603,7 +1631,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   function applyCredits(task){
     const amount=Math.max(0,Number(task.amountPerPerson)||0); if(!amount||!state.credits) return 0;
     let used=0; task.credited=task.credited||{};
-    taskParticipants(task).forEach(p=>{const c=state.credits[p.id]||0;if(c<=0)return;const y=Math.min(c,Math.max(0,taskRequired(task,p.id)-taskPaidAmount(task,p.id)));if(y<=0)return;
+    taskParticipants(task).forEach(p=>{const c=state.credits[p.id]||0;if(c<=0||p.leader)return;const y=Math.min(c,Math.max(0,taskRequired(task,p.id)-taskPaidAmount(task,p.id)));if(y<=0)return;
       task.credited[p.id]=(task.credited[p.id]||0)+y; state.credits[p.id]=Math.round((c-y)*100)/100; if(state.credits[p.id]<=0) delete state.credits[p.id]; used+=y;});
     if(used>0) setTimeout(()=>showToast(`В «${task.title}» зачтены авансы: ${money(used)}`),400);
     return used;
@@ -1694,6 +1722,16 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     }
   });
 
+
+  /* ===== Руководитель комитета ===== */
+  $('rosterBody').addEventListener('click',e=>{
+    const b=e.target.closest('[data-toggle-leader]'); if(!b) return;
+    const par=getParent(b.dataset.toggleLeader); if(!par) return;
+    par.leader=!par.leader;
+    markChanged(par.leader?'Назначен руководитель комитета':'Руководитель снят');
+    showToast(par.leader?`👑 ${par.name} — руководитель. Во всех задачах отмечен(а) выполнившим`:`${par.name} больше не руководитель`);
+  });
+
   /* ===== Калькулятор и раздел сбора ===== */
   const calc={expr:'',history:[],tab:'calc',split:{title:'',total:'',fromCash:'',families:'',round:10}};
   function calcEval(src){
@@ -1745,7 +1783,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   function calcPaneHtml(){
     const keys=[['C','fn'],['(','fn'],[')','fn'],['÷','op'],['7'],['8'],['9'],['×','op'],['4'],['5'],['6'],['−','op'],['1'],['2'],['3'],['+','op'],['%','fn'],['0'],[',',''],['=','eq']];
     return `<div class="calc-screen"><input id="calcExpr" inputmode="decimal" autocomplete="off" aria-label="Выражение" placeholder="0" value="${esc(calc.expr)}"><div class="calc-preview" id="calcPreview" aria-live="polite"></div></div>
-      <div class="calc-quick"><button type="button" class="btn" data-calc-ins="${Number(balance().toFixed(2))}">Касса: ${money(balance())}</button><button type="button" class="btn" data-calc-ins="${state.parents.length}">Семей: ${state.parents.length}</button><button type="button" class="btn" data-calc-back>⌫</button><button type="button" class="btn" data-calc-copy>Копировать</button></div>
+      <div class="calc-quick"><button type="button" class="btn" data-calc-ins="${Number(balance().toFixed(2))}">Касса: ${money(balance())}</button><button type="button" class="btn" data-calc-ins="${state.parents.filter(x=>!x.leader).length}">Сдающих семей: ${state.parents.filter(x=>!x.leader).length}</button><button type="button" class="btn" data-calc-back>⌫</button><button type="button" class="btn" data-calc-copy>Копировать</button></div>
       <div class="calc-keys">${keys.map(([k,c])=>`<button type="button" class="${c||''}" data-calc-key="${k}">${k}</button>`).join('')}</div>
       <div class="calc-history" id="calcHistory"></div>`;
   }
@@ -1770,7 +1808,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       <div class="form-actions" style="margin-top:12px"><button type="button" class="btn" data-split-copy>Копировать текст</button><button type="button" class="btn primary" data-split-task>＋ Создать задачу-сбор</button></div>`;
   }
   function splitPaneHtml(){
-    const sp=calc.split; if(sp.families==='') sp.families=String(state.parents.length);
+    const sp=calc.split; if(sp.families==='') sp.families=String(state.parents.filter(x=>!x.leader).length);
     return `<div class="split-grid">
       <div class="field span-all"><label for="spTitle">На что собираем</label><input id="spTitle" maxlength="120" placeholder="Например, подарки на Новый год" value="${esc(sp.title)}"></div>
       <div class="field"><label for="spTotal">Стоимость, ₴</label><input id="spTotal" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" value="${esc(sp.total)}"></div>
