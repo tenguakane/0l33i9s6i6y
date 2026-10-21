@@ -546,6 +546,14 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 .amt-chips .btn{min-height:36px;padding:4px 11px;font-size:12.5px}
 .amt-info{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:0 0 12px;font-size:13px}
 .amt-info span{color:var(--muted)}
+.pay-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:42px;padding:6px 10px;border:1.5px solid var(--accent);border-radius:12px;background:var(--panel);color:var(--accent);font-weight:700;font-size:13px;cursor:pointer;transition:background .12s,transform .08s}
+.pay-btn:hover{background:var(--accent-bg)}
+.pay-btn:active{transform:scale(.97)}
+.pay-btn.done{border-color:color-mix(in srgb,var(--green) 55%,transparent);background:color-mix(in srgb,var(--green) 14%,var(--panel));color:var(--green)}
+.pay-btn.done:hover{background:color-mix(in srgb,var(--green) 20%,var(--panel))}
+.task-amount-label.secondary{font-size:10.5px}
+.mark-all-row{display:flex;justify-content:flex-end;margin:-2px 0 9px}
+.mark-all-row .btn{min-height:36px;font-size:12.5px}
 </style>
 <style></style><style>
   .imageye-selected {
@@ -1038,7 +1046,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
           const paid=taskPaidAmount(task,p.id), parentDone=taskParentDone(task,p.id), remaining=Math.max(0,amount-paid);
           const statusLabel=parentDone?(paid>amount?'Переплата':'Выполнено'):(paid>0?'Частично':'Не внесено');
           const note=parentDone?(paid>amount?`Переплата: ${money(paid-amount)}`:'Взнос выполнен'):(paid>0?`Осталось: ${money(remaining)}`:`К оплате: ${money(amount)}`);
-          return `<div class="task-person amount-person ${parentDone?'completed':''}"><div class="task-person-top"><span class="task-person-name">${esc(p.name)}${custom?`<span class="custom-tag" title="Индивидуальная сумма">${money(amount)}</span>`:''}</span><span class="pill ${parentDone?'good':paid>0?'warn':''}">${statusLabel}</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(task,p.id)>0?esc(taskRawPaid(task,p.id)):''}" data-task-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(task.title)}" placeholder="0"></label><small class="task-amount-note">${note}</small><button type="button" class="mini-link" data-set-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}">✎ ${custom?'Своя сумма · изменить':'Изменить сумму'}</button>${(task.credited?.[p.id]||0)>0?`<small class="credit-note">зачтено из переплаты ${money(task.credited[p.id])}</small>`:''}${(task.carried?.[p.id]||0)>0?`<small class="task-amount-note">перенесено в другой сбор ${money(task.carried[p.id])}</small>`:''}${paid>amount?`<button type="button" class="mini-link" data-carry="${esc(task.id)}" data-parent-id="${esc(p.id)}">↪ Зачесть в следующий сбор</button>`:''}</div>`;
+          return `<div class="task-person amount-person ${parentDone?'completed':''}"><div class="task-person-top"><span class="task-person-name">${esc(p.name)}${custom?`<span class="custom-tag" title="Индивидуальная сумма">${money(amount)}</span>`:''}</span><span class="pill ${parentDone?'good':paid>0?'warn':''}">${statusLabel}</span></div><button type="button" class="pay-btn ${parentDone?'done':''}" data-mark-paid="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-pressed="${parentDone?'true':'false'}">${parentDone?'✓ Внесено':`Внесено ${money(Math.max(0,amount-paid))}`}</button><label class="task-amount-label secondary">или другая сумма, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(task,p.id)>0?esc(taskRawPaid(task,p.id)):''}" data-task-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(task.title)}" placeholder="0"></label><small class="task-amount-note">${note}</small><button type="button" class="mini-link" data-set-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}">✎ ${custom?'Своя сумма · изменить':'Изменить сумму'}</button>${(task.credited?.[p.id]||0)>0?`<small class="credit-note">зачтено из переплаты ${money(task.credited[p.id])}</small>`:''}${(task.carried?.[p.id]||0)>0?`<small class="task-amount-note">перенесено в другой сбор ${money(task.carried[p.id])}</small>`:''}${paid>amount?`<button type="button" class="mini-link" data-carry="${esc(task.id)}" data-parent-id="${esc(p.id)}">↪ Зачесть в следующий сбор</button>`:''}</div>`;
         }).join('');
       } else {
         people=taskParticipants(task).map(p=>{
@@ -1051,7 +1059,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       const customCount=amount>0?taskParticipants(task).filter(p=>taskHasCustom(task,p.id)).length:0;
       const exclMeta=(customCount?`<span class="pill">Свои суммы: ${customCount}</span>`:'')+(task.repeat?'<span class="repeat-tag">🔁 Ежемесячно</span>':'')+(excludedPeople.length?`<span class="pill">Не касается: ${excludedPeople.length}</span>`:'');
       const moneyMeta=exclMeta+(amount>0?`<span class="pill ${pr.collected>=pr.target?'good':'warn'}">Собрано ${money(pr.collected)} из ${money(pr.target)}</span><span class="pill">${money(amount)} на человека</span>`:'');
-      return `<article class="task-card ${collapsed?'collapsed':''}" data-task-card="${esc(task.id)}"><div class="task-head"><div style="min-width:0;flex:1"><button class="task-title-toggle" type="button" data-toggle-task="${esc(task.id)}" aria-expanded="${collapsed?'false':'true'}" aria-label="${collapsed?'Развернуть':'Свернуть'} задачу ${esc(task.title)}"><span class="task-title">${esc(task.title)} ${done?'<span class="pill good">✓ Готово</span>':''}</span><span class="task-toggle-indicator" aria-hidden="true">⌄</span></button><div class="task-description">${esc(task.description||'Описание не добавлено')}</div><div class="task-meta"><span class="pill ${done?'good':'warn'}">${pr.done} из ${pr.total} выполнено</span>${task.dueDate?`<span class="pill">Срок: ${formatDate(task.dueDate)}</span>`:''}${moneyMeta}</div></div><div class="card-actions" style="margin:0;flex-wrap:nowrap"><button class="btn small" type="button" data-copy-task="${esc(task.id)}" aria-label="Скопировать в следующий месяц" title="Скопировать в следующий месяц">⧉</button><button class="btn small" type="button" data-edit-task="${esc(task.id)}" aria-label="Редактировать задачу">✎</button><button class="btn small danger" type="button" data-delete-task="${esc(task.id)}" aria-label="Удалить задачу">×</button></div></div><div class="task-progress"><span style="width:${pr.ratio}%"></span></div><div class="task-people">${people}</div></article>`;
+      return `<article class="task-card ${collapsed?'collapsed':''}" data-task-card="${esc(task.id)}"><div class="task-head"><div style="min-width:0;flex:1"><button class="task-title-toggle" type="button" data-toggle-task="${esc(task.id)}" aria-expanded="${collapsed?'false':'true'}" aria-label="${collapsed?'Развернуть':'Свернуть'} задачу ${esc(task.title)}"><span class="task-title">${esc(task.title)} ${done?'<span class="pill good">✓ Готово</span>':''}</span><span class="task-toggle-indicator" aria-hidden="true">⌄</span></button><div class="task-description">${esc(task.description||'Описание не добавлено')}</div><div class="task-meta"><span class="pill ${done?'good':'warn'}">${pr.done} из ${pr.total} выполнено</span>${task.dueDate?`<span class="pill">Срок: ${formatDate(task.dueDate)}</span>`:''}${moneyMeta}</div></div><div class="card-actions" style="margin:0;flex-wrap:nowrap"><button class="btn small" type="button" data-copy-task="${esc(task.id)}" aria-label="Скопировать в следующий месяц" title="Скопировать в следующий месяц">⧉</button><button class="btn small" type="button" data-edit-task="${esc(task.id)}" aria-label="Редактировать задачу">✎</button><button class="btn small danger" type="button" data-delete-task="${esc(task.id)}" aria-label="Удалить задачу">×</button></div></div><div class="task-progress"><span style="width:${pr.ratio}%"></span></div>${amount>0&&!done&&pr.total-pr.done>1?`<div class="mark-all-row"><button type="button" class="btn small" data-mark-all="${esc(task.id)}">✓ Отметить всех оставшихся (${pr.total-pr.done})</button></div>`:''}<div class="task-people">${people}</div></article>`;
     }).join('');
   }
   function renderTransactions() {
@@ -1654,6 +1662,37 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     }
   }
   document.addEventListener('click',e=>{const b=e.target.closest('[data-set-amount]');if(b){e.preventDefault();openCustomAmount(b.dataset.setAmount,b.dataset.parentId);}});
+
+
+  /* ===== Отметка «Внесено» одной кнопкой ===== */
+  const markPrev={};
+  function markPaid(task,pid,on){
+    task.statuses=task.statuses||{}; const key=task.id+'|'+pid;
+    if(!on){ const prev=markPrev[key]; task.statuses[pid]=prev>0?prev:0; delete markPrev[key]; return; }
+    markPrev[key]=taskRawPaid(task,pid);
+    if(on) task.statuses[pid]=Math.max(taskRawPaid(task,pid),taskRequired(task,pid)-(task.credited?.[pid]||0)+(task.carried?.[pid]||0));
+    else task.statuses[pid]=0;
+  }
+  $('tasksList').addEventListener('click',e=>{
+    const b=e.target.closest('[data-mark-paid]');
+    if(b){
+      const t=state.tasks.find(x=>x.id===b.dataset.markPaid), par=getParent(b.dataset.parentId); if(!t||!par) return;
+      const done=taskParentDone(t,par.id);
+      if(done&&!confirm(`Снять отметку «Внесено» у ${par.name}?`)) return;
+      markPaid(t,par.id,!done);
+      markChanged(done?'Отметка взноса снята':'Взнос отмечен');
+      showToast(done?`${par.name}: отметка снята`:`${par.name}: внесено ${money(taskRawPaid(t,par.id))} по «${t.title}»`);
+      return;
+    }
+    const all=e.target.closest('[data-mark-all]');
+    if(all){
+      const t=state.tasks.find(x=>x.id===all.dataset.markAll); if(!t) return;
+      const left=taskParticipants(t).filter(p=>!taskParentDone(t,p.id));
+      if(!left.length||!confirm(`Отметить «Внесено» у ${left.length} ${plural(left.length,['человека','человек','человек'])}?\n\n${left.map(p=>p.name).join(', ')}`)) return;
+      left.forEach(p=>markPaid(t,p.id,true));
+      markChanged('Взносы отмечены'); showToast(`Отмечено: ${left.length} · «${t.title}» собран`);
+    }
+  });
 
   /* ===== Калькулятор и раздел сбора ===== */
   const calc={expr:'',history:[],tab:'calc',split:{title:'',total:'',fromCash:'',families:'',round:10}};
