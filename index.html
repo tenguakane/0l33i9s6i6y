@@ -607,7 +607,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 </div>
 <div id="cloudLock"><div class="cl-box">
   <h2>Родительский комитет</h2><p id="clSub">Введите пароль, чтобы открыть данные.</p>
-  <div id="clUrlWrap"><label for="clUrl">Адрес хранилища</label><input type="url" id="clUrl" placeholder="https://….workers.dev" autocapitalize="off" spellcheck="false"></div>
+  <div id="clUrlWrap" hidden=""><label for="clUrl">Адрес хранилища</label><input type="url" id="clUrl" placeholder="https://….workers.dev" autocapitalize="off" spellcheck="false"></div>
   <label for="clPass">Пароль</label><input type="password" id="clPass" autocomplete="current-password">
   <label class="cl-chk"><input type="checkbox" id="clRemember" checked=""> Запомнить на этом устройстве</label>
   <div class="cl-err" id="clErr" role="alert"></div>
@@ -1251,7 +1251,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   setDefaultTxDate();setTxFormMode();renderAll();persist('Данные готовы к работе');
 
   /* ================= Облачное хранилище (Cloudflare Worker + KV) ================= */
-  const DEFAULT_CLOUD_URL = '';
+  const DEFAULT_CLOUD_URL = 'https://lisiy-sad.tenguakane.workers.dev';
   const K_URL='committeeCloudUrlV1', K_PASS='committeeCloudPassV1', K_REV='committeeCloudRevV1', K_PEND='committeeCloudPendingV1';
   const CL = {url:'', pass:'', rev:0, ready:false, timer:0, pushing:false, poll:0};
   const lsGet = k => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
