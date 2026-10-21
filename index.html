@@ -588,6 +588,16 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 .debt-amt{font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .debt-amt.zero{color:var(--green);font-weight:600}
 @media(max-width:520px){.debt-row{grid-template-columns:minmax(0,1fr) auto;gap:4px 10px}.debt-row .debt-bar{grid-column:1/-1;grid-row:2}}
+.carry-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:40px;margin-top:6px;padding:6px 10px;border:1.5px solid var(--yellow);border-radius:12px;background:color-mix(in srgb,var(--yellow) 16%,var(--panel));color:var(--text);font-weight:700;font-size:12.5px;line-height:1.2;cursor:pointer;transition:background .12s,transform .08s}
+.carry-btn:hover{background:color-mix(in srgb,var(--yellow) 26%,var(--panel))}
+.carry-btn:active{transform:scale(.97)}
+.parent-task-amount-summary .carry-btn{width:auto;align-self:flex-start}
+.debt-carry{display:flex;flex-wrap:wrap;gap:6px;margin:-2px 10px 6px}
+.debt-carry .carry-btn{width:auto;min-height:34px;margin:0;font-size:12px}
+.undo-line{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.undo-btn{border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--text);font-size:11px;font-weight:600;padding:3px 8px;cursor:pointer;white-space:nowrap}
+.undo-btn:hover{border-color:var(--red);color:var(--red)}
+.mini-stat .undo-btn{margin-top:5px}
 </style>
 <style></style><style>
   .imageye-selected {
@@ -840,7 +850,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       const paid = tasks.filter(t=>t.amountPerPerson>0).reduce((sum,t)=>sum+Object.entries(t.statuses).filter(([k])=>ids.has(k)).reduce((a,[,v])=>a+(typeof v==='number'&&Number.isFinite(v)?Math.max(0,v):v===true?t.amountPerPerson:0),0),0);
       adj -= paid;
     }
-    return {version:1,taskCash:true,parents:p,children:c,tasks,transactions,balanceAdjustment:adj,credits:cleanMoneyMap(s.credits),seriesLast:Object.fromEntries(Object.entries(s.seriesLast&&typeof s.seriesLast==='object'?s.seriesLast:{}).filter(([k,v])=>typeof v==='string'&&/^\d{4}-\d{2}$/.test(v))),notes:String(s.notes||'').slice(0,10000),createdAt:s.createdAt||new Date().toISOString()};
+    return {version:1,taskCash:true,parents:p,children:c,tasks,transactions,balanceAdjustment:adj,credits:cleanMoneyMap(s.credits),transfers:Array.isArray(s.transfers)?s.transfers.filter(x=>x&&typeof x.pid==='string'&&typeof x.from==='string').map(x=>({id:String(x.id||makeId()),pid:x.pid,from:x.from,parts:(Array.isArray(x.parts)?x.parts:[]).filter(q=>q&&typeof q.to==='string'&&Number(q.amount)>0).map(q=>({to:q.to,amount:Number(q.amount)})),credit:Math.max(0,Number(x.credit)||0),at:String(x.at||'')})):[],seriesLast:Object.fromEntries(Object.entries(s.seriesLast&&typeof s.seriesLast==='object'?s.seriesLast:{}).filter(([k,v])=>typeof v==='string'&&/^\d{4}-\d{2}$/.test(v))),notes:String(s.notes||'').slice(0,10000),createdAt:s.createdAt||new Date().toISOString()};
   }
   function loadLocal() {
     try {
@@ -1022,7 +1032,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     const bday=child?.birthday?birthdayInfo(child.birthday):null;
     const renderParentTask = (t, done) => {
       const amount=taskRequired(t,p.id), paid=taskPaidAmount(t,p.id), custom=taskHasCustom(t,p.id);
-      const amountMeta=amount>0?`<div class="parent-task-amount-editor"><label class="parent-task-amount-label">Внесено, ₴<input class="parent-task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(t,p.id)>0?esc(taskRawPaid(t,p.id)):''}" data-parent-task-amount="${esc(t.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(t.title)}" placeholder="0"></label><div class="parent-task-amount-summary">${money(paid)} из ${money(amount)}${custom?' <span class="custom-tag">своя сумма</span>':''}<button type="button" class="mini-link" data-set-amount="${esc(t.id)}" data-parent-id="${esc(p.id)}">✎ Изменить сумму</button>${(t.credited?.[p.id]||0)>0?`<span class="credit-note">в т.ч. зачтено из переплаты ${money(t.credited[p.id])}</span>`:''}${paid>amount?`<span class="overpaid">Переплата: ${money(paid-amount)}</span><button type="button" class="mini-link" data-carry="${esc(t.id)}" data-parent-id="${esc(p.id)}">↪ Перенести переплату</button>`:paid<amount?`<span>Осталось: ${money(amount-paid)}</span>`:'<span class="paid-done">Взнос выполнен</span>'}</div></div>`:'';
+      const amountMeta=amount>0?`<div class="parent-task-amount-editor"><label class="parent-task-amount-label">Внесено, ₴<input class="parent-task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(t,p.id)>0?esc(taskRawPaid(t,p.id)):''}" data-parent-task-amount="${esc(t.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(t.title)}" placeholder="0"></label><div class="parent-task-amount-summary">${money(paid)} из ${money(amount)}${custom?' <span class="custom-tag">своя сумма</span>':''}<button type="button" class="mini-link" data-set-amount="${esc(t.id)}" data-parent-id="${esc(p.id)}">✎ Изменить сумму</button>${(t.credited?.[p.id]||0)>0?`<span class="undo-line"><span class="credit-note">в т.ч. зачтено из переплаты ${money(t.credited[p.id])}</span><button type="button" class="undo-btn" data-undo-credit="${esc(t.id)}" data-parent-id="${esc(p.id)}">↩ Отменить</button></span>`:''}${(t.carried?.[p.id]||0)>0?`<span class="undo-line"><span>перенесено в другие сборы ${money(t.carried[p.id])}</span><button type="button" class="undo-btn" data-undo-carry="${esc(t.id)}" data-parent-id="${esc(p.id)}">↩ Отменить перенос</button></span>`:''}${paid>amount?`<span class="overpaid">Переплата: ${money(paid-amount)}</span><button type="button" class="carry-btn" data-carry="${esc(t.id)}" data-parent-id="${esc(p.id)}">↪ Перенести переплату ${money(paid-amount)}</button>`:paid<amount?`<span>Осталось: ${money(amount-paid)}</span>`:'<span class="paid-done">Взнос выполнен</span>'}</div></div>`:'';
       return `<li class="${done?'done-task':''}"><div class="parent-task-toggle-row"><div class="parent-task-copy"><div class="parent-task-name">${esc(t.title)}${t.month!==currentMonth()?`<span class="month-tag">${esc(monthLabel(t.month))}</span>`:''}</div>${t.description?`<div class="parent-task-meta">${esc(t.description)}</div>`:''}${t.dueDate?`<div class="parent-task-meta">Срок: ${formatDate(t.dueDate)}</div>`:''}</div><label class="parent-task-done-toggle"><input type="checkbox" data-parent-task-toggle="${esc(t.id)}" data-parent-id="${esc(p.id)}" ${done?'checked':''} aria-label="${done?'Снять выполнение':'Отметить выполненной'}: ${esc(t.title)}"><span>${done?'Выполнено':'Выполнить'}</span></label></div>${done?'':`<button type="button" class="mini-link" data-parent-exclude="${esc(t.id)}" data-parent-id="${esc(p.id)}">Задача не касается этой семьи</button>`}${amountMeta}</li>`;
     };
     const pendingHtml=pending.length
@@ -1036,7 +1046,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       : '<div class="muted small-text">Операций с привязкой к этому родителю за выбранный месяц нет.</div>';
     grid.innerHTML=`<article class="panel parent-detail">
       <div class="parent-detail-head"><div class="person-head"><div class="avatar">${esc(String(state.parents.indexOf(p)+1).padStart(2,'0'))}</div><div class="person-main"><div class="person-name">${esc(p.name)}${p.leader?'<span class="leader-badge">👑 Руководитель</span>':''}</div><div class="person-sub">${p.leader?'Все задачи отмечаются выполненными автоматически · ':''}Ребёнок: ${esc(child?.name||'не указан')}</div></div></div><div class="card-actions"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">✎ Изменить данные</button><button type="button" class="btn small" data-add-contribution="${esc(p.id)}">＋ Взнос</button></div></div>
-      <div class="parent-stats"><div class="mini-stat"><span>Внесено за выбранный месяц</span><b>${money(contributed)}</b></div><div class="mini-stat"><span>Внесено за всё время</span><b>${money(contributedAll)}</b></div><div class="mini-stat"><span>Открытые задачи</span><b style="color:${pending.length?'var(--yellow)':'var(--green)'}">${pending.length}</b></div><div class="mini-stat"><span>Задач выполнено за месяц</span><b>${completed.length} из ${tasksInMonth.length}</b></div>${(()=>{const dt=parentDebtTotal(p.id);return `<div class="mini-stat"><span>Должен всего по задачам</span><b style="color:${dt.sum>0?'var(--red)':'var(--green)'}">${money(dt.sum)}</b>${dt.other?`<span>+ невыполненных поручений: ${dt.other}</span>`:''}</div>`;})()}${debts.length?`<div class="mini-stat"><span>Долг прошлых месяцев</span><b style="color:var(--red)">${debtSum>0?money(debtSum):debts.length+' '+plural(debts.length,['задача','задачи','задач'])}</b></div>`:''}${credit>0?`<div class="mini-stat"><span>Аванс на следующий сбор</span><b style="color:var(--accent)">${money(credit)}</b></div>`:''}</div><p class="parent-contribution-note">Итог включает поступления из «Финансов» и взносы, указанные в задачах со сбором средств. Один платёж учитывайте только в одном месте, иначе статистика сложит его дважды.</p>
+      <div class="parent-stats"><div class="mini-stat"><span>Внесено за выбранный месяц</span><b>${money(contributed)}</b></div><div class="mini-stat"><span>Внесено за всё время</span><b>${money(contributedAll)}</b></div><div class="mini-stat"><span>Открытые задачи</span><b style="color:${pending.length?'var(--yellow)':'var(--green)'}">${pending.length}</b></div><div class="mini-stat"><span>Задач выполнено за месяц</span><b>${completed.length} из ${tasksInMonth.length}</b></div>${(()=>{const dt=parentDebtTotal(p.id);return `<div class="mini-stat"><span>Должен всего по задачам</span><b style="color:${dt.sum>0?'var(--red)':'var(--green)'}">${money(dt.sum)}</b>${dt.other?`<span>+ невыполненных поручений: ${dt.other}</span>`:''}</div>`;})()}${debts.length?`<div class="mini-stat"><span>Долг прошлых месяцев</span><b style="color:var(--red)">${debtSum>0?money(debtSum):debts.length+' '+plural(debts.length,['задача','задачи','задач'])}</b></div>`:''}${credit>0?`<div class="mini-stat"><span>Аванс на следующий сбор</span><b style="color:var(--accent)">${money(credit)}</b><button type="button" class="undo-btn" data-undo-pool="${esc(p.id)}">↩ Вернуть в переплату</button></div>`:''}</div><p class="parent-contribution-note">Итог включает поступления из «Финансов» и взносы, указанные в задачах со сбором средств. Один платёж учитывайте только в одном месте, иначе статистика сложит его дважды.</p>
       <div class="parent-detail-columns">
         <section class="parent-detail-section"><div class="parent-section-head"><h3>Открытые задачи</h3><span class="pill ${pending.length?'warn':'good'}">${pending.length?`${pending.length} ${plural(pending.length,['задача','задачи','задач'])}`:'Нет открытых задач'}</span></div>${pendingHtml}${debts.length?`<h3 style="color:var(--red)">Долги прошлых месяцев</h3><ul class="parent-task-list">${debts.map(t=>renderParentTask(t,false)).join('')}</ul>`:''}<h3>Выполненные задачи за месяц</h3>${completedHtml}${excludedTasks.length?`<h3>Не касаются этой семьи</h3><ul class="parent-excluded-list">${excludedTasks.map(t=>`<li><span>${esc(t.title)}</span><button type="button" class="mini-link" data-parent-include="${esc(t.id)}" data-parent-id="${esc(p.id)}">Вернуть</button></li>`).join('')}</ul>`:''}</section>
         <section class="parent-detail-section"><h3>Информация о ребёнке</h3><div class="child-info-box"><p class="child-info-row"><span>Имя:</span> ${esc(child?.name||'Не указано')}</p><p class="child-info-row"><span>Дата рождения:</span> ${child?.birthday?formatDate(child.birthday):'Не указана'}</p><p class="child-info-row"><span>Ближайший день рождения:</span> ${esc(bday?.label||'Дата рождения не указана')}</p><p class="child-info-row"><span>Предпочтения в подарках:</span> ${esc(child?.giftPreferences?.trim()||'Не заполнены')}</p><p class="child-info-row"><span>Предпочтения в еде:</span> ${esc(child?.foodPreferences?.trim()||'Не заполнены')}</p></div><h3>Операции за ${esc(monthLabel(currentMonth()))}</h3>${txHtml}</section>
@@ -1085,7 +1095,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
           const paid=taskPaidAmount(task,p.id), parentDone=taskParentDone(task,p.id), remaining=Math.max(0,amount-paid);
           const statusLabel=parentDone?(paid>amount?'Переплата':'Выполнено'):(paid>0?'Частично':'Не внесено');
           const note=parentDone?(paid>amount?`Переплата: ${money(paid-amount)}`:'Взнос выполнен'):(paid>0?`Осталось: ${money(remaining)}`:`К оплате: ${money(amount)}`);
-          return `<div class="task-person amount-person ${parentDone?'completed':''}"><div class="task-person-top"><span class="task-person-name">${esc(p.name)}${custom?`<span class="custom-tag" title="Индивидуальная сумма">${money(amount)}</span>`:''}</span><span class="pill ${parentDone?'good':paid>0?'warn':''}">${statusLabel}</span></div><button type="button" class="pay-btn ${parentDone?'done':''}" data-mark-paid="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-pressed="${parentDone?'true':'false'}">${parentDone?'✓ Внесено':`Внесено ${money(Math.max(0,amount-paid))}`}</button><label class="task-amount-label secondary">или другая сумма, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(task,p.id)>0?esc(taskRawPaid(task,p.id)):''}" data-task-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(task.title)}" placeholder="0"></label><small class="task-amount-note">${note}</small><button type="button" class="mini-link" data-set-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}">✎ ${custom?'Своя сумма · изменить':'Изменить сумму'}</button>${(task.credited?.[p.id]||0)>0?`<small class="credit-note">зачтено из переплаты ${money(task.credited[p.id])}</small>`:''}${(task.carried?.[p.id]||0)>0?`<small class="task-amount-note">перенесено в другой сбор ${money(task.carried[p.id])}</small>`:''}${paid>amount?`<button type="button" class="mini-link" data-carry="${esc(task.id)}" data-parent-id="${esc(p.id)}">↪ Перенести переплату</button>`:''}</div>`;
+          return `<div class="task-person amount-person ${parentDone?'completed':''}"><div class="task-person-top"><span class="task-person-name">${esc(p.name)}${custom?`<span class="custom-tag" title="Индивидуальная сумма">${money(amount)}</span>`:''}</span><span class="pill ${parentDone?'good':paid>0?'warn':''}">${statusLabel}</span></div><button type="button" class="pay-btn ${parentDone?'done':''}" data-mark-paid="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-pressed="${parentDone?'true':'false'}">${parentDone?'✓ Внесено':`Внесено ${money(Math.max(0,amount-paid))}`}</button><label class="task-amount-label secondary">или другая сумма, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(task,p.id)>0?esc(taskRawPaid(task,p.id)):''}" data-task-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(task.title)}" placeholder="0"></label><small class="task-amount-note">${note}</small><button type="button" class="mini-link" data-set-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}">✎ ${custom?'Своя сумма · изменить':'Изменить сумму'}</button>${(task.credited?.[p.id]||0)>0?`<div class="undo-line"><span class="credit-note">зачтено из переплаты ${money(task.credited[p.id])}</span><button type="button" class="undo-btn" data-undo-credit="${esc(task.id)}" data-parent-id="${esc(p.id)}">↩ Отменить</button></div>`:''}${(task.carried?.[p.id]||0)>0?`<div class="undo-line"><span>перенесено в другие сборы ${money(task.carried[p.id])}</span><button type="button" class="undo-btn" data-undo-carry="${esc(task.id)}" data-parent-id="${esc(p.id)}">↩ Отменить перенос</button></div>`:''}${paid>amount?`<button type="button" class="carry-btn" data-carry="${esc(task.id)}" data-parent-id="${esc(p.id)}">↪ Перенести переплату ${money(paid-amount)}</button>`:''}</div>`;
         }).join('');
       } else {
         people=taskParticipants(task).map(p=>{
@@ -1663,25 +1673,28 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     const amount=Math.max(0,Number(task.amountPerPerson)||0); if(!amount||!state.credits) return 0;
     let used=0; task.credited=task.credited||{};
     taskParticipants(task).forEach(p=>{const c=state.credits[p.id]||0;if(c<=0||p.leader)return;const y=Math.min(c,Math.max(0,taskRequired(task,p.id)-taskPaidAmount(task,p.id)));if(y<=0)return;
-      task.credited[p.id]=(task.credited[p.id]||0)+y; state.credits[p.id]=Math.round((c-y)*100)/100; if(state.credits[p.id]<=0) delete state.credits[p.id]; used+=y;});
+      task.credited[p.id]=(task.credited[p.id]||0)+y; state.credits[p.id]=Math.round((c-y)*100)/100; if(state.credits[p.id]<=0) delete state.credits[p.id]; used+=y; logTransfer(p.id,'credit',[{to:task.id,amount:y}],0);});
     if(used>0) setTimeout(()=>showToast(`В «${task.title}» зачтены авансы: ${money(used)}`),400);
     return used;
   }
   function returnCredits(task){
     state.credits=state.credits||{};
     Object.entries(task.credited||{}).forEach(([pid,v])=>{if(v>0&&getParent(pid))state.credits[pid]=(state.credits[pid]||0)+v;});
+    (state.transfers||[]).forEach(L=>{L.parts=L.parts.filter(q=>{if(q.to!==task.id)return true;if(L.from!=='credit')L.credit=r2(L.credit+q.amount);return false;});});
+    state.transfers=(state.transfers||[]).filter(L=>L.from!==task.id&&(L.parts.length||L.credit>0));
   }
   function doCarry(src,pid,allocs,restToCredit){
     const over=Math.round((taskPaidAmount(src,pid)-taskRequired(src,pid))*100)/100; if(over<=0) return;
     src.carried=src.carried||{}; state.credits=state.credits||{};
-    let moved=0; const parts=[];
+    let moved=0; const parts=[], logParts=[];
     allocs.forEach(({task,amount})=>{
       const y=Math.round(Math.min(amount,taskOwed(task,pid),over-moved)*100)/100; if(y<=0) return;
-      task.credited=task.credited||{}; task.credited[pid]=Math.round(((task.credited[pid]||0)+y)*100)/100; moved+=y; parts.push(`«${task.title}» ${money(y)}`);
+      task.credited=task.credited||{}; task.credited[pid]=Math.round(((task.credited[pid]||0)+y)*100)/100; moved+=y; parts.push(`«${task.title}» ${money(y)}`); logParts.push({to:task.id,amount:y});
     });
     const rest=Math.round((over-moved)*100)/100, toCredit=restToCredit&&rest>0?rest:0;
     const out=Math.round((moved+toCredit)*100)/100; if(out<=0){showToast('Ничего не распределено',true);return;}
     src.carried[pid]=Math.round(((src.carried[pid]||0)+out)*100)/100;
+    logTransfer(pid,src.id,logParts,toCredit);
     if(toCredit>0) state.credits[pid]=Math.round(((state.credits[pid]||0)+toCredit)*100)/100;
     closeModal(); markChanged('Переплата распределена');
     const name=getParent(pid)?.name||'';
@@ -1805,7 +1818,9 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     box.innerHTML=rows.length?rows.map(({p,d})=>{
       const credit=state.credits?.[p.id]||0;
       const sub=p.leader?'👑 руководитель':[d.tasks?`${d.tasks} ${plural(d.tasks,['сбор','сбора','сборов'])}`:'',d.other?`${d.other} ${plural(d.other,['поручение','поручения','поручений'])}`:'',credit>0?`аванс ${money(credit)}`:''].filter(Boolean).join(' · ')||'всё сдано';
-      return `<button type="button" class="debt-row ${p.id===selectedParentId?'sel':''}" data-debt-parent="${esc(p.id)}"><span class="debt-row-name">${esc(p.name)}<small>${esc(sub)}</small></span><span class="debt-bar" aria-hidden="true"><span style="width:${d.sum/max*100}%"></span></span><span class="debt-amt ${d.sum>0?'':'zero'}">${d.sum>0?money(d.sum):'✓ 0 ₴'}</span></button>`;
+      const overs=p.leader?[]:state.tasks.filter(t=>Number(t.amountPerPerson)>0&&!taskExcluded(t,p.id)).map(t=>({t,o:Math.round((taskPaidAmount(t,p.id)-taskRequired(t,p.id))*100)/100})).filter(x=>x.o>0);
+      const carryHtml=overs.length?`<div class="debt-carry">${overs.map(x=>`<button type="button" class="carry-btn" data-carry="${esc(x.t.id)}" data-parent-id="${esc(p.id)}">↪ Переплата ${money(x.o)} · «${esc(x.t.title)}» — перенести</button>`).join('')}</div>`:'';
+      return `<button type="button" class="debt-row ${p.id===selectedParentId?'sel':''}" data-debt-parent="${esc(p.id)}"><span class="debt-row-name">${esc(p.name)}<small>${esc(sub)}</small></span><span class="debt-bar" aria-hidden="true"><span style="width:${d.sum/max*100}%"></span></span><span class="debt-amt ${d.sum>0?'':'zero'}">${d.sum>0?money(d.sum):'✓ 0 ₴'}</span></button>${carryHtml}`;
     }).join(''):'<div class="muted small-text">Пока нет родителей.</div>';
   }
   $('debtBoardRows').addEventListener('click',e=>{const b=e.target.closest('[data-debt-parent]');if(!b)return;selectedParentId=b.dataset.debtParent;renderParents();renderDebtBoard();$('parentsGrid').scrollIntoView({behavior:'smooth',block:'start'});});
@@ -1813,6 +1828,91 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   const _renderAllBoard=renderAll;
   renderAll=function(){_renderAllBoard();renderDebtBoard();};
   renderDebtBoard();
+
+
+  /* ===== Отмена переносов переплаты ===== */
+  function r2(x){return Math.round((Number(x)||0)*100)/100;}
+  function logTransfer(pid,from,parts,credit){
+    state.transfers=state.transfers||[];
+    const ps=(parts||[]).filter(q=>q.amount>0).map(q=>({to:q.to,amount:r2(q.amount)}));
+    if(!ps.length&&!(credit>0)) return;
+    state.transfers.push({id:makeId(),pid,from,parts:ps,credit:r2(credit||0),at:new Date().toISOString()});
+  }
+  function tidyTransfers(){state.transfers=(state.transfers||[]).filter(L=>(L.parts=L.parts.filter(q=>q.amount>0.004)).length||L.credit>0.004);}
+  function decCredited(task,pid,amt){
+    if(!task) return 0; const cur=task.credited?.[pid]||0, y=r2(Math.min(cur,amt));
+    if(y>0){task.credited[pid]=r2(cur-y); if(task.credited[pid]<=0) delete task.credited[pid];}
+    return y;
+  }
+  function decCarried(task,pid,amt){
+    if(!task) return 0; const cur=task.carried?.[pid]||0, y=r2(Math.min(cur,amt));
+    if(y>0){task.carried[pid]=r2(cur-y); if(task.carried[pid]<=0) delete task.carried[pid];}
+    return y;
+  }
+  function addPool(pid,amt){if(amt<=0)return;state.credits=state.credits||{};state.credits[pid]=r2((state.credits[pid]||0)+amt);}
+  function takePool(pid,amt){const cur=state.credits?.[pid]||0,y=r2(Math.min(cur,amt));if(y>0){state.credits[pid]=r2(cur-y);if(state.credits[pid]<=0)delete state.credits[pid];}return y;}
+  // Забрать сумму, которая уже ушла из аванса в задачи (сначала по журналу, потом из любых зачтённых сумм).
+  function reclaimFromCreditUses(pid,need){
+    let got=0; const tl=state.transfers||[];
+    for(let i=tl.length-1;i>=0&&need-got>0.004;i--){const L=tl[i];if(L.pid!==pid||L.from!=='credit')continue;
+      for(const q of L.parts){if(need-got<=0.004)break;const y=decCredited(state.tasks.find(t=>t.id===q.to),pid,Math.min(q.amount,need-got));q.amount=r2(q.amount-y);got=r2(got+y);}}
+    if(need-got>0.004){const ts=state.tasks.filter(t=>(t.credited?.[pid]||0)>0).sort((a,b)=>b.month.localeCompare(a.month)||(b.createdAt||'').localeCompare(a.createdAt||''));
+      for(const t of ts){if(need-got<=0.004)break;got=r2(got+decCredited(t,pid,need-got));}}
+    return got;
+  }
+  // Отменить зачёт в конкретной задаче: деньги возвращаются туда, откуда пришли.
+  function undoCredit(task,pid){
+    const amt=task.credited?.[pid]||0; if(amt<=0) return null;
+    decCredited(task,pid,amt);
+    let left=amt; const back=[]; const tl=state.transfers||[];
+    for(let i=tl.length-1;i>=0&&left>0.004;i--){const L=tl[i];if(L.pid!==pid)continue;
+      for(const q of L.parts){if(q.to!==task.id||q.amount<=0||left<=0.004)continue;const y=r2(Math.min(q.amount,left));q.amount=r2(q.amount-y);left=r2(left-y);
+        if(L.from==='credit'){addPool(pid,y);back.push(`аванс +${money(y)}`);}
+        else{const src=state.tasks.find(t=>t.id===L.from);if(src&&decCarried(src,pid,y)>0)back.push(`переплата в «${src.title}» +${money(y)}`);else{addPool(pid,y);back.push(`аванс +${money(y)}`);}}}}
+    if(left>0.004){addPool(pid,left);back.push(`аванс +${money(left)}`);}
+    tidyTransfers(); return back;
+  }
+  // Отменить все переносы из задачи-источника: переплата снова появляется в ней.
+  function undoCarry(src,pid){
+    const total=src.carried?.[pid]||0; if(total<=0) return null;
+    let recovered=0, logged=0; const tl=state.transfers||[];
+    for(let i=tl.length-1;i>=0;i--){const L=tl[i];if(L.pid!==pid||L.from!==src.id)continue;
+      for(const q of L.parts){logged=r2(logged+q.amount);const y=decCredited(state.tasks.find(t=>t.id===q.to),pid,q.amount);recovered=r2(recovered+y);
+        if(y<q.amount){const more=takePool(pid,q.amount-y);recovered=r2(recovered+more);} q.amount=0;}
+      if(L.credit>0){logged=r2(logged+L.credit);let y=takePool(pid,L.credit);if(y<L.credit)y=r2(y+reclaimFromCreditUses(pid,L.credit-y));recovered=r2(recovered+y);L.credit=0;}
+    }
+    const unlogged=r2(total-logged);
+    if(unlogged>0.004){let y=takePool(pid,unlogged);if(y<unlogged)y=r2(y+reclaimFromCreditUses(pid,unlogged-y));recovered=r2(recovered+y);}
+    decCarried(src,pid,Math.min(total,recovered));
+    tidyTransfers(); return {total,recovered};
+  }
+  // Вернуть аванс обратно переплатой в задачи, откуда он был перенесён.
+  function undoPool(pid){
+    let pool=state.credits?.[pid]||0; if(pool<=0) return null; const back=[]; const tl=state.transfers||[];
+    for(let i=tl.length-1;i>=0&&pool>0.004;i--){const L=tl[i];if(L.pid!==pid||L.from==='credit'||L.credit<=0)continue;
+      const src=state.tasks.find(t=>t.id===L.from); if(!src) continue;
+      const y=r2(Math.min(L.credit,pool)); const z=decCarried(src,pid,y); if(z<=0) continue;
+      takePool(pid,z); L.credit=r2(L.credit-z); pool=r2(pool-z); back.push(`«${src.title}» +${money(z)}`);}
+    if(pool>0.004){const srcs=state.tasks.filter(t=>(t.carried?.[pid]||0)>0).sort((a,b)=>b.month.localeCompare(a.month));
+      for(const t of srcs){if(pool<=0.004)break;const z=decCarried(t,pid,pool);takePool(pid,z);pool=r2(pool-z);back.push(`«${t.title}» +${money(z)}`);}}
+    tidyTransfers(); return back;
+  }
+  document.addEventListener('click',e=>{
+    const c=e.target.closest('[data-undo-credit]');
+    if(c){e.preventDefault();const t=state.tasks.find(x=>x.id===c.dataset.undoCredit),par=getParent(c.dataset.parentId);if(!t||!par)return;
+      if(!confirm(`Отменить зачёт ${money(t.credited?.[par.id]||0)} в «${t.title}» для ${par.name}?\n\nДеньги вернутся туда, откуда были перенесены (переплата в исходной задаче или аванс).`))return;
+      const back=undoCredit(t,par.id); markChanged('Зачёт переплаты отменён'); showToast(`Отменено. ${back?.join(', ')||''}`); return;}
+    const k=e.target.closest('[data-undo-carry]');
+    if(k){e.preventDefault();const t=state.tasks.find(x=>x.id===k.dataset.undoCarry),par=getParent(k.dataset.parentId);if(!t||!par)return;
+      const targets=(state.transfers||[]).filter(L=>L.pid===par.id&&L.from===t.id).flatMap(L=>[...L.parts.map(q=>`• «${state.tasks.find(x=>x.id===q.to)?.title||'удалённая задача'}» — ${money(q.amount)}`),...(L.credit>0?[`• аванс — ${money(L.credit)}`]:[])]);
+      if(!confirm(`Отменить перенос переплаты ${money(t.carried?.[par.id]||0)} из «${t.title}» (${par.name})?${targets.length?`\n\nЗачёт будет снят:\n${targets.join('\n')}`:''}\n\nПереплата снова появится в этой задаче.`))return;
+      const r=undoCarry(t,par.id); markChanged('Перенос переплаты отменён');
+      showToast(r&&r.recovered+0.004<r.total?`Возвращено ${money(r.recovered)} из ${money(r.total)} — часть уже нельзя забрать`:`Перенос отменён: переплата ${money(r?.recovered||0)} снова в «${t.title}»`); return;}
+    const pl=e.target.closest('[data-undo-pool]');
+    if(pl){e.preventDefault();const par=getParent(pl.dataset.undoPool);if(!par)return;
+      if(!confirm(`Вернуть аванс ${money(state.credits?.[par.id]||0)} обратно переплатой в задачи, откуда он был перенесён?`))return;
+      const back=undoPool(par.id); markChanged('Аванс возвращён в переплату'); showToast(back?.length?`Переплата возвращена: ${back.join(', ')}`:'Не удалось найти исходную задачу');}
+  });
 
   /* ===== Калькулятор и раздел сбора ===== */
   const calc={expr:'',history:[],tab:'calc',split:{title:'',total:'',fromCash:'',families:'',round:10}};
