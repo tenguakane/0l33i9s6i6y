@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="auto"><head>
+<html lang="ru" data-theme="auto"><head><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="rgb(251, 246, 238)">
+<meta name="theme-color" content="rgb(23, 20, 25)">
 <script>try{var t=localStorage.getItem("committeeThemeV1");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <title>Родительский комитет</title>
 <meta name="robots" content="noindex,nofollow">
@@ -434,18 +436,61 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 .cl-chk{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13.5px;color:var(--muted)}
 #backupBanner{display:none!important}
 #cloudNote{font-size:12px}#cloudNote.err{color:var(--red)}#cloudNote.ok strong{color:var(--green);font-weight:500}
+/* ===== Калькулятор ===== */
+.calc-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;margin:0 0 14px;border:1px solid var(--line);border-radius:14px;background:var(--soft)}
+.calc-tabs button{min-height:40px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-weight:600}
+.calc-tabs button.active{background:var(--panel);color:var(--accent);box-shadow:var(--shadow)}
+.calc-screen{padding:12px 14px;border:1.5px solid var(--line);border-radius:16px;background:var(--ctrl);margin-bottom:10px}
+.calc-screen input{border:0!important;box-shadow:none!important;padding:0;min-height:0;background:transparent;font-size:22px;font-variant-numeric:tabular-nums;text-align:right}
+.calc-preview{min-height:30px;margin-top:4px;text-align:right;font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--accent);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.calc-preview.err{font-size:13px;font-weight:500;color:var(--red)}
+.calc-quick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.calc-quick .btn{min-height:34px;padding:4px 10px;font-size:12.5px;font-weight:500}
+.calc-keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.calc-keys button{min-height:52px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--text);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;transition:background .12s,transform .08s}
+.calc-keys button:active{transform:scale(.96)}
+.calc-keys button:hover{background:var(--hover)}
+.calc-keys .op{background:var(--soft);color:var(--accent)}
+.calc-keys .fn{color:var(--muted);font-size:16px}
+.calc-keys .eq{background:var(--accent);border-color:var(--accent);color:var(--on,#fff)}
+.calc-history{margin-top:12px;display:flex;flex-direction:column;gap:5px;max-height:150px;overflow:auto}
+.calc-history button{display:flex;justify-content:space-between;gap:10px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--muted);font-size:12.5px;text-align:left;font-variant-numeric:tabular-nums}
+.calc-history button b{color:var(--text);white-space:nowrap}
+.split-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.split-grid .span-all{grid-column:1/-1}
+.split-round{display:flex;gap:6px;flex-wrap:wrap}
+.split-round button{min-height:38px;padding:4px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font-weight:600}
+.split-round button.active{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.split-result{margin-top:14px;padding:14px;border-radius:16px;background:var(--accent-bg);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+.split-big{font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--accent);font-variant-numeric:tabular-nums}
+.split-big small{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0}
+.split-bar{display:flex;height:12px;margin:12px 0 8px;border-radius:99px;overflow:hidden;background:color-mix(in srgb,var(--text) 10%,transparent)}
+.split-bar span{display:block;height:100%}
+.split-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}
+.split-legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.split-rows{margin-top:10px;display:grid;grid-template-columns:1fr auto;gap:5px 12px;font-size:13px;font-variant-numeric:tabular-nums}
+.split-rows span:nth-child(odd){color:var(--muted)}
+.split-rows .neg{color:var(--red)}
+@media(max-width:700px){#calcBtn{position:fixed;right:16px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:55;width:52px;height:52px;min-height:52px;border-radius:50%;font-size:22px;background:var(--panel);border:1px solid var(--line);box-shadow:0 8px 22px -6px #2b263266}}
+@media(max-width:390px){.split-grid{grid-template-columns:1fr}.calc-keys button{min-height:48px;font-size:18px}}
+
 </style>
-</head>
+<style></style><style>
+  .imageye-selected {
+    outline: 2px solid black !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+  }
+</style></head>
 <body>
 <header>
   <div class="header-inner">
     <div class="topline">
       <div class="brand"><div class="brand-mark" aria-hidden="true">✳</div><div><h1>Родительский комитет</h1><p>Задачи, сборы и общие расходы группы</p></div></div>
-      <div class="header-actions"><button type="button" class="btn icon" id="themeBtn" aria-label="Цветовая тема" title="Цветовая тема">🎨</button>
-        <button class="btn" id="cloudLogout" type="button" title="Выйти и забыть пароль на этом устройстве" hidden="">Выйти</button><button class="btn primary" id="saveBtn" type="button" title="Скачать HTML-файл со всеми текущими данными">⇩ Сохранить</button>
+      <div class="header-actions"><button type="button" class="btn icon" id="themeBtn" aria-label="Цветовая тема" title="Цветовая тема">🎨</button><button type="button" class="btn icon" id="calcBtn" aria-label="Калькулятор" title="Калькулятор">🧮</button>
+        <button class="btn" id="cloudLogout" type="button" title="Выйти и забыть пароль на этом устройстве">Выйти</button><button class="btn primary" id="saveBtn" type="button" title="Скачать HTML-файл со всеми текущими данными">⇩ Сохранить</button>
       </div>
     </div>
-    <div class="save-note" id="cloudNote" style="margin-bottom:-6px"></div>
+    <div class="save-note ok" id="cloudNote" style="margin-bottom:-6px">☁ <strong>Обновлено из облака · 21:01</strong></div>
     <div class="save-note" id="saveNote">✓ <strong>Данные готовы к работе</strong></div>
     <div class="monthbar">
       <div class="month-controls">
@@ -466,33 +511,33 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     </nav>
   </div>
 </header>
-<main><div class="backup-banner critical" id="backupBanner"><div id="backupBannerText"><strong>Сохраните копию данных!</strong> Всё хранится только в браузере этого телефона. Если очистить историю, сменить телефон или открыть файл в другом месте — <strong>все данные пропадут</strong>. Последняя копия: ещё ни разу.</div><div class="backup-actions"><button type="button" class="btn primary small" id="backupNow">⇩ Сохранить копию</button><button type="button" class="btn small" id="backupLater">Позже</button></div></div>
+<main><div class="backup-banner" id="backupBanner" hidden=""><div id="backupBannerText"><strong>Сохраните копию данных!</strong> Всё хранится только в браузере этого телефона. Если очистить историю, сменить телефон или открыть файл в другом месте — <strong>все данные пропадут</strong>. Последняя копия: сегодня.</div><div class="backup-actions"><button type="button" class="btn primary small" id="backupNow">⇩ Сохранить копию</button><button type="button" class="btn small" id="backupLater">Позже</button></div></div>
   <section class="tab active" id="tab-overview">
     <div class="page-head overview-page-head">
       <div><h2>Обзор группы</h2><p id="overviewSubtitle">октябрь 2026 г. · состояние кассы и дел группы</p></div>
-      <div class="overview-actions"><button type="button" class="btn primary" data-overview-action="tasks">＋ Новая задача</button><button type="button" class="btn" data-overview-action="finances">＋ Финансовая операция</button><button type="button" class="btn" id="ovQuick">💸 Быстрый взнос</button><button type="button" class="btn" id="ovReport">📄 Отчёт для родителей</button></div>
+      <div class="overview-actions"><button type="button" class="btn primary" data-overview-action="tasks">＋ Новая задача</button><button type="button" class="btn" data-overview-action="finances">＋ Финансовая операция</button><button type="button" class="btn" id="ovQuick">💸 Быстрый взнос</button><button type="button" class="btn" id="ovReport">📄 Отчёт для родителей</button><button type="button" class="btn" id="ovCalc">🧮 Калькулятор</button></div>
     </div>
 <section class="summary-grid" aria-label="Сводка за месяц">
     <article class="summary-card money"><div class="summary-label">ПОСТУПИЛО ЗА МЕСЯЦ</div><div class="summary-value" id="sumIncome">0 ₴</div><div class="summary-sub" id="sumIncomeSub">0 операций</div></article>
     <article class="summary-card spent"><div class="summary-label">ПОТРАЧЕНО ЗА МЕСЯЦ</div><div class="summary-value" id="sumExpense">0 ₴</div><div class="summary-sub" id="sumExpenseSub">0 операций</div></article>
     <article class="summary-card"><div class="summary-label">ОСТАТОК В КАССЕ</div><div class="summary-value" id="sumBalance" style="color: var(--text);">0 ₴</div><div class="summary-sub">Общий баланс за всё время</div></article>
-    <article class="summary-card tasks"><div class="summary-label">ЗАДАЧИ ЗА МЕСЯЦ</div><div class="summary-value" id="sumTasks">0/0</div><div class="summary-sub" id="sumTasksSub">Пока нет задач</div></article>
+    <article class="summary-card tasks"><div class="summary-label">ЗАДАЧИ ЗА МЕСЯЦ</div><div class="summary-value" id="sumTasks">1/2</div><div class="summary-sub" id="sumTasksSub">12 из 18 исполнений полностью · собрано 160 ₴ из 450 ₴</div></article>
   </section>
     <div class="overview-grid">
       <div class="overview-column overview-column-left">
         <section id="overviewTasksPanel" class="panel overview-panel">
           <div class="overview-panel-head"><h3>Требуют внимания</h3><button type="button" class="text-action" data-open-tab="tasks">Все задачи →</button></div>
-          <div id="overviewTasks" class="overview-list"><div class="empty"><strong>Нет задач на этот месяц</strong>Создайте задачу или поручение — оно появится здесь.</div></div>
+          <div id="overviewTasks" class="overview-list"><button type="button" class="overview-item" data-overview-task="99a6d3f7-f68f-4cec-8af3-d365189fb3e2"><span class="overview-row-main"><span class="overview-row-title">Сбор на праздник</span><span class="overview-row-meta">3 из 9 выполнено · Срок: 25.10.2026 · Собрано 160 ₴ из 450 ₴</span></span><span class="overview-chevron" aria-hidden="true">›</span></button></div>
         </section>
         <section id="overviewCollectionsPanel" class="panel overview-panel">
           <div class="overview-panel-head"><h3>Взносы по задачам</h3><button type="button" class="text-action" data-open-tab="tasks">Все задачи →</button></div>
-          <div id="overviewCollections" class="overview-list"><div class="empty"><strong>Взносов по задачам пока нет</strong>Когда вы укажете сумму, внесённую родителем, здесь появятся взносы, остатки и переплаты.</div></div>
+          <div id="overviewCollections" class="overview-list"><article class="overview-collection-card"><div class="overview-collection-head"><div class="overview-row-title">Сбор на праздник</div><span class="overview-collection-total">160 ₴ / 450 ₴</span></div><div class="overview-row-meta">Сумма на человека: 50 ₴</div><div class="overview-collection-people"><div class="overview-collection-person"><span class="overview-collection-person-name">Каменченко Людмила · внесено 50 ₴</span><span class="overview-collection-person-value ">Взнос выполнен</span></div><div class="overview-collection-person"><span class="overview-collection-person-name">Ширкина Анна · внесено 60 ₴</span><span class="overview-collection-person-value overpaid">Переплата: 10 ₴</span></div><div class="overview-collection-person"><span class="overview-collection-person-name">Гула Таисия · внесено 50 ₴</span><span class="overview-collection-person-value ">Взнос выполнен</span></div></div><div class="overview-collection-foot">Пока не внесли: Лялько Лидия, Бондаренко Алина, Савельева Алёна, Кашпур Мила, Вовненко Юлия, Онуфриенко Каролина</div></article></div>
         </section>
       </div>
       <div class="overview-column overview-column-right">
         <section id="overviewBirthdaysPanel" class="panel overview-panel">
           <div class="overview-panel-head"><h3>Ближайшие дни рождения</h3><button type="button" class="text-action" data-open-tab="kids">Все дети →</button></div>
-          <div id="overviewBirthdays" class="overview-list"><div class="empty"><strong>Дни рождения не указаны</strong>Добавьте даты на вкладке «Дети».</div></div>
+          <div id="overviewBirthdays" class="overview-list"><div class="overview-row"><div class="overview-row-main"><div class="overview-row-title">Онуфриенко Роман</div><div class="overview-row-meta">Онуфриенко Каролина · 02.11.2026</div></div><span class="birthday-count ">Через 12 дней</span></div><div class="overview-row"><div class="overview-row-main"><div class="overview-row-title">Иськов Артём</div><div class="overview-row-meta">Гула Таисия · 08.11.2026</div></div><span class="birthday-count ">Через 18 дней</span></div><div class="overview-row"><div class="overview-row-main"><div class="overview-row-title">Лялько Матвей</div><div class="overview-row-meta">Лялько Лидия · 05.01.2027</div></div><span class="birthday-count ">Через 76 дней</span></div><div class="overview-row"><div class="overview-row-main"><div class="overview-row-title">Каменченко Даня</div><div class="overview-row-meta">Каменченко Людмила · 15.01.2027</div></div><span class="birthday-count ">Через 86 дней</span></div></div>
         </section>
         <section id="overviewTransactionsPanel" class="panel overview-panel overview-recent-panel">
           <div class="overview-panel-head"><h3>Последние финансовые операции</h3><button type="button" class="text-action" data-open-tab="finances">Все финансы →</button></div>
@@ -509,20 +554,27 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   <section class="tab" id="tab-parents">
     <div class="page-head"><div><h2>Родители</h2><p>Выберите родителя, чтобы посмотреть его взносы, задачи и связанные операции.</p></div></div>
     <div class="parent-selector panel">
-      <div class="field parent-select-field"><label for="parentSelect">Выбрать родителя</label><select id="parentSelect" aria-label="Выбрать родителя для просмотра"><option value="">Нет родителей</option></select></div>
-      <span class="pill" id="parentCount">0 родителей</span>
+      <div class="field parent-select-field"><label for="parentSelect">Выбрать родителя</label><select id="parentSelect" aria-label="Выбрать родителя для просмотра"><option value="00e70aa6-2287-44fe-8814-bbf002c3934a">⚠ Лялько Лидия (1)</option><option value="8c832e8d-b5f7-494b-8f46-b8fa47b38c0f">⚠ Бондаренко Алина (1)</option><option value="8f469ff3-81dc-4e64-be08-5c6e8c4b89e2">Каменченко Людмила</option><option value="0b178fba-38d4-4e83-809d-f73511629960">⚠ Савельева Алёна (1)</option><option value="756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6">Ширкина Анна</option><option value="d656e9e6-ab31-4732-b4a3-4080a2081705">⚠ Кашпур Мила (1)</option><option value="4cdfd1f7-7e99-40ae-a549-ae9587acb3d0">⚠ Вовненко Юлия (1)</option><option value="f619160f-4540-4bd2-b1fc-b38edc61d2ad">Гула Таисия</option><option value="5ef7aa70-ff59-41b2-96b9-62ad133f6480">⚠ Онуфриенко Каролина (1)</option></select></div>
+      <span class="pill" id="parentCount">9 родителей</span>
     </div>
-    <div id="parentsGrid"><div class="empty"><strong>Пока нет родителей</strong>Добавьте пару во вкладке «Настройки».</div></div>
+    <div id="parentsGrid"><article class="panel parent-detail">
+      <div class="parent-detail-head"><div class="person-head"><div class="avatar">01</div><div class="person-main"><div class="person-name">Лялько Лидия</div><div class="person-sub">Ребёнок: Лялько Матвей</div></div></div><div class="card-actions"><button type="button" class="btn small" data-edit-parent="00e70aa6-2287-44fe-8814-bbf002c3934a">✎ Изменить данные</button><button type="button" class="btn small" data-add-contribution="00e70aa6-2287-44fe-8814-bbf002c3934a">＋ Взнос</button></div></div>
+      <div class="parent-stats"><div class="mini-stat"><span>Внесено за выбранный месяц</span><b>0 ₴</b></div><div class="mini-stat"><span>Внесено за всё время</span><b>0 ₴</b></div><div class="mini-stat"><span>Открытые задачи</span><b style="color:var(--yellow)">1</b></div><div class="mini-stat"><span>Задач выполнено за месяц</span><b>1 из 2</b></div></div><p class="parent-contribution-note">Итог включает поступления из «Финансов» и взносы, указанные в задачах со сбором средств. Один платёж учитывайте только в одном месте, иначе статистика сложит его дважды.</p>
+      <div class="parent-detail-columns">
+        <section class="parent-detail-section"><div class="parent-section-head"><h3>Открытые задачи</h3><span class="pill warn">1 задача</span></div><ul class="parent-task-list"><li class=""><div class="parent-task-toggle-row"><div class="parent-task-copy"><div class="parent-task-name">Сбор на праздник</div><div class="parent-task-meta">С каждого собрать по 50 грн и золотой зуб</div><div class="parent-task-meta">Срок: 25.10.2026</div></div><label class="parent-task-done-toggle"><input type="checkbox" data-parent-task-toggle="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="00e70aa6-2287-44fe-8814-bbf002c3934a" aria-label="Отметить выполненной: Сбор на праздник"><span>Выполнить</span></label></div><div class="parent-task-amount-editor"><label class="parent-task-amount-label">Внесено, ₴<input class="parent-task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="" data-parent-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="00e70aa6-2287-44fe-8814-bbf002c3934a" aria-label="Сколько внёс Лялько Лидия на задачу Сбор на праздник" placeholder="0"></label><div class="parent-task-amount-summary">0 ₴ из 50 ₴<span>Осталось: 50 ₴</span></div></div></li></ul><h3>Выполненные задачи за месяц</h3><ul class="parent-completed-list"><li class="done-task"><div class="parent-task-toggle-row"><div class="parent-task-copy"><div class="parent-task-name">Тест</div><div class="parent-task-meta">Тест</div></div><label class="parent-task-done-toggle"><input type="checkbox" data-parent-task-toggle="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="00e70aa6-2287-44fe-8814-bbf002c3934a" checked="" aria-label="Снять выполнение: Тест"><span>Выполнено</span></label></div></li></ul></section>
+        <section class="parent-detail-section"><h3>Информация о ребёнке</h3><div class="child-info-box"><p class="child-info-row"><span>Имя:</span> Лялько Матвей</p><p class="child-info-row"><span>Дата рождения:</span> 05.01.2022</p><p class="child-info-row"><span>Ближайший день рождения:</span> Через 76 дней</p><p class="child-info-row"><span>Предпочтения в подарках:</span> Не заполнены</p><p class="child-info-row"><span>Предпочтения в еде:</span> Не заполнены</p></div><h3>Операции за октябрь 2026 г.</h3><div class="muted small-text">Операций с привязкой к этому родителю за выбранный месяц нет.</div></section>
+      </div>
+    </article></div>
     <p class="footer-note">Финансовые данные привязаны к выбранному родителю и выбранному месяцу. Общий остаток кассы отображается на вкладке «Обзор».</p>
   </section>
 
   <section class="tab" id="tab-kids">
-    <div class="page-head"><div><h2>Дети</h2><p>Дни рождения рассчитываются автоматически. Предпочтения можно записывать для идей подарков.</p></div><span class="pill" id="kidsCount">0 детей</span></div>
-    <div class="grid" id="kidsGrid"><div class="empty"><strong>Пока нет детей</strong>Добавьте пару во вкладке «Настройки».</div></div>
+    <div class="page-head"><div><h2>Дети</h2><p>Дни рождения рассчитываются автоматически. Предпочтения можно записывать для идей подарков.</p></div><span class="pill" id="kidsCount">9 детей</span></div>
+    <div class="grid" id="kidsGrid"><article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">Онуфриенко Роман</div><div class="person-sub">Родитель: Онуфриенко Каролина</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: 02.11.2021</span><span class="birthday-count ">Через 12 дней</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>Пока не заполнено</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>Пока не заполнено</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="ac58a981-3ecf-4e25-8f34-d8d4cebca192">✎ Изменить данные</button></div></article><article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">Иськов Артём</div><div class="person-sub">Родитель: Гула Таисия</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: 08.11.2021</span><span class="birthday-count ">Через 18 дней</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>Пока не заполнено</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>Пока не заполнено</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="47a615ef-6fa0-41a7-92fa-4efa061348e3">✎ Изменить данные</button></div></article><article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">Лялько Матвей</div><div class="person-sub">Родитель: Лялько Лидия</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: 05.01.2022</span><span class="birthday-count ">Через 76 дней</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>Пока не заполнено</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>Пока не заполнено</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="ac90881d-45ae-405d-a484-81ddbe485768">✎ Изменить данные</button></div></article><article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">Каменченко Даня</div><div class="person-sub">Родитель: Каменченко Людмила</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: 15.01.2021</span><span class="birthday-count ">Через 86 дней</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>Пока не заполнено</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>Пока не заполнено</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="1b360c8e-3012-401f-9ef1-7cebf49e085d">✎ Изменить данные</button></div></article><article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">Бондаренко Алексей</div><div class="person-sub">Родитель: Бондаренко Алина</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: 13.02.2021</span><span class="birthday-count ">Через 115 дней</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>Пока не заполнено</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>Пока не заполнено</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="a3f8e3f3-cbe5-4f91-b72e-633c2af79a35">✎ Изменить данные</button></div></article><article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">Савельев Ринат</div><div class="person-sub">Родитель: Савельева Алёна</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: 13.02.2021</span><span class="birthday-count ">Через 115 дней</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>Пока не заполнено</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>Пока не заполнено</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="d283e21e-1971-433a-b703-5f9b7939cf37">✎ Изменить данные</button></div></article><article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">Ширкин Михаил</div><div class="person-sub">Родитель: Ширкина Анна</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: 26.02.2021</span><span class="birthday-count ">Через 128 дней</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>Пока не заполнено</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>Пока не заполнено</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="77db184f-9bb3-4b0e-954b-5c1c28fbae2a">✎ Изменить данные</button></div></article><article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">Самоишенко Даниил</div><div class="person-sub">Родитель: Кашпур Мила</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: 13.08.2021</span><span class="birthday-count ">Через 296 дней</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>Пока не заполнено</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>Пока не заполнено</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="6f1df24b-4a1f-4862-b0fe-506de9e24ed8">✎ Изменить данные</button></div></article><article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">Вовненко Назар</div><div class="person-sub">Родитель: Вовненко Юлия</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: 17.08.2021</span><span class="birthday-count ">Через 300 дней</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>Пока не заполнено</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>Пока не заполнено</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="72b89310-d32a-4267-8374-23f0361529c7">✎ Изменить данные</button></div></article></div>
   </section>
 
   <section class="tab" id="tab-tasks">
-    <div class="page-head"><div><h2>Задачи</h2><p>Создавайте поручения и указывайте частичные взносы для задач с суммой на человека.</p></div><div class="page-head-actions"><span class="pill" id="monthTaskCount">0 задач в месяце</span><button type="button" class="btn primary mobile-form-trigger" id="openTaskFormBtn">＋ Новая задача</button></div></div>
+    <div class="page-head"><div><h2>Задачи</h2><p>Создавайте поручения и указывайте частичные взносы для задач с суммой на человека.</p></div><div class="page-head-actions"><span class="pill" id="monthTaskCount">2 задачи в месяце</span><button type="button" class="btn primary mobile-form-trigger" id="openTaskFormBtn">＋ Новая задача</button></div></div>
     <h3 class="section-title desktop-form-label">Добавить задачу</h3>
     <div class="panel form-panel" id="taskFormPanel">
       <form id="taskForm">
@@ -538,9 +590,9 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     <h3 class="section-title">Задачи за выбранный месяц</h3>
     <div class="task-toolbar">
       <label class="hide-completed-control"><input id="hideCompletedTasks" type="checkbox"><span>Скрыть выполненные</span></label>
-      <span class="pill" id="taskFilterCount">0 задач</span>
+      <span class="pill" id="taskFilterCount">2 задачи</span>
     </div>
-    <div id="tasksList" class="task-list"><div class="empty"><strong>В этом месяце задач пока нет</strong>Создайте задачу выше — например, сбор на праздник. После этого можно отмечать исполнение отдельно для каждого родителя.</div></div>
+    <div id="tasksList" class="task-list"><article class="task-card " data-task-card="99a6d3f7-f68f-4cec-8af3-d365189fb3e2"><div class="task-head"><div style="min-width:0;flex:1"><button class="task-title-toggle" type="button" data-toggle-task="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" aria-expanded="true" aria-label="Свернуть задачу Сбор на праздник"><span class="task-title">Сбор на праздник </span><span class="task-toggle-indicator" aria-hidden="true">⌄</span></button><div class="task-description">С каждого собрать по 50 грн и золотой зуб</div><div class="task-meta"><span class="pill warn">3 из 9 выполнено</span><span class="pill">Срок: 25.10.2026</span><span class="pill warn">Собрано 160 ₴ из 450 ₴</span><span class="pill">50 ₴ на человека</span></div></div><div class="card-actions" style="margin:0;flex-wrap:nowrap"><button class="btn small" type="button" data-edit-task="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" aria-label="Редактировать задачу">✎</button><button class="btn small danger" type="button" data-delete-task="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" aria-label="Удалить задачу">×</button></div></div><div class="task-progress"><span style="width:35.55555555555556%"></span></div><div class="task-people"><div class="task-person amount-person "><div class="task-person-top"><span class="task-person-name">Лялько Лидия</span><span class="pill ">Не внесено</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="" data-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="00e70aa6-2287-44fe-8814-bbf002c3934a" aria-label="Сколько внёс Лялько Лидия на задачу Сбор на праздник" placeholder="0"></label><small class="task-amount-note">К оплате: 50 ₴</small></div><div class="task-person amount-person "><div class="task-person-top"><span class="task-person-name">Бондаренко Алина</span><span class="pill ">Не внесено</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="" data-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="8c832e8d-b5f7-494b-8f46-b8fa47b38c0f" aria-label="Сколько внёс Бондаренко Алина на задачу Сбор на праздник" placeholder="0"></label><small class="task-amount-note">К оплате: 50 ₴</small></div><div class="task-person amount-person completed"><div class="task-person-top"><span class="task-person-name">Каменченко Людмила</span><span class="pill good">Выполнено</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="50" data-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="8f469ff3-81dc-4e64-be08-5c6e8c4b89e2" aria-label="Сколько внёс Каменченко Людмила на задачу Сбор на праздник" placeholder="0"></label><small class="task-amount-note">Взнос выполнен</small></div><div class="task-person amount-person "><div class="task-person-top"><span class="task-person-name">Савельева Алёна</span><span class="pill ">Не внесено</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="" data-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="0b178fba-38d4-4e83-809d-f73511629960" aria-label="Сколько внёс Савельева Алёна на задачу Сбор на праздник" placeholder="0"></label><small class="task-amount-note">К оплате: 50 ₴</small></div><div class="task-person amount-person completed"><div class="task-person-top"><span class="task-person-name">Ширкина Анна</span><span class="pill good">Переплата</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="60" data-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6" aria-label="Сколько внёс Ширкина Анна на задачу Сбор на праздник" placeholder="0"></label><small class="task-amount-note">Переплата: 10 ₴</small></div><div class="task-person amount-person "><div class="task-person-top"><span class="task-person-name">Кашпур Мила</span><span class="pill ">Не внесено</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="" data-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="d656e9e6-ab31-4732-b4a3-4080a2081705" aria-label="Сколько внёс Кашпур Мила на задачу Сбор на праздник" placeholder="0"></label><small class="task-amount-note">К оплате: 50 ₴</small></div><div class="task-person amount-person "><div class="task-person-top"><span class="task-person-name">Вовненко Юлия</span><span class="pill ">Не внесено</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="" data-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="4cdfd1f7-7e99-40ae-a549-ae9587acb3d0" aria-label="Сколько внёс Вовненко Юлия на задачу Сбор на праздник" placeholder="0"></label><small class="task-amount-note">К оплате: 50 ₴</small></div><div class="task-person amount-person completed"><div class="task-person-top"><span class="task-person-name">Гула Таисия</span><span class="pill good">Выполнено</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="50" data-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="f619160f-4540-4bd2-b1fc-b38edc61d2ad" aria-label="Сколько внёс Гула Таисия на задачу Сбор на праздник" placeholder="0"></label><small class="task-amount-note">Взнос выполнен</small></div><div class="task-person amount-person "><div class="task-person-top"><span class="task-person-name">Онуфриенко Каролина</span><span class="pill ">Не внесено</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="" data-task-amount="99a6d3f7-f68f-4cec-8af3-d365189fb3e2" data-parent-id="5ef7aa70-ff59-41b2-96b9-62ad133f6480" aria-label="Сколько внёс Онуфриенко Каролина на задачу Сбор на праздник" placeholder="0"></label><small class="task-amount-note">К оплате: 50 ₴</small></div></div></article><article class="task-card " data-task-card="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f"><div class="task-head"><div style="min-width:0;flex:1"><button class="task-title-toggle" type="button" data-toggle-task="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" aria-expanded="true" aria-label="Свернуть задачу Тест"><span class="task-title">Тест <span class="pill good">✓ Готово</span></span><span class="task-toggle-indicator" aria-hidden="true">⌄</span></button><div class="task-description">Тест</div><div class="task-meta"><span class="pill good">9 из 9 выполнено</span></div></div><div class="card-actions" style="margin:0;flex-wrap:nowrap"><button class="btn small" type="button" data-edit-task="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" aria-label="Редактировать задачу">✎</button><button class="btn small danger" type="button" data-delete-task="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" aria-label="Удалить задачу">×</button></div></div><div class="task-progress"><span style="width:100%"></span></div><div class="task-people"><label class="task-person completed"><input type="checkbox" data-task-check="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="00e70aa6-2287-44fe-8814-bbf002c3934a" checked="" aria-label="Отметить исполнение: Лялько Лидия"><span>Лялько Лидия<small>Выполнено</small></span></label><label class="task-person completed"><input type="checkbox" data-task-check="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="8c832e8d-b5f7-494b-8f46-b8fa47b38c0f" checked="" aria-label="Отметить исполнение: Бондаренко Алина"><span>Бондаренко Алина<small>Выполнено</small></span></label><label class="task-person completed"><input type="checkbox" data-task-check="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="8f469ff3-81dc-4e64-be08-5c6e8c4b89e2" checked="" aria-label="Отметить исполнение: Каменченко Людмила"><span>Каменченко Людмила<small>Выполнено</small></span></label><label class="task-person completed"><input type="checkbox" data-task-check="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="0b178fba-38d4-4e83-809d-f73511629960" checked="" aria-label="Отметить исполнение: Савельева Алёна"><span>Савельева Алёна<small>Выполнено</small></span></label><label class="task-person completed"><input type="checkbox" data-task-check="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6" checked="" aria-label="Отметить исполнение: Ширкина Анна"><span>Ширкина Анна<small>Выполнено</small></span></label><label class="task-person completed"><input type="checkbox" data-task-check="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="d656e9e6-ab31-4732-b4a3-4080a2081705" checked="" aria-label="Отметить исполнение: Кашпур Мила"><span>Кашпур Мила<small>Выполнено</small></span></label><label class="task-person completed"><input type="checkbox" data-task-check="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="4cdfd1f7-7e99-40ae-a549-ae9587acb3d0" checked="" aria-label="Отметить исполнение: Вовненко Юлия"><span>Вовненко Юлия<small>Выполнено</small></span></label><label class="task-person completed"><input type="checkbox" data-task-check="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="f619160f-4540-4bd2-b1fc-b38edc61d2ad" checked="" aria-label="Отметить исполнение: Гула Таисия"><span>Гула Таисия<small>Выполнено</small></span></label><label class="task-person completed"><input type="checkbox" data-task-check="f4f6661d-1c6e-469a-a0c3-fee1ffe6440f" data-parent-id="5ef7aa70-ff59-41b2-96b9-62ad133f6480" checked="" aria-label="Отметить исполнение: Онуфриенко Каролина"><span>Онуфриенко Каролина<small>Выполнено</small></span></label></div></article></div>
   </section>
 
   <section class="tab" id="tab-finances">
@@ -553,7 +605,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
             <div class="field"><label for="txType">Тип операции *</label><select id="txType"><option value="income">Поступление</option><option value="expense">Расход</option></select></div>
             <div class="field"><label for="txAmount">Сумма, ₴ *</label><input id="txAmount" type="number" min="0.01" step="0.01" required="" placeholder="0,00"></div>
             <div class="field"><label for="txDate">Дата *</label><input id="txDate" type="date" required=""></div>
-            <div class="field"><label for="txParent" id="txParentLabel">Кто внёс деньги</label><select id="txParent"><option value="">Не указан</option></select></div>
+            <div class="field"><label for="txParent" id="txParentLabel">Кто внёс деньги</label><select id="txParent"><option value="">Не указан</option><option value="00e70aa6-2287-44fe-8814-bbf002c3934a">Лялько Лидия</option><option value="8c832e8d-b5f7-494b-8f46-b8fa47b38c0f">Бондаренко Алина</option><option value="8f469ff3-81dc-4e64-be08-5c6e8c4b89e2">Каменченко Людмила</option><option value="0b178fba-38d4-4e83-809d-f73511629960">Савельева Алёна</option><option value="756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6">Ширкина Анна</option><option value="d656e9e6-ab31-4732-b4a3-4080a2081705">Кашпур Мила</option><option value="4cdfd1f7-7e99-40ae-a549-ae9587acb3d0">Вовненко Юлия</option><option value="f619160f-4540-4bd2-b1fc-b38edc61d2ad">Гула Таисия</option><option value="5ef7aa70-ff59-41b2-96b9-62ad133f6480">Онуфриенко Каролина</option></select></div>
             <div class="field span-all"><label for="txDescription">Назначение / на что потратили *</label><input id="txDescription" required="" maxlength="240" placeholder="Например, сбор на праздник или материалы для поделок"></div>
           </div>
           <div class="form-actions"><button type="button" class="btn" id="cancelTxEdit" hidden="">Отмена</button><button type="submit" class="btn primary" id="txSubmit">＋ Добавить операцию</button></div>
@@ -592,11 +644,11 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   </section>
 
   <section class="tab" id="tab-settings">
-    <div class="page-head"><div><h2>Настройки</h2><p>Управляйте составом родительского комитета и связью родителей с детьми.</p></div></div><div class="panel safety-panel" id="safetyPanel"><h3>🛟 Сохранность данных</h3><p class="muted small-text">Данные живут только в браузере этого устройства. Их можно потерять: очистка браузера, режим инкогнито, сброс телефона, нехватка памяти или потеря телефона. Единственная надёжная копия — скачанный HTML-файл.</p><p style="margin:8px 0">Последняя копия: <strong id="safetyLast">ещё ни разу</strong></p><ol class="small-text muted" style="margin:0 0 12px;padding-left:18px"><li>Нажмите «Сохранить» — скачается файл.</li><li>Отправьте его себе в Telegram/Viber, на почту или в облако.</li><li>Делайте это после каждого сбора денег и раз в неделю.</li></ol><button type="button" class="btn primary" id="safetyNow">⇩ Сохранить копию сейчас</button></div><div class="panel" id="themePanel" style="margin-bottom:14px"><h3>🎨 Цветовая тема</h3><p class="muted small-text" style="margin:0 0 10px">Выбор запоминается на этом устройстве и сохраняется в скачанном файле.</p><div class="theme-grid"><button type="button" class="theme-swatch active" data-theme-pick="auto" style="--sb:#fbf6ee;--sa:#171419"><span class="dot"></span>Авто</button><button type="button" class="theme-swatch" data-theme-pick="mono" style="--sb:#0a0a0a;--sa:#f4f4f4"><span class="dot"></span>Чёрно-белая</button><button type="button" class="theme-swatch" data-theme-pick="violet" style="--sb:#0f0a1a;--sa:#9d8fcf"><span class="dot"></span>Фиолет</button><button type="button" class="theme-swatch" data-theme-pick="midnight" style="--sb:#0a101c;--sa:#7a9fd1"><span class="dot"></span>Полночь</button><button type="button" class="theme-swatch" data-theme-pick="emerald" style="--sb:#08130f;--sa:#6bb59a"><span class="dot"></span>Изумруд</button><button type="button" class="theme-swatch" data-theme-pick="amber" style="--sb:#130f0a;--sa:#d1ac5e"><span class="dot"></span>Янтарь</button><button type="button" class="theme-swatch" data-theme-pick="light" style="--sb:#fbf6ee;--sa:#3d958b"><span class="dot"></span>Светлая</button></div></div>
+    <div class="page-head"><div><h2>Настройки</h2><p>Управляйте составом родительского комитета и связью родителей с детьми.</p></div></div><div class="panel safety-panel" id="safetyPanel"><h3>🛟 Сохранность данных</h3><p class="muted small-text">Данные живут только в браузере этого устройства. Их можно потерять: очистка браузера, режим инкогнито, сброс телефона, нехватка памяти или потеря телефона. Единственная надёжная копия — скачанный HTML-файл.</p><p style="margin:8px 0">Последняя копия: <strong id="safetyLast">сегодня</strong></p><ol class="small-text muted" style="margin:0 0 12px;padding-left:18px"><li>Нажмите «Сохранить» — скачается файл.</li><li>Отправьте его себе в Telegram/Viber, на почту или в облако.</li><li>Делайте это после каждого сбора денег и раз в неделю.</li></ol><button type="button" class="btn primary" id="safetyNow">⇩ Сохранить копию сейчас</button></div><div class="panel" id="themePanel" style="margin-bottom:14px"><h3>🎨 Цветовая тема</h3><p class="muted small-text" style="margin:0 0 10px">Выбор запоминается на этом устройстве и сохраняется в скачанном файле.</p><div class="theme-grid"><button type="button" class="theme-swatch active" data-theme-pick="auto" style="--sb:#fbf6ee;--sa:#171419"><span class="dot"></span>Авто</button><button type="button" class="theme-swatch" data-theme-pick="mono" style="--sb:#0a0a0a;--sa:#f4f4f4"><span class="dot"></span>Чёрно-белая</button><button type="button" class="theme-swatch" data-theme-pick="violet" style="--sb:#0f0a1a;--sa:#9d8fcf"><span class="dot"></span>Фиолет</button><button type="button" class="theme-swatch" data-theme-pick="midnight" style="--sb:#0a101c;--sa:#7a9fd1"><span class="dot"></span>Полночь</button><button type="button" class="theme-swatch" data-theme-pick="emerald" style="--sb:#08130f;--sa:#6bb59a"><span class="dot"></span>Изумруд</button><button type="button" class="theme-swatch" data-theme-pick="amber" style="--sb:#130f0a;--sa:#d1ac5e"><span class="dot"></span>Янтарь</button><button type="button" class="theme-swatch" data-theme-pick="light" style="--sb:#fbf6ee;--sa:#3d958b"><span class="dot"></span>Светлая</button></div></div>
     <h3 class="section-title">Состав группы</h3>
     <div class="panel">
       <div class="page-head" style="margin-bottom:10px"><div><h3 style="margin:0">Родители и дети</h3><p>Здесь можно изменить имена, связь в семье, добавить новую пару или удалить семью. Даты рождения и подарочные предпочтения редактируются во вкладке «Дети».</p></div></div>
-      <div class="table-wrap"><table><thead><tr><th>Родитель</th><th>Ребёнок</th><th>Действия</th></tr></thead><tbody id="rosterBody"><tr><td colspan="3" class="empty-cell">Состав группы пока пуст.</td></tr></tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>Родитель</th><th>Ребёнок</th><th>Действия</th></tr></thead><tbody id="rosterBody"><tr><td data-label="Родитель">Лялько Лидия</td><td data-label="Ребёнок">Лялько Матвей</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="00e70aa6-2287-44fe-8814-bbf002c3934a">Изменить</button><button type="button" class="btn small danger" data-delete-family="00e70aa6-2287-44fe-8814-bbf002c3934a">Удалить</button></div></td></tr><tr><td data-label="Родитель">Бондаренко Алина</td><td data-label="Ребёнок">Бондаренко Алексей</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="8c832e8d-b5f7-494b-8f46-b8fa47b38c0f">Изменить</button><button type="button" class="btn small danger" data-delete-family="8c832e8d-b5f7-494b-8f46-b8fa47b38c0f">Удалить</button></div></td></tr><tr><td data-label="Родитель">Каменченко Людмила</td><td data-label="Ребёнок">Каменченко Даня</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="8f469ff3-81dc-4e64-be08-5c6e8c4b89e2">Изменить</button><button type="button" class="btn small danger" data-delete-family="8f469ff3-81dc-4e64-be08-5c6e8c4b89e2">Удалить</button></div></td></tr><tr><td data-label="Родитель">Савельева Алёна</td><td data-label="Ребёнок">Савельев Ринат</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="0b178fba-38d4-4e83-809d-f73511629960">Изменить</button><button type="button" class="btn small danger" data-delete-family="0b178fba-38d4-4e83-809d-f73511629960">Удалить</button></div></td></tr><tr><td data-label="Родитель">Ширкина Анна</td><td data-label="Ребёнок">Ширкин Михаил</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6">Изменить</button><button type="button" class="btn small danger" data-delete-family="756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6">Удалить</button></div></td></tr><tr><td data-label="Родитель">Кашпур Мила</td><td data-label="Ребёнок">Самоишенко Даниил</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="d656e9e6-ab31-4732-b4a3-4080a2081705">Изменить</button><button type="button" class="btn small danger" data-delete-family="d656e9e6-ab31-4732-b4a3-4080a2081705">Удалить</button></div></td></tr><tr><td data-label="Родитель">Вовненко Юлия</td><td data-label="Ребёнок">Вовненко Назар</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="4cdfd1f7-7e99-40ae-a549-ae9587acb3d0">Изменить</button><button type="button" class="btn small danger" data-delete-family="4cdfd1f7-7e99-40ae-a549-ae9587acb3d0">Удалить</button></div></td></tr><tr><td data-label="Родитель">Гула Таисия</td><td data-label="Ребёнок">Иськов Артём</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="f619160f-4540-4bd2-b1fc-b38edc61d2ad">Изменить</button><button type="button" class="btn small danger" data-delete-family="f619160f-4540-4bd2-b1fc-b38edc61d2ad">Удалить</button></div></td></tr><tr><td data-label="Родитель">Онуфриенко Каролина</td><td data-label="Ребёнок">Онуфриенко Роман</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="5ef7aa70-ff59-41b2-96b9-62ad133f6480">Изменить</button><button type="button" class="btn small danger" data-delete-family="5ef7aa70-ff59-41b2-96b9-62ad133f6480">Удалить</button></div></td></tr></tbody></table></div>
       <div class="form-actions"><button type="button" class="btn" id="addFamilyBtn">＋ Добавить пару</button></div>
     </div>
   </section>
@@ -605,7 +657,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal"><div class="modal-head"><h2 id="modalTitle">Редактирование</h2><button type="button" class="btn icon" id="closeModal" aria-label="Закрыть">×</button></div><div id="modalBody"></div></div>
 </div>
-<div id="cloudLock"><div class="cl-box">
+<div id="cloudLock" hidden=""><div class="cl-box">
   <h2>Родительский комитет</h2><p id="clSub">Введите пароль, чтобы открыть данные.</p>
   <div id="clUrlWrap" hidden=""><label for="clUrl">Адрес хранилища</label><input type="url" id="clUrl" placeholder="https://….workers.dev" autocapitalize="off" spellcheck="false"></div>
   <label for="clPass">Пароль</label><input type="password" id="clPass" autocomplete="current-password">
@@ -618,15 +670,15 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     <input type="file" id="clFile" accept=".html,.htm,.json,text/html,application/json" hidden="">
   </div>
 </div></div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="toast show" id="toast" role="status" aria-live="polite">Данные обновлены с другого устройства</div>
 <script>
 (() => {
   'use strict';
   let cloudChanged = () => {};
-  const STORAGE_KEY = 'kindergartenCommitteeData_cloud_v1'; // STORAGE_KEY_MARKER
+  const STORAGE_KEY = 'kindergartenCommitteeData_v1_1792605720381'; // STORAGE_KEY_MARKER
   // При сохранении в отдельный HTML эти значения заполняются актуальными данными.
-  const EMBEDDED_STATE = null; // EMBEDDED_STATE_MARKER
-  const EMBEDDED_VIEW = {}; // EMBEDDED_VIEW_MARKER
+  const EMBEDDED_STATE = {"version":1,"parents":[{"id":"00e70aa6-2287-44fe-8814-bbf002c3934a","name":"Лялько Лидия","childId":"ac90881d-45ae-405d-a484-81ddbe485768"},{"id":"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f","name":"Бондаренко Алина","childId":"a3f8e3f3-cbe5-4f91-b72e-633c2af79a35"},{"id":"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2","name":"Каменченко Людмила","childId":"1b360c8e-3012-401f-9ef1-7cebf49e085d"},{"id":"0b178fba-38d4-4e83-809d-f73511629960","name":"Савельева Алёна","childId":"d283e21e-1971-433a-b703-5f9b7939cf37"},{"id":"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6","name":"Ширкина Анна","childId":"77db184f-9bb3-4b0e-954b-5c1c28fbae2a"},{"id":"d656e9e6-ab31-4732-b4a3-4080a2081705","name":"Кашпур Мила","childId":"6f1df24b-4a1f-4862-b0fe-506de9e24ed8"},{"id":"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0","name":"Вовненко Юлия","childId":"72b89310-d32a-4267-8374-23f0361529c7"},{"id":"f619160f-4540-4bd2-b1fc-b38edc61d2ad","name":"Гула Таисия","childId":"47a615ef-6fa0-41a7-92fa-4efa061348e3"},{"id":"5ef7aa70-ff59-41b2-96b9-62ad133f6480","name":"Онуфриенко Каролина","childId":"ac58a981-3ecf-4e25-8f34-d8d4cebca192"}],"children":[{"id":"ac90881d-45ae-405d-a484-81ddbe485768","name":"Лялько Матвей","birthday":"2022-01-05","giftPreferences":"","foodPreferences":""},{"id":"a3f8e3f3-cbe5-4f91-b72e-633c2af79a35","name":"Бондаренко Алексей","birthday":"2021-02-13","giftPreferences":"","foodPreferences":""},{"id":"1b360c8e-3012-401f-9ef1-7cebf49e085d","name":"Каменченко Даня","birthday":"2021-01-15","giftPreferences":"","foodPreferences":""},{"id":"d283e21e-1971-433a-b703-5f9b7939cf37","name":"Савельев Ринат","birthday":"2021-02-13","giftPreferences":"","foodPreferences":""},{"id":"77db184f-9bb3-4b0e-954b-5c1c28fbae2a","name":"Ширкин Михаил","birthday":"2021-02-26","giftPreferences":"","foodPreferences":""},{"id":"6f1df24b-4a1f-4862-b0fe-506de9e24ed8","name":"Самоишенко Даниил","birthday":"2021-08-13","giftPreferences":"","foodPreferences":""},{"id":"72b89310-d32a-4267-8374-23f0361529c7","name":"Вовненко Назар","birthday":"2021-08-17","giftPreferences":"","foodPreferences":""},{"id":"47a615ef-6fa0-41a7-92fa-4efa061348e3","name":"Иськов Артём","birthday":"2021-11-08","giftPreferences":"","foodPreferences":""},{"id":"ac58a981-3ecf-4e25-8f34-d8d4cebca192","name":"Онуфриенко Роман","birthday":"2021-11-02","giftPreferences":"","foodPreferences":""}],"tasks":[{"id":"99a6d3f7-f68f-4cec-8af3-d365189fb3e2","month":"2026-10","title":"Сбор на праздник","description":"С каждого собрать по 50 грн и золотой зуб","dueDate":"2026-10-25","amountPerPerson":50,"statuses":{"00e70aa6-2287-44fe-8814-bbf002c3934a":false,"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f":false,"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2":true,"0b178fba-38d4-4e83-809d-f73511629960":false,"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6":60,"d656e9e6-ab31-4732-b4a3-4080a2081705":false,"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0":false,"f619160f-4540-4bd2-b1fc-b38edc61d2ad":true,"5ef7aa70-ff59-41b2-96b9-62ad133f6480":false},"createdAt":"2026-10-19T23:01:59.320Z"},{"id":"f4f6661d-1c6e-469a-a0c3-fee1ffe6440f","month":"2026-10","title":"Тест","description":"Тест","dueDate":"","amountPerPerson":0,"statuses":{"00e70aa6-2287-44fe-8814-bbf002c3934a":true,"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f":true,"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2":true,"0b178fba-38d4-4e83-809d-f73511629960":true,"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6":true,"d656e9e6-ab31-4732-b4a3-4080a2081705":true,"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0":true,"f619160f-4540-4bd2-b1fc-b38edc61d2ad":true,"5ef7aa70-ff59-41b2-96b9-62ad133f6480":true},"createdAt":"2026-10-19T23:20:29.771Z"},{"id":"c6069192-10b8-4577-9eae-7fc87e8074e1","month":"2026-09","title":"Вода за сентябрь","description":"","dueDate":"2026-09-30","amountPerPerson":51,"statuses":{"00e70aa6-2287-44fe-8814-bbf002c3934a":false,"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f":false,"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2":false,"0b178fba-38d4-4e83-809d-f73511629960":false,"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6":false,"d656e9e6-ab31-4732-b4a3-4080a2081705":false,"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0":false,"f619160f-4540-4bd2-b1fc-b38edc61d2ad":false,"5ef7aa70-ff59-41b2-96b9-62ad133f6480":false},"createdAt":"2026-10-21T17:59:11.805Z"},{"id":"5a666cb8-3c21-4929-9b3a-08399d3805fb","month":"2026-09","title":"Сбор на праздник (день воспитателя)","description":"Сбор средств на праздник","dueDate":"2026-09-30","amountPerPerson":288,"statuses":{"00e70aa6-2287-44fe-8814-bbf002c3934a":false,"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f":false,"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2":false,"0b178fba-38d4-4e83-809d-f73511629960":false,"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6":false,"d656e9e6-ab31-4732-b4a3-4080a2081705":false,"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0":false,"f619160f-4540-4bd2-b1fc-b38edc61d2ad":false,"5ef7aa70-ff59-41b2-96b9-62ad133f6480":false},"createdAt":"2026-10-21T18:00:41.789Z"},{"id":"ec0e5058-444c-4478-a54f-17c2e430f6f9","month":"2026-09","title":"Подарок имениннику","description":"Общий подарок имениннику. Сумма и реквизиты — по договорённости в чате.","dueDate":"2026-10-31","amountPerPerson":222,"statuses":{"00e70aa6-2287-44fe-8814-bbf002c3934a":false,"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f":false,"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2":false,"0b178fba-38d4-4e83-809d-f73511629960":false,"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6":false,"d656e9e6-ab31-4732-b4a3-4080a2081705":false,"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0":false,"f619160f-4540-4bd2-b1fc-b38edc61d2ad":false,"5ef7aa70-ff59-41b2-96b9-62ad133f6480":false},"createdAt":"2026-10-21T18:01:46.325Z"}],"transactions":[],"balanceAdjustment":0,"notes":"Заметка","createdAt":"2026-10-19T22:53:22.771Z"}; // EMBEDDED_STATE_MARKER
+  const EMBEDDED_VIEW = {"month":"2026-10","activeTab":"overview","selectedParentId":"00e70aa6-2287-44fe-8814-bbf002c3934a","collapsedTaskIds":[],"hideCompletedTasks":false,"backupAt":1792605720381,"theme":"auto"}; // EMBEDDED_VIEW_MARKER
   const $ = (id) => document.getElementById(id);
   const monthInput = $('monthPicker');
   const today = new Date();
@@ -1250,6 +1302,133 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   $('hideCompletedTasks').checked=hideCompletedTasks;
   setDefaultTxDate();setTxFormMode();renderAll();persist('Данные готовы к работе');
 
+
+  /* ===== Калькулятор и раздел сбора ===== */
+  const calc={expr:'',history:[],tab:'calc',split:{title:'',total:'',fromCash:'',families:'',round:10}};
+  function calcEval(src){
+    const s=String(src).replace(/\s+/g,'').replace(/,/g,'.').replace(/[×xх*]/g,'*').replace(/[÷:\/]/g,'/').replace(/[−–]/g,'-');
+    if(!s) return null;
+    let i=0;
+    const peek=()=>s[i];
+    function num(){const m=/^\d*\.?\d+|^\d+\.?/.exec(s.slice(i));if(!m)throw new Error('ожидалось число');i+=m[0].length;return Number(m[0]);}
+    function factor(){
+      let v;
+      if(peek()==='-'){i++;const f=factor();return {v:-f.v,pct:f.pct};}
+      if(peek()==='+'){i++;return factor();}
+      if(peek()==='('){i++;v=expr();if(peek()!==')')throw new Error('не закрыта скобка');i++;}
+      else v=num();
+      if(peek()==='%'){i++;return {v:v/100,pct:true};}
+      return {v,pct:false};
+    }
+    function term(){
+      let v=factor().v;
+      while(peek()==='*'||peek()==='/'){const op=s[i++];const r=factor().v;if(op==='/'){if(r===0)throw new Error('деление на ноль');v/=r;}else v*=r;}
+      return v;
+    }
+    function termP(){const st=i;const f=factor();if(peek()==='*'||peek()==='/'){i=st;return {v:term(),pct:false};}return f;}
+    function expr(){
+      let v=termP().v;
+      while(peek()==='+'||peek()==='-'){const op=s[i++];const r=termP();const rv=r.pct?v*r.v:r.v;v=op==='+'?v+rv:v-rv;}
+      return v;
+    }
+    const v=expr();
+    if(i<s.length) throw new Error('лишний символ «'+s[i]+'»');
+    if(!Number.isFinite(v)) throw new Error('слишком большое число');
+    return Math.round(v*1e9)/1e9;
+  }
+  const calcFmt=v=>new Intl.NumberFormat('uk-UA',{maximumFractionDigits:2}).format(v);
+  function calcPreview(){
+    const el=$('calcPreview'); if(!el) return;
+    try{const v=calcEval(calc.expr);el.className='calc-preview';el.textContent=v===null?'':'= '+calcFmt(v);}
+    catch(e){el.className='calc-preview err';el.textContent=/[+\-*/×÷(]$/.test(calc.expr.trim())?'':e.message;}
+  }
+  function calcRenderHistory(){
+    const h=$('calcHistory'); if(!h) return;
+    h.innerHTML=calc.history.map((x,i)=>`<button type="button" data-calc-hist="${i}"><span>${esc(x.e)}</span><b>= ${esc(calcFmt(x.v))}</b></button>`).join('');
+  }
+  function calcInsert(t){const inp=$('calcExpr');calc.expr=inp.value;calc.expr+=t;inp.value=calc.expr;calcPreview();}
+  function calcEquals(){
+    try{const v=calcEval(calc.expr);if(v===null)return;calc.history.unshift({e:calc.expr,v});calc.history=calc.history.slice(0,12);calc.expr=String(v).replace('.',',');$('calcExpr').value=calc.expr;calcPreview();calcRenderHistory();}
+    catch(e){showToast('Ошибка: '+e.message,true);}
+  }
+  function calcPaneHtml(){
+    const keys=[['C','fn'],['(','fn'],[')','fn'],['÷','op'],['7'],['8'],['9'],['×','op'],['4'],['5'],['6'],['−','op'],['1'],['2'],['3'],['+','op'],['%','fn'],['0'],[',',''],['=','eq']];
+    return `<div class="calc-screen"><input id="calcExpr" inputmode="decimal" autocomplete="off" aria-label="Выражение" placeholder="0" value="${esc(calc.expr)}"><div class="calc-preview" id="calcPreview" aria-live="polite"></div></div>
+      <div class="calc-quick"><button type="button" class="btn" data-calc-ins="${Number(balance().toFixed(2))}">Касса: ${money(balance())}</button><button type="button" class="btn" data-calc-ins="${state.parents.length}">Семей: ${state.parents.length}</button><button type="button" class="btn" data-calc-back>⌫</button><button type="button" class="btn" data-calc-copy>Копировать</button></div>
+      <div class="calc-keys">${keys.map(([k,c])=>`<button type="button" class="${c||''}" data-calc-key="${k}">${k}</button>`).join('')}</div>
+      <div class="calc-history" id="calcHistory"></div>`;
+  }
+  function splitCompute(){
+    const sp=calc.split, total=Math.max(0,Number(String(sp.total).replace(',','.'))||0);
+    const fromCash=Math.min(total,Math.max(0,Number(String(sp.fromCash).replace(',','.'))||0));
+    const fam=Math.max(0,Math.floor(Number(sp.families)||0));
+    const need=total-fromCash, raw=fam?need/fam:0, step=Number(sp.round)||0;
+    const per=step>0?Math.ceil(raw/step-1e-9)*step:Math.round(raw*100)/100;
+    const collected=per*fam, surplus=collected-need, cashAfter=balance()-fromCash+surplus;
+    return {total,fromCash,fam,need,raw,per,collected,surplus,cashAfter};
+  }
+  function splitRender(){
+    const box=$('splitResult'); if(!box) return;
+    const r=splitCompute();
+    if(!r.total||!r.fam){box.innerHTML='<div class="muted small-text">Укажите стоимость и число семей — расчёт появится здесь.</div>';return;}
+    const w=x=>r.total+Math.max(0,r.surplus)>0?(x/(r.total+Math.max(0,r.surplus))*100):0;
+    box.innerHTML=`<div class="muted small-text">С каждой семьи</div><div class="split-big">${money(r.per)} <small>× ${r.fam} ${plural(r.fam,['семья','семьи','семей'])}</small></div>
+      <div class="split-bar" aria-hidden="true"><span style="width:${w(r.fromCash)}%;background:var(--accent2)"></span><span style="width:${w(Math.min(r.collected,r.need))}%;background:var(--accent)"></span><span style="width:${w(Math.max(0,r.surplus))}%;background:var(--green)"></span></div>
+      <div class="split-legend"><span><i style="background:var(--accent2)"></i>Из кассы</span><span><i style="background:var(--accent)"></i>Взносы</span><span><i style="background:var(--green)"></i>Излишек от округления</span></div>
+      <div class="split-rows"><span>Стоимость</span><b>${money(r.total)}</b><span>Из кассы</span><b>${money(r.fromCash)}</b><span>Нужно собрать</span><b>${money(r.need)}</b><span>Точная доля</span><b>${money(Math.round(r.raw*100)/100)}</b><span>Соберём всего</span><b>${money(r.collected)}</b><span>Излишек в кассу</span><b>${money(r.surplus)}</b><span>Касса после</span><b class="${r.cashAfter<0?'neg':''}">${money(r.cashAfter)}</b></div>
+      <div class="form-actions" style="margin-top:12px"><button type="button" class="btn" data-split-copy>Копировать текст</button><button type="button" class="btn primary" data-split-task>＋ Создать задачу-сбор</button></div>`;
+  }
+  function splitPaneHtml(){
+    const sp=calc.split; if(sp.families==='') sp.families=String(state.parents.length);
+    return `<div class="split-grid">
+      <div class="field span-all"><label for="spTitle">На что собираем</label><input id="spTitle" maxlength="120" placeholder="Например, подарки на Новый год" value="${esc(sp.title)}"></div>
+      <div class="field"><label for="spTotal">Стоимость, ₴</label><input id="spTotal" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" value="${esc(sp.total)}"></div>
+      <div class="field"><label for="spFam">Сколько семей</label><input id="spFam" type="number" min="1" step="1" inputmode="numeric" value="${esc(sp.families)}"></div>
+      <div class="field span-all"><label for="spCash">Взять из кассы, ₴ <span class="muted">(сейчас ${money(balance())})</span></label><div style="display:flex;gap:8px"><input id="spCash" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" value="${esc(sp.fromCash)}"><button type="button" class="btn small" data-sp-allcash style="flex:0 0 auto">Всю кассу</button></div></div>
+      <div class="field span-all"><label>Округлять взнос вверх до</label><div class="split-round">${[[0,'копеек'],[1,'1 ₴'],[5,'5 ₴'],[10,'10 ₴'],[50,'50 ₴'],[100,'100 ₴']].map(([v,l])=>`<button type="button" data-sp-round="${v}" class="${Number(sp.round)===v?'active':''}">${l}</button>`).join('')}</div></div>
+    </div><div class="split-result" id="splitResult"></div>`;
+  }
+  function openCalculator(tab){
+    if(tab) calc.tab=tab;
+    openModal('Калькулятор',`<div id="calcRoot"><div class="calc-tabs" role="tablist"><button type="button" data-calc-tab="calc">🧮 Обычный</button><button type="button" data-calc-tab="split">👪 Раздел сбора</button></div><div id="calcPane"></div></div>`);
+    const body=$('calcRoot'), pane=$('calcPane');
+    const show=()=>{
+      body.querySelectorAll('[data-calc-tab]').forEach(b=>b.classList.toggle('active',b.dataset.calcTab===calc.tab));
+      if(calc.tab==='calc'){pane.innerHTML=calcPaneHtml();calcPreview();calcRenderHistory();const inp=$('calcExpr');inp.addEventListener('input',()=>{calc.expr=inp.value;calcPreview();});inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='='){e.preventDefault();calcEquals();}});if(!isMobileLayout())setTimeout(()=>inp.focus(),60);}
+      else{pane.innerHTML=splitPaneHtml();splitRender();}
+    };
+    body.addEventListener('click',e=>{
+      const t=e.target.closest('[data-calc-tab]'); if(t){calc.tab=t.dataset.calcTab;show();return;}
+      const k=e.target.closest('[data-calc-key]');
+      if(k){const v=k.dataset.calcKey;if(v==='C'){calc.expr='';$('calcExpr').value='';calcPreview();}else if(v==='=')calcEquals();else calcInsert(v);return;}
+      const ins=e.target.closest('[data-calc-ins]'); if(ins){calcInsert(String(ins.dataset.calcIns).replace('.',','));return;}
+      if(e.target.closest('[data-calc-back]')){const inp=$('calcExpr');calc.expr=inp.value.slice(0,-1);inp.value=calc.expr;calcPreview();return;}
+      if(e.target.closest('[data-calc-copy]')){let v;try{v=calcEval(calc.expr);}catch(err){}const txt=v==null?calc.expr:String(v).replace('.',',');navigator.clipboard?.writeText(txt).then(()=>showToast('Скопировано: '+txt),()=>{});return;}
+      const h=e.target.closest('[data-calc-hist]'); if(h){const x=calc.history[h.dataset.calcHist];calc.expr=x.e;$('calcExpr').value=x.e;calcPreview();return;}
+      if(e.target.closest('[data-sp-allcash]')){calc.split.fromCash=String(Math.max(0,Math.min(Number(balance().toFixed(2)),Number(calc.split.total)||Infinity)));$('spCash').value=calc.split.fromCash;splitRender();return;}
+      const rb=e.target.closest('[data-sp-round]'); if(rb){calc.split.round=Number(rb.dataset.spRound);body.querySelectorAll('[data-sp-round]').forEach(b=>b.classList.toggle('active',b===rb));splitRender();return;}
+      if(e.target.closest('[data-split-copy]')){const r=splitCompute();const txt=`${calc.split.title||'Сбор'}: стоимость ${money(r.total)}${r.fromCash?`, из кассы ${money(r.fromCash)}`:''}. С каждой семьи — ${money(r.per)}.`;navigator.clipboard?.writeText(txt).then(()=>showToast('Текст скопирован — вставьте в чат группы'),()=>{});return;}
+      if(e.target.closest('[data-split-task]')){
+        const r=splitCompute(); if(!r.per){showToast('Сумма взноса получилась нулевой',true);return;}
+        const title=calc.split.title.trim()||'Сбор';
+        const desc=`Стоимость: ${money(r.total)}${r.fromCash?` · из кассы: ${money(r.fromCash)}`:''} · с семьи: ${money(r.per)}`;
+        closeModal(); activateTab('tasks',true); setTaskFormMode();
+        $('taskTitle').value=title; $('taskAmount').value=r.per; $('taskDescription').value=desc;
+        if(isMobileLayout()) openFormDrawer('Новая задача',$('taskFormPanel'),'taskDue');
+        else setTimeout(()=>{$('taskForm').scrollIntoView({behavior:'smooth',block:'center'});$('taskDue').focus({preventScroll:true});},80);
+        showToast('Задача заполнена — проверьте срок и нажмите «Добавить»');
+      }
+    });
+    body.addEventListener('input',e=>{
+      const map={spTitle:'title',spTotal:'total',spCash:'fromCash',spFam:'families'}, key=map[e.target.id];
+      if(key){calc.split[key]=e.target.value; if(key!=='title') splitRender();}
+    });
+    show();
+  }
+  $('calcBtn')?.addEventListener('click',()=>openCalculator());
+  $('ovCalc')?.addEventListener('click',()=>openCalculator());
+  document.addEventListener('keydown',e=>{if(e.altKey&&(e.key==='c'||e.key==='с'||e.code==='KeyC')&&!$('modalBackdrop').classList.contains('open')){e.preventDefault();openCalculator();}});
+
   /* ================= Облачное хранилище (Cloudflare Worker + KV) ================= */
   const DEFAULT_CLOUD_URL = 'https://lisiy-sad.tenguakane.workers.dev';
   const K_URL='committeeCloudUrlV1', K_PASS='committeeCloudPassV1', K_REV='committeeCloudRevV1', K_PEND='committeeCloudPendingV1';
@@ -1373,4 +1552,4 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 </script>
 
 
-</body></html>
+<div id="extension-mmplj"></div></body></html>
