@@ -598,6 +598,33 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 .undo-btn{border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--text);font-size:11px;font-weight:600;padding:3px 8px;cursor:pointer;white-space:nowrap}
 .undo-btn:hover{border-color:var(--red);color:var(--red)}
 .mini-stat .undo-btn{margin-top:5px}
+.fin-tabs{display:inline-grid;grid-auto-flow:column;gap:4px;padding:4px;margin:0 0 14px;border:1px solid var(--line);border-radius:14px;background:var(--soft)}
+.fin-tabs button{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 14px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-weight:600;white-space:nowrap}
+.fin-tabs button.active{background:var(--panel);color:var(--accent);box-shadow:var(--shadow)}
+.fin-badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--yellow);color:var(--on,#fff);font-size:11px;font-weight:700}
+.ov-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.ov-filter{display:flex;align-items:center;gap:10px;margin:0 0 12px;max-width:420px}
+.ov-filter label{margin:0;white-space:nowrap}
+.ov-block{margin-bottom:12px}
+.ov-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ov-head h3{margin:0}
+.ov-block>p{margin:4px 0 10px}
+.ov-list{display:flex;flex-direction:column;gap:7px}
+.ov-item{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--soft)}
+.ov-who{font-weight:700;font-size:13.5px}
+.ov-who small{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:6px}
+.ov-flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:5px;font-size:12.5px}
+.ov-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:var(--panel);border:1px solid var(--line);max-width:100%;overflow-wrap:anywhere}
+.ov-chip small{color:var(--muted);font-size:10.5px}
+.ov-chip.pool{background:var(--accent-bg);border-color:color-mix(in srgb,var(--accent) 35%,transparent);color:var(--accent);font-weight:600}
+.ov-chip.gone{opacity:.6;text-decoration:line-through}
+.ov-arrow{color:var(--muted);font-weight:700}
+.ov-side{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.ov-amt{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ov-amt.y{color:var(--yellow)}.ov-amt.a{color:var(--accent)}
+.ov-side .carry-btn{width:auto;min-height:34px;margin:0;font-size:12px}
+.ov-empty{padding:14px;border:1px dashed var(--line);border-radius:12px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:700px){.ov-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.fin-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%}.fin-tabs button{justify-content:center;padding:6px 8px}.ov-item{grid-template-columns:minmax(0,1fr)}.ov-side{flex-direction:row;justify-content:space-between;align-items:center}}
 </style>
 <style></style><style>
   .imageye-selected {
@@ -733,6 +760,8 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 
   <section class="tab" id="tab-finances">
     <div class="page-head"><div><h2>Финансы</h2><p>Учитывайте поступления и расходы, просматривайте историю и сравнивайте показатели за месяц и за всё время.</p></div><button type="button" class="btn primary mobile-form-trigger" id="openTxFormBtn">＋ Добавить операцию</button></div>
+    <div class="fin-tabs" role="tablist"><button type="button" role="tab" class="active" data-fin-tab="main">₴ Касса и операции</button><button type="button" role="tab" data-fin-tab="over">↪ Переплаты <span class="fin-badge" id="overBadge" hidden></span></button></div>
+    <div id="finMain">
     <div class="data-top-grid">
       <div class="panel" id="transactionFormPanel">
         <h3 id="transactionFormTitle">Добавить операцию</h3>
@@ -784,6 +813,14 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     </section>
     <h3 class="section-title">История финансовых операций <span class="pill">Все месяцы</span></h3>
     <div class="table-wrap"><table><thead><tr><th>Дата</th><th>Операция</th><th>Сумма</th><th>Кто внёс / потратил</th><th></th></tr></thead><tbody id="transactionsBody"><tr><td colspan="5" class="empty-cell">Финансовых операций пока нет.</td></tr></tbody></table></div>
+    </div>
+    <div id="finOver" hidden>
+      <div class="ov-kpis" id="ovKpis"></div>
+      <div class="ov-filter"><label for="ovPerson">Человек</label><select id="ovPerson"><option value="">Все</option></select></div>
+      <section class="panel ov-block"><div class="ov-head"><h3>Нераспределённые переплаты</h3><span class="pill" id="ovFreeCount"></span></div><p class="muted small-text">Кто внёс больше, чем нужно, и эти деньги ещё никуда не перенесены.</p><div id="ovFree" class="ov-list"></div></section>
+      <section class="panel ov-block"><div class="ov-head"><h3>Авансы</h3><span class="pill" id="ovPoolCount"></span></div><p class="muted small-text">Переплаты, отложенные на следующий сбор. Зачтутся автоматически при создании нового сбора.</p><div id="ovPool" class="ov-list"></div></section>
+      <section class="panel ov-block"><div class="ov-head"><h3>История переносов</h3><span class="pill" id="ovHistCount"></span></div><p class="muted small-text">Откуда и куда перешли деньги. Любой перенос можно отменить — деньги вернутся туда, откуда пришли.</p><div id="ovHist" class="ov-list"></div></section>
+    </div>
   </section>
 
   <section class="tab" id="tab-settings">
@@ -1913,6 +1950,78 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       if(!confirm(`Вернуть аванс ${money(state.credits?.[par.id]||0)} обратно переплатой в задачи, откуда он был перенесён?`))return;
       const back=undoPool(par.id); markChanged('Аванс возвращён в переплату'); showToast(back?.length?`Переплата возвращена: ${back.join(', ')}`:'Не удалось найти исходную задачу');}
   });
+
+
+  /* ===== Финансы → Переплаты ===== */
+  let finTab='main';
+  function setFinTab(t){finTab=t;document.querySelectorAll('[data-fin-tab]').forEach(b=>{b.classList.toggle('active',b.dataset.finTab===t);b.setAttribute('aria-selected',b.dataset.finTab===t);});$('finMain').hidden=t!=='main';$('finOver').hidden=t!=='over';if(t==='over')renderOverpays();else setTimeout(renderMonthStats,30);}
+  document.querySelector('.fin-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-fin-tab]');if(b)setFinTab(b.dataset.finTab);});
+  const taskById=id=>state.tasks.find(t=>t.id===id);
+  const taskChip=(id,cls='')=>{const t=taskById(id);return t?`<span class="ov-chip ${cls}">«${esc(t.title)}» <small>${esc(monthLabel(t.month))}</small></span>`:`<span class="ov-chip gone">удалённая задача</span>`;};
+  const fmtWhen=iso=>{const d=new Date(iso);return isNaN(d)?'':`${pad2(d.getDate())}.${pad2(d.getMonth()+1)} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;};
+  function overpayData(){
+    const free=[]; state.parents.forEach(p=>{if(p.leader)return;state.tasks.forEach(t=>{if(!(Number(t.amountPerPerson)>0)||taskExcluded(t,p.id))return;const o=r2(taskPaidAmount(t,p.id)-taskRequired(t,p.id));if(o>0)free.push({p,t,o});});});
+    const pool=state.parents.map(p=>({p,v:state.credits?.[p.id]||0})).filter(x=>x.v>0);
+    const hist=[];
+    (state.transfers||[]).forEach(L=>{const p=getParent(L.pid);
+      L.parts.forEach((q,qi)=>{if(q.amount>0)hist.push({L,p,kind:L.from==='credit'?'pool2task':'task2task',from:L.from,to:q.to,amount:q.amount,qi});});
+      if(L.credit>0)hist.push({L,p,kind:'task2pool',from:L.from,amount:L.credit});});
+    // Переносы из старых версий файла (без журнала)
+    state.tasks.forEach(t=>Object.entries(t.carried||{}).forEach(([pid,v])=>{const logged=(state.transfers||[]).filter(L=>L.pid===pid&&L.from===t.id).reduce((a,L)=>a+L.credit+L.parts.reduce((b,q)=>b+q.amount,0),0);const rest=r2(v-logged);if(rest>0.004)hist.push({L:null,p:getParent(pid),kind:'legacy',from:t.id,amount:rest,pid});}));
+    hist.sort((a,b)=>(b.L?.at||'').localeCompare(a.L?.at||''));
+    return {free,pool,hist};
+  }
+  function renderOverpays(){
+    const d=overpayData();
+    const badge=$('overBadge'), n=d.free.length; badge.hidden=!n; badge.textContent=n;
+    if($('finOver').hidden) return;
+    const sel=$('ovPerson'), cur=sel.value;
+    sel.innerHTML='<option value="">Все</option>'+state.parents.filter(p=>!p.leader).map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('');
+    sel.value=state.parents.some(p=>p.id===cur)?cur:'';
+    const f=sel.value, by=x=>!f||(x.p?.id||x.pid)===f;
+    const free=d.free.filter(by), pool=d.pool.filter(by), hist=d.hist.filter(by);
+    const sum=a=>a.reduce((s,x)=>s+(x.o??x.v??x.amount),0);
+    const moved=hist.filter(h=>h.kind!=='task2pool').reduce((s,h)=>s+h.amount,0);
+    $('ovKpis').innerHTML=`<div class="mini-stat"><span>Нераспределено</span><b style="color:${free.length?'var(--yellow)':'var(--green)'}">${money(sum(free))}</b><span>${free.length} ${plural(free.length,['переплата','переплаты','переплат'])}</span></div><div class="mini-stat"><span>В авансах</span><b style="color:var(--accent)">${money(sum(pool))}</b><span>${pool.length} ${plural(pool.length,['человек','человека','человек'])}</span></div><div class="mini-stat"><span>Зачтено в другие сборы</span><b>${money(moved)}</b><span>${hist.length} ${plural(hist.length,['запись','записи','записей'])}</span></div><div class="mini-stat"><span>Людей с переплатами</span><b>${new Set([...free,...pool].map(x=>x.p.id)).size}</b></div>`;
+    $('ovFreeCount').textContent=money(sum(free));
+    $('ovFree').innerHTML=free.length?free.sort((a,b)=>b.o-a.o).map(x=>`<div class="ov-item"><div><div class="ov-who">${esc(x.p.name)}</div><div class="ov-flow">${taskChip(x.t.id)}<span class="muted">внесено ${money(taskRawPaid(x.t,x.p.id))} при сумме ${money(taskRequired(x.t,x.p.id))}</span></div></div><div class="ov-side"><span class="ov-amt y">+${money(x.o)}</span><button type="button" class="carry-btn" data-carry="${esc(x.t.id)}" data-parent-id="${esc(x.p.id)}">↪ Перенести</button></div></div>`).join(''):'<div class="ov-empty">✓ Нераспределённых переплат нет</div>';
+    $('ovPoolCount').textContent=money(sum(pool));
+    $('ovPool').innerHTML=pool.length?pool.map(x=>`<div class="ov-item"><div><div class="ov-who">${esc(x.p.name)}</div><div class="ov-flow"><span class="ov-chip pool">аванс</span><span class="muted">зачтётся в ближайший новый сбор</span></div></div><div class="ov-side"><span class="ov-amt a">${money(x.v)}</span><button type="button" class="undo-btn" data-undo-pool="${esc(x.p.id)}">↩ Вернуть в переплату</button></div></div>`).join(''):'<div class="ov-empty">Авансов нет</div>';
+    $('ovHistCount').textContent=`${hist.length}`;
+    $('ovHist').innerHTML=hist.length?hist.map(h=>{
+      const from=h.kind==='pool2task'?'<span class="ov-chip pool">аванс</span>':taskChip(h.from);
+      const to=h.kind==='task2pool'?'<span class="ov-chip pool">аванс</span>':h.kind==='legacy'?'<span class="ov-chip">другие сборы <small>без журнала</small></span>':taskChip(h.to);
+      const undo=h.kind==='legacy'?`data-undo-carry="${esc(h.from)}" data-parent-id="${esc(h.pid)}"`:`data-undo-part="${esc(h.L.id)}" data-part="${h.kind==='task2pool'?'credit':h.qi}"`;
+      return `<div class="ov-item"><div><div class="ov-who">${esc(h.p?.name||'—')}<small>${h.L?esc(fmtWhen(h.L.at)):''}</small></div><div class="ov-flow">${from}<span class="ov-arrow">→</span>${to}</div></div><div class="ov-side"><span class="ov-amt">${money(h.amount)}</span><button type="button" class="undo-btn" ${undo}>↩ Отменить</button></div></div>`;
+    }).join(''):'<div class="ov-empty">Переносов пока не было</div>';
+  }
+  $('ovPerson').addEventListener('change',renderOverpays);
+  // Отмена одного конкретного переноса из журнала
+  function undoPart(logId,part){
+    const L=(state.transfers||[]).find(x=>x.id===logId); if(!L) return 0; const pid=L.pid;
+    if(part==='credit'){
+      let got=takePool(pid,L.credit); if(got<L.credit) got=r2(got+reclaimFromCreditUses(pid,L.credit-got));
+      decCarried(taskById(L.from),pid,got); L.credit=r2(L.credit-got); tidyTransfers(); return got;
+    }
+    const q=L.parts[Number(part)]; if(!q) return 0;
+    const y=decCredited(taskById(q.to),pid,q.amount);
+    if(L.from==='credit'){addPool(pid,y);}
+    else{let back=y; if(y<q.amount) back=r2(back+takePool(pid,q.amount-y)); decCarried(taskById(L.from),pid,back);}
+    q.amount=L.from==='credit'?r2(q.amount-y):0;
+    tidyTransfers(); return y;
+  }
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('[data-undo-part]'); if(!b) return; e.preventDefault();
+    const L=(state.transfers||[]).find(x=>x.id===b.dataset.undoPart); if(!L) return;
+    const part=b.dataset.part, p=getParent(L.pid);
+    const amt=part==='credit'?L.credit:L.parts[Number(part)]?.amount||0;
+    const where=part==='credit'?`из «${taskById(L.from)?.title||'задачи'}» в аванс`:L.from==='credit'?`из аванса в «${taskById(L.parts[Number(part)]?.to)?.title||'задачу'}»`:`из «${taskById(L.from)?.title||'задачи'}» в «${taskById(L.parts[Number(part)]?.to)?.title||'задачу'}»`;
+    if(!confirm(`Отменить перенос ${money(amt)} ${where} (${p?.name||''})?`)) return;
+    const got=undoPart(L.id,part); markChanged('Перенос отменён'); showToast(`Отменено: ${money(got)} вернулись обратно · ${p?.name||''}`);
+  });
+  const _renderAllOver=renderAll;
+  renderAll=function(){_renderAllOver();renderOverpays();};
+  renderOverpays();
 
   /* ===== Калькулятор и раздел сбора ===== */
   const calc={expr:'',history:[],tab:'calc',split:{title:'',total:'',fromCash:'',families:'',round:10}};
