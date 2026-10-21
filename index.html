@@ -625,6 +625,21 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 .ov-side .carry-btn{width:auto;min-height:34px;margin:0;font-size:12px}
 .ov-empty{padding:14px;border:1px dashed var(--line);border-radius:12px;text-align:center;color:var(--muted);font-size:13px}
 @media(max-width:700px){.ov-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.fin-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%}.fin-tabs button{justify-content:center;padding:6px 8px}.ov-item{grid-template-columns:minmax(0,1fr)}.ov-side{flex-direction:row;justify-content:space-between;align-items:center}}
+.img-modal canvas{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.img-preview{max-height:52vh;overflow:auto;border-radius:14px;margin:10px 0}
+.img-controls{display:grid;grid-template-columns:1fr;gap:10px}
+.img-controls .row{display:flex;gap:8px;align-items:flex-end}
+.img-controls .row .field{flex:1}
+.img-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.img-actions .btn{min-height:46px}
+@media(max-width:420px){.img-actions{grid-template-columns:1fr 1fr}.img-actions .btn:last-child{grid-column:1/-1}}
+.guest-banner{display:flex;align-items:center;gap:8px;margin:8px 0 0;padding:8px 12px;border-radius:12px;background:color-mix(in srgb,var(--accent) 12%,var(--panel));border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);color:var(--text);font-size:13px;font-weight:600}
+.guest-banner[hidden]{display:none}
+body.guest-mode :is(#saveBtn,[data-overview-action],#ovQuick,.overview-notes-panel,#taskFormPanel,.desktop-form-label,#openTaskFormBtn,[data-edit-task],[data-delete-task],[data-copy-task],[data-mark-paid],[data-mark-all],.task-amount-label,[data-set-amount],.carry-btn,.undo-btn,[data-task-include],[data-edit-parent],[data-add-contribution],.parent-task-done-toggle,.parent-task-amount-label,[data-parent-exclude],[data-parent-include],[data-edit-child],#transactionFormPanel,#openTxFormBtn,#openBalanceFormBtn,#balanceAdjustPanel,.mobile-row-actions,#addFamilyBtn,#safetyPanel,[data-split-task],.field:has(#imgNote),#backupBanner,.parent-contribution-note){display:none!important}
+body.guest-mode input[data-task-check]{pointer-events:none}
+body.guest-mode .task-person{cursor:default}
+body.guest-mode .data-top-grid{grid-template-columns:1fr}
+.cl-hint{font-size:12px;color:var(--muted);margin-top:6px}
 </style>
 <style></style><style>
   .imageye-selected {
@@ -646,7 +661,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
         <button class="btn" id="cloudLogout" type="button" title="Выйти и забыть пароль на этом устройстве">Выйти</button><button class="btn primary" id="saveBtn" type="button" title="Скачать HTML-файл со всеми текущими данными">⇩ Сохранить</button>
       </div>
     </div>
-    <div class="save-note ok" id="cloudNote" style="margin-bottom:-6px">☁ <strong>Данные загружены из облака · 21:38</strong></div>
+    <div class="guest-banner" id="guestBanner" hidden>👁 Гостевой режим — можно только смотреть</div><div class="save-note ok" id="cloudNote" style="margin-bottom:-6px">☁ <strong>Данные загружены из облака · 21:38</strong></div>
     <div class="save-note" id="saveNote">✓ <strong>Данные готовы к работе</strong></div>
     <div class="monthbar">
       <div class="month-controls">
@@ -713,7 +728,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 
   <section class="tab" id="tab-parents">
     <div class="page-head"><div><h2>Родители</h2><p>Выберите родителя, чтобы посмотреть его взносы, задачи и связанные операции.</p></div></div>
-    <section class="panel debt-board" id="debtBoard"><div class="debt-board-head"><div><h3>Кто сколько должен</h3><p>Сумма долга по всем задачам за все месяцы. Нажмите на имя, чтобы открыть подробности.</p></div><div class="debt-total" id="debtBoardTotal"></div></div><div class="debt-rows" id="debtBoardRows"></div></section>
+    <section class="panel debt-board" id="debtBoard"><div class="debt-board-head"><div><h3>Кто сколько должен <button type="button" class="btn small" data-debt-image="all" style="margin-left:6px;vertical-align:2px">🖼 Картинка-список</button></h3><p>Сумма долга по всем задачам за все месяцы. Нажмите на имя, чтобы открыть подробности.</p></div><div class="debt-total" id="debtBoardTotal"></div></div><div class="debt-rows" id="debtBoardRows"></div></section>
     <div class="parent-selector panel">
       <div class="field parent-select-field"><label for="parentSelect">Выбрать родителя</label><select id="parentSelect" aria-label="Выбрать родителя для просмотра"><option value="00e70aa6-2287-44fe-8814-bbf002c3934a">⚠ Лялько Лидия (1)</option><option value="8c832e8d-b5f7-494b-8f46-b8fa47b38c0f">Бондаренко Алина</option><option value="8f469ff3-81dc-4e64-be08-5c6e8c4b89e2">Каменченко Людмила</option><option value="0b178fba-38d4-4e83-809d-f73511629960">Савельева Алёна</option><option value="756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6">Ширкина Анна</option><option value="d656e9e6-ab31-4732-b4a3-4080a2081705">Кашпур Мила</option><option value="4cdfd1f7-7e99-40ae-a549-ae9587acb3d0">Вовненко Юлия</option><option value="f619160f-4540-4bd2-b1fc-b38edc61d2ad">Гула Таисия</option><option value="5ef7aa70-ff59-41b2-96b9-62ad133f6480">Онуфриенко Каролина</option></select></div>
       <span class="pill" id="parentCount">9 родителей</span>
@@ -838,7 +853,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   <div class="modal"><div class="modal-head"><h2 id="modalTitle">Редактирование</h2><button type="button" class="btn icon" id="closeModal" aria-label="Закрыть">×</button></div><div id="modalBody"></div></div>
 </div>
 <div id="cloudLock" hidden=""><div class="cl-box">
-  <h2>Родительский комитет</h2><p id="clSub">Введите пароль, чтобы открыть данные.</p>
+  <h2>Родительский комитет</h2><p id="clSub">Введите пароль, чтобы открыть данные.</p><p class="cl-hint" style="margin-top:-8px">Есть гостевой пароль? Введите его — откроется режим только для просмотра.</p>
   <div id="clUrlWrap" hidden=""><label for="clUrl">Адрес хранилища</label><input type="url" id="clUrl" placeholder="https://….workers.dev" autocapitalize="off" spellcheck="false"></div>
   <label for="clPass">Пароль</label><input type="password" id="clPass" autocomplete="current-password">
   <label class="cl-chk"><input type="checkbox" id="clRemember" checked=""> Запомнить на этом устройстве</label>
@@ -855,6 +870,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 (() => {
   'use strict';
   let cloudChanged = () => {};
+  var guestMode = false;
   const STORAGE_KEY = 'kindergartenCommitteeData_v1_1792607883173'; // STORAGE_KEY_MARKER
   // При сохранении в отдельный HTML эти значения заполняются актуальными данными.
   const EMBEDDED_STATE = {"version":1,"parents":[{"id":"00e70aa6-2287-44fe-8814-bbf002c3934a","name":"Лялько Лидия","childId":"ac90881d-45ae-405d-a484-81ddbe485768"},{"id":"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f","name":"Бондаренко Алина","childId":"a3f8e3f3-cbe5-4f91-b72e-633c2af79a35"},{"id":"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2","name":"Каменченко Людмила","childId":"1b360c8e-3012-401f-9ef1-7cebf49e085d"},{"id":"0b178fba-38d4-4e83-809d-f73511629960","name":"Савельева Алёна","childId":"d283e21e-1971-433a-b703-5f9b7939cf37"},{"id":"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6","name":"Ширкина Анна","childId":"77db184f-9bb3-4b0e-954b-5c1c28fbae2a"},{"id":"d656e9e6-ab31-4732-b4a3-4080a2081705","name":"Кашпур Мила","childId":"6f1df24b-4a1f-4862-b0fe-506de9e24ed8"},{"id":"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0","name":"Вовненко Юлия","childId":"72b89310-d32a-4267-8374-23f0361529c7"},{"id":"f619160f-4540-4bd2-b1fc-b38edc61d2ad","name":"Гула Таисия","childId":"47a615ef-6fa0-41a7-92fa-4efa061348e3"},{"id":"5ef7aa70-ff59-41b2-96b9-62ad133f6480","name":"Онуфриенко Каролина","childId":"ac58a981-3ecf-4e25-8f34-d8d4cebca192"}],"children":[{"id":"ac90881d-45ae-405d-a484-81ddbe485768","name":"Лялько Матвей","birthday":"2022-01-05","giftPreferences":"","foodPreferences":""},{"id":"a3f8e3f3-cbe5-4f91-b72e-633c2af79a35","name":"Бондаренко Алексей","birthday":"2021-02-13","giftPreferences":"","foodPreferences":""},{"id":"1b360c8e-3012-401f-9ef1-7cebf49e085d","name":"Каменченко Даня","birthday":"2021-01-15","giftPreferences":"","foodPreferences":""},{"id":"d283e21e-1971-433a-b703-5f9b7939cf37","name":"Савельев Ринат","birthday":"2021-02-13","giftPreferences":"","foodPreferences":""},{"id":"77db184f-9bb3-4b0e-954b-5c1c28fbae2a","name":"Ширкин Михаил","birthday":"2021-02-26","giftPreferences":"","foodPreferences":""},{"id":"6f1df24b-4a1f-4862-b0fe-506de9e24ed8","name":"Самоишенко Даниил","birthday":"2021-08-13","giftPreferences":"","foodPreferences":""},{"id":"72b89310-d32a-4267-8374-23f0361529c7","name":"Вовненко Назар","birthday":"2021-08-17","giftPreferences":"","foodPreferences":""},{"id":"47a615ef-6fa0-41a7-92fa-4efa061348e3","name":"Иськов Артём","birthday":"2021-11-08","giftPreferences":"","foodPreferences":""},{"id":"ac58a981-3ecf-4e25-8f34-d8d4cebca192","name":"Онуфриенко Роман","birthday":"2021-11-02","giftPreferences":"","foodPreferences":""}],"tasks":[{"id":"c6069192-10b8-4577-9eae-7fc87e8074e1","month":"2026-09","title":"Вода за сентябрь","description":"","dueDate":"2026-09-30","amountPerPerson":51,"statuses":{"00e70aa6-2287-44fe-8814-bbf002c3934a":51,"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f":51,"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2":53,"0b178fba-38d4-4e83-809d-f73511629960":51,"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6":51,"d656e9e6-ab31-4732-b4a3-4080a2081705":51,"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0":51,"f619160f-4540-4bd2-b1fc-b38edc61d2ad":51,"5ef7aa70-ff59-41b2-96b9-62ad133f6480":51},"createdAt":"2026-10-21T17:59:11.805Z"},{"id":"5a666cb8-3c21-4929-9b3a-08399d3805fb","month":"2026-09","title":"Сбор на праздник (день воспитателя)","description":"Сбор средств на праздник","dueDate":"2026-09-30","amountPerPerson":288,"statuses":{"00e70aa6-2287-44fe-8814-bbf002c3934a":288,"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f":288,"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2":288,"0b178fba-38d4-4e83-809d-f73511629960":288,"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6":288,"d656e9e6-ab31-4732-b4a3-4080a2081705":288,"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0":288,"f619160f-4540-4bd2-b1fc-b38edc61d2ad":288,"5ef7aa70-ff59-41b2-96b9-62ad133f6480":288},"createdAt":"2026-10-21T18:00:41.789Z"},{"id":"3e1926a6-8132-4ae4-9d80-9710e8c65fe4","month":"2026-10","title":"Фонд","description":"","dueDate":"2026-10-31","amountPerPerson":100,"statuses":{"00e70aa6-2287-44fe-8814-bbf002c3934a":89,"8c832e8d-b5f7-494b-8f46-b8fa47b38c0f":104,"8f469ff3-81dc-4e64-be08-5c6e8c4b89e2":101,"0b178fba-38d4-4e83-809d-f73511629960":100,"756b1119-ed5a-47c1-ba4b-0ef0ea47f2b6":100,"d656e9e6-ab31-4732-b4a3-4080a2081705":100,"4cdfd1f7-7e99-40ae-a549-ae9587acb3d0":249,"f619160f-4540-4bd2-b1fc-b38edc61d2ad":300,"5ef7aa70-ff59-41b2-96b9-62ad133f6480":293},"createdAt":"2026-10-21T18:12:46.180Z"}],"transactions":[],"balanceAdjustment":0,"notes":"Заметка","createdAt":"2026-10-19T22:53:22.771Z"}; // EMBEDDED_STATE_MARKER
@@ -887,7 +903,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       const paid = tasks.filter(t=>t.amountPerPerson>0).reduce((sum,t)=>sum+Object.entries(t.statuses).filter(([k])=>ids.has(k)).reduce((a,[,v])=>a+(typeof v==='number'&&Number.isFinite(v)?Math.max(0,v):v===true?t.amountPerPerson:0),0),0);
       adj -= paid;
     }
-    return {version:1,taskCash:true,parents:p,children:c,tasks,transactions,balanceAdjustment:adj,credits:cleanMoneyMap(s.credits),transfers:Array.isArray(s.transfers)?s.transfers.filter(x=>x&&typeof x.pid==='string'&&typeof x.from==='string').map(x=>({id:String(x.id||makeId()),pid:x.pid,from:x.from,parts:(Array.isArray(x.parts)?x.parts:[]).filter(q=>q&&typeof q.to==='string'&&Number(q.amount)>0).map(q=>({to:q.to,amount:Number(q.amount)})),credit:Math.max(0,Number(x.credit)||0),at:String(x.at||'')})):[],seriesLast:Object.fromEntries(Object.entries(s.seriesLast&&typeof s.seriesLast==='object'?s.seriesLast:{}).filter(([k,v])=>typeof v==='string'&&/^\d{4}-\d{2}$/.test(v))),notes:String(s.notes||'').slice(0,10000),createdAt:s.createdAt||new Date().toISOString()};
+    return {version:1,taskCash:true,parents:p,children:c,tasks,transactions,balanceAdjustment:adj,credits:cleanMoneyMap(s.credits),transfers:Array.isArray(s.transfers)?s.transfers.filter(x=>x&&typeof x.pid==='string'&&typeof x.from==='string').map(x=>({id:String(x.id||makeId()),pid:x.pid,from:x.from,parts:(Array.isArray(x.parts)?x.parts:[]).filter(q=>q&&typeof q.to==='string'&&Number(q.amount)>0).map(q=>({to:q.to,amount:Number(q.amount)})),credit:Math.max(0,Number(x.credit)||0),at:String(x.at||'')})):[],seriesLast:Object.fromEntries(Object.entries(s.seriesLast&&typeof s.seriesLast==='object'?s.seriesLast:{}).filter(([k,v])=>typeof v==='string'&&/^\d{4}-\d{2}$/.test(v))),payNote:String(s.payNote||'').slice(0,300),notes:String(s.notes||'').slice(0,10000),createdAt:s.createdAt||new Date().toISOString()};
   }
   function loadLocal() {
     try {
@@ -970,6 +986,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   function taskIsComplete(task) { const p=taskProgress(task); return p.total>0&&p.done===p.total; }
   function showToast(message, error=false) { const el=$('toast'); el.textContent=message; el.classList.toggle('error',error); el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3200); }
   function persist(message='Изменения сохранены в этом браузере') {
+    if(guestMode) return;
     if(!/^Данные готовы/.test(message)){ meta.dirty=(meta.dirty||0)+1; saveMeta(); updateBackupUi(); if(meta.dirty%10===0) setTimeout(()=>showToast(`⚠ ${meta.dirty} изменений без копии файла. Нажмите «Сохранить»`,true),600); }
     try { cloudChanged(); } catch (e) {}
     try { localStorage.setItem(STORAGE_KEY,JSON.stringify(state)); $('saveNote').innerHTML=`✓ <strong>${esc(message)}</strong>`; }
@@ -1082,10 +1099,10 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       ? `<div class="parent-tx-list">${parentTxs.map(tx=>`<div class="parent-tx-item"><div class="parent-tx-main"><div class="parent-tx-title">${esc(tx.description)}</div><div class="parent-tx-meta">${formatDate(tx.date)}</div></div><div class="parent-tx-amount amount ${tx.type}">${tx.type==='income'?'+':'−'}${money(tx.amount)}</div></div>`).join('')}</div>`
       : '<div class="muted small-text">Операций с привязкой к этому родителю за выбранный месяц нет.</div>';
     grid.innerHTML=`<article class="panel parent-detail">
-      <div class="parent-detail-head"><div class="person-head"><div class="avatar">${esc(String(state.parents.indexOf(p)+1).padStart(2,'0'))}</div><div class="person-main"><div class="person-name">${esc(p.name)}${p.leader?'<span class="leader-badge">👑 Руководитель</span>':''}</div><div class="person-sub">${p.leader?'Все задачи отмечаются выполненными автоматически · ':''}Ребёнок: ${esc(child?.name||'не указан')}</div></div></div><div class="card-actions"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">✎ Изменить данные</button><button type="button" class="btn small" data-add-contribution="${esc(p.id)}">＋ Взнос</button></div></div>
-      <div class="parent-stats"><div class="mini-stat"><span>Внесено за выбранный месяц</span><b>${money(contributed)}</b></div><div class="mini-stat"><span>Внесено за всё время</span><b>${money(contributedAll)}</b></div><div class="mini-stat"><span>Открытые задачи</span><b style="color:${pending.length?'var(--yellow)':'var(--green)'}">${pending.length}</b></div><div class="mini-stat"><span>Задач выполнено за месяц</span><b>${completed.length} из ${tasksInMonth.length}</b></div>${(()=>{const dt=parentDebtTotal(p.id);return `<div class="mini-stat"><span>Должен всего по задачам</span><b style="color:${dt.sum>0?'var(--red)':'var(--green)'}">${money(dt.sum)}</b>${dt.other?`<span>+ невыполненных поручений: ${dt.other}</span>`:''}</div>`;})()}${debts.length?`<div class="mini-stat"><span>Долг прошлых месяцев</span><b style="color:var(--red)">${debtSum>0?money(debtSum):debts.length+' '+plural(debts.length,['задача','задачи','задач'])}</b></div>`:''}${credit>0?`<div class="mini-stat"><span>Аванс на следующий сбор</span><b style="color:var(--accent)">${money(credit)}</b><button type="button" class="undo-btn" data-undo-pool="${esc(p.id)}">↩ Вернуть в переплату</button></div>`:''}</div><p class="parent-contribution-note">Итог включает поступления из «Финансов» и взносы, указанные в задачах со сбором средств. Один платёж учитывайте только в одном месте, иначе статистика сложит его дважды.</p>
+      <div class="parent-detail-head"><div class="person-head"><div class="avatar">${esc(String(state.parents.indexOf(p)+1).padStart(2,'0'))}</div><div class="person-main"><div class="person-name">${esc(p.name)}${p.leader?'<span class="leader-badge">👑 Руководитель</span>':''}</div><div class="person-sub">${p.leader?'Все задачи отмечаются выполненными автоматически · ':''}Ребёнок: ${esc(child?.name||'не указан')}</div></div></div><div class="card-actions"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">✎ Изменить данные</button><button type="button" class="btn small" data-add-contribution="${esc(p.id)}">＋ Взнос</button><button type="button" class="btn small" data-debt-image="${esc(p.id)}">🖼 Картинка с долгом</button></div></div>
+      <div class="parent-stats"><div class="mini-stat"><span>Внесено за выбранный месяц</span><b>${money(contributed)}</b></div><div class="mini-stat"><span>Внесено за всё время</span><b>${money(contributedAll)}</b></div><div class="mini-stat"><span>Открытые задачи</span><b style="color:${pending.length?'var(--yellow)':'var(--green)'}">${pending.length}</b></div><div class="mini-stat"><span>Задач выполнено за месяц</span><b>${completed.length} из ${tasksInMonth.length}</b></div>${(()=>{const dt=parentDebtTotal(p.id);return `<div class="mini-stat"><span>Должен всего по задачам</span><b style="color:${dt.sum>0?'var(--red)':'var(--green)'}">${money(dt.sum)}</b>${dt.sum>0?`<span>${[dt.cur>0?`этот месяц ${money(dt.cur)}`:'',dt.past>0?`прошлые месяцы ${money(dt.past)}`:''].filter(Boolean).join(' + ')}</span>`:''}${dt.other?`<span>+ невыполненных поручений: ${dt.other}</span>`:''}${dt.future>0?`<span>ещё ${money(dt.future)} — задачи следующих месяцев</span>`:''}</div>`;})()}${debts.length?`<div class="mini-stat"><span>Долг прошлых месяцев</span><b style="color:var(--red)">${debtSum>0?money(debtSum):debts.length+' '+plural(debts.length,['задача','задачи','задач'])}</b></div>`:''}${credit>0?`<div class="mini-stat"><span>Аванс на следующий сбор</span><b style="color:var(--accent)">${money(credit)}</b><button type="button" class="undo-btn" data-undo-pool="${esc(p.id)}">↩ Вернуть в переплату</button></div>`:''}</div><p class="parent-contribution-note">Итог включает поступления из «Финансов» и взносы, указанные в задачах со сбором средств. Один платёж учитывайте только в одном месте, иначе статистика сложит его дважды.</p>
       <div class="parent-detail-columns">
-        <section class="parent-detail-section"><div class="parent-section-head"><h3>Открытые задачи</h3><span class="pill ${pending.length?'warn':'good'}">${pending.length?`${pending.length} ${plural(pending.length,['задача','задачи','задач'])}`:'Нет открытых задач'}</span></div>${pendingHtml}${debts.length?`<h3 style="color:var(--red)">Долги прошлых месяцев</h3><ul class="parent-task-list">${debts.map(t=>renderParentTask(t,false)).join('')}</ul>`:''}<h3>Выполненные задачи за месяц</h3>${completedHtml}${excludedTasks.length?`<h3>Не касаются этой семьи</h3><ul class="parent-excluded-list">${excludedTasks.map(t=>`<li><span>${esc(t.title)}</span><button type="button" class="mini-link" data-parent-include="${esc(t.id)}" data-parent-id="${esc(p.id)}">Вернуть</button></li>`).join('')}</ul>`:''}</section>
+        <section class="parent-detail-section"><div class="parent-section-head"><h3>Открытые задачи</h3><span class="pill ${pending.length?'warn':'good'}">${pending.length?`${pending.length} ${plural(pending.length,['задача','задачи','задач'])}`:'Нет открытых задач'}</span></div>${pendingHtml}${(()=>{const ft=parentDebtTotal(p.id).futureTasks;return ft.length?`<h3>Следующие месяцы <span class="muted small-text" style="font-weight:400">— пока не входят в долг</span></h3><ul class="parent-task-list">${ft.map(x=>renderParentTask(x.t,false)).join('')}</ul>`:'';})()}${debts.length?`<h3 style="color:var(--red)">Долги прошлых месяцев</h3><ul class="parent-task-list">${debts.map(t=>renderParentTask(t,false)).join('')}</ul>`:''}<h3>Выполненные задачи за месяц</h3>${completedHtml}${excludedTasks.length?`<h3>Не касаются этой семьи</h3><ul class="parent-excluded-list">${excludedTasks.map(t=>`<li><span>${esc(t.title)}</span><button type="button" class="mini-link" data-parent-include="${esc(t.id)}" data-parent-id="${esc(p.id)}">Вернуть</button></li>`).join('')}</ul>`:''}</section>
         <section class="parent-detail-section"><h3>Информация о ребёнке</h3><div class="child-info-box"><p class="child-info-row"><span>Имя:</span> ${esc(child?.name||'Не указано')}</p><p class="child-info-row"><span>Дата рождения:</span> ${child?.birthday?formatDate(child.birthday):'Не указана'}</p><p class="child-info-row"><span>Ближайший день рождения:</span> ${esc(bday?.label||'Дата рождения не указана')}</p><p class="child-info-row"><span>Предпочтения в подарках:</span> ${esc(child?.giftPreferences?.trim()||'Не заполнены')}</p><p class="child-info-row"><span>Предпочтения в еде:</span> ${esc(child?.foodPreferences?.trim()||'Не заполнены')}</p></div><h3>Операции за ${esc(monthLabel(currentMonth()))}</h3>${txHtml}</section>
       </div>
     </article>`;
@@ -1841,11 +1858,17 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 
 
   /* ===== Общий долг каждого родителя ===== */
+  // Долг считается по задачам до текущего месяца включительно (сегодняшнего или выбранного вверху, что позже).
+  // Задачи следующих месяцев показываются отдельно и в долг не входят, пока месяц не наступил.
+  function debtCutoff(){const a=monthKey(),b=currentMonth();return a>b?a:b;}
   function parentDebtTotal(pid){
-    const r={sum:0,tasks:0,other:0};
+    const r={sum:0,tasks:0,other:0,cur:0,past:0,future:0,futureTasks:[]};
     if(isLeader(pid)) return r;
-    state.tasks.forEach(t=>{if(taskExcluded(t,pid)||taskParentDone(t,pid))return;const o=taskOwed(t,pid);if(o>0){r.sum+=o;r.tasks++;}else if(!(Number(t.amountPerPerson)>0))r.other++;});
-    r.sum=Math.round(r.sum*100)/100; return r;
+    const cut=debtCutoff(), cm=currentMonth();
+    state.tasks.forEach(t=>{if(taskExcluded(t,pid)||taskParentDone(t,pid))return;const o=taskOwed(t,pid);
+      if(t.month>cut){if(o>0){r.future+=o;r.futureTasks.push({t,o});}return;}
+      if(o>0){r.sum+=o;r.tasks++;if(t.month<cm)r.past+=o;else r.cur+=o;}else if(!(Number(t.amountPerPerson)>0))r.other++;});
+    ['sum','cur','past','future'].forEach(k=>r[k]=Math.round(r[k]*100)/100); return r;
   }
   function renderDebtBoard(){
     const box=$('debtBoardRows'); if(!box) return;
@@ -2023,6 +2046,131 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   renderAll=function(){_renderAllOver();renderOverpays();};
   renderOverpays();
 
+
+  /* ===== Картинка с долгом ===== */
+  function parentDebtItems(pid){
+    const money_=[],other=[];
+    if(isLeader(pid)) return {money:money_,other,total:0};
+    state.tasks.filter(t=>t.month<=debtCutoff()&&!taskExcluded(t,pid)&&!taskParentDone(t,pid)).sort((a,b)=>a.month.localeCompare(b.month)||(a.dueDate||'9999').localeCompare(b.dueDate||'9999'))
+      .forEach(t=>{const o=taskOwed(t,pid);if(o>0)money_.push({t,o,req:taskRequired(t,pid),paid:taskPaidAmount(t,pid)});else if(!(Number(t.amountPerPerson)>0))other.push({t});});
+    return {money:money_,other,total:r2(money_.reduce((a,x)=>a+x.o,0))};
+  }
+  const IMG={bg:'#fbf6ee',card:'#ffffff',ink:'#2b2631',muted:'#7a7285',line:'#eadfce',red:'#d9455f',accent:'#3d958b',accentBg:'#e2f4f1',gold:'#e2ad48',goldBg:'#fbf0d9'};
+  const IMG_FONT='system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
+  function wrapLines(ctx,text,maxW){const words=String(text).split(/\s+/);const out=[];let line='';words.forEach(w=>{const t=line?line+' '+w:w;if(ctx.measureText(t).width>maxW&&line){out.push(line);line=w;}else line=t;});if(line)out.push(line);return out.length?out:[''];}
+  function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+  function loadBagIcon(){return new Promise(res=>{const svg=document.querySelector('.brand-mark svg');if(!svg){res(null);return;}const img=new Image();img.onload=()=>res(img);img.onerror=()=>res(null);img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg.outerHTML);});}
+  // Универсальная отрисовка: блоки текста задаются списком, высота считается заранее.
+  async function drawDebtImage(kind,pid,opts){
+    const W=1080,P=64,IW=W-P*2; const c=document.createElement('canvas'); const ctx=c.getContext('2d');
+    const icon=await loadBagIcon();
+    const today=formatDate(localDate());
+    const ops=[]; let y=0;
+    const font=(sz,wt=400)=>`${wt} ${sz}px ${IMG_FONT}`;
+    const text=(str,sz,wt,color,opt={})=>{ctx.font=font(sz,wt);const lines=wrapLines(ctx,str,opt.maxW||IW);const lh=Math.round(sz*1.3);lines.forEach((l,i)=>ops.push({t:'text',str:l,x:opt.x??P,y:y+sz+i*lh,sz,wt,color,align:opt.align}));y+=lines.length*lh;};
+    const gap=h=>{y+=h;};
+    // шапка
+    ops.push({t:'header'}); y=150;
+    if(kind==='one'){
+      const par=getParent(pid), d=parentDebtItems(pid), credit=state.credits?.[pid]||0;
+      gap(30); text(par.name,52,800,IMG.ink);
+      gap(10); text(d.total>0?'Напоминание о взносах':'Все взносы сданы — спасибо!',28,500,IMG.muted);
+      gap(28);
+      const boxTop=y; y+=36; const boxH=150;
+      ops.push({t:'box',x:P,y:boxTop,w:IW,h:boxH,fill:d.total>0?'#fdecef':IMG.accentBg,stroke:d.total>0?'#f3c2cb':'#b9e2dc'});
+      ops.push({t:'text',str:d.total>0?'К оплате':'Долг',x:P+36,y:boxTop+56,sz:28,wt:600,color:IMG.muted});
+      ops.push({t:'text',str:money(d.total),x:P+36,y:boxTop+122,sz:62,wt:800,color:d.total>0?IMG.red:IMG.accent});
+      if(credit>0) ops.push({t:'text',str:`аванс ${money(credit)} зачтётся в новый сбор`,x:W-P-36,y:boxTop+122,sz:24,wt:500,color:IMG.accent,align:'right'});
+      y=boxTop+boxH+40;
+      if(d.money.length){
+        text('За что',30,700,IMG.ink); gap(14);
+        d.money.forEach(x=>{
+          const top=y; ctx.font=font(32,700); const tl=wrapLines(ctx,x.t.title,IW-260);
+          const meta=[monthLabel(x.t.month),x.t.dueDate?`срок ${formatDate(x.t.dueDate)}`:'',x.paid>0?`внесено ${money(x.paid)} из ${money(x.req)}`:''].filter(Boolean).join(' · ');
+          ctx.font=font(24,400); const ml=wrapLines(ctx,meta,IW-260);
+          const h=28+tl.length*42+ml.length*32+22;
+          ops.push({t:'box',x:P,y:top,w:IW,h,fill:'#ffffff',stroke:IMG.line});
+          tl.forEach((l,i)=>ops.push({t:'text',str:l,x:P+30,y:top+28+32+i*42,sz:32,wt:700,color:IMG.ink}));
+          ml.forEach((l,i)=>ops.push({t:'text',str:l,x:P+30,y:top+28+tl.length*42+20+i*32,sz:24,wt:400,color:IMG.muted}));
+          ops.push({t:'text',str:money(x.o),x:W-P-30,y:top+28+34,sz:36,wt:800,color:IMG.red,align:'right'});
+          y=top+h+14;
+        });
+      }
+      if(d.other.length){gap(16);text('Ещё не выполнено',30,700,IMG.ink);gap(8);d.other.forEach(x=>text(`• ${x.t.title} (${monthLabel(x.t.month)}${x.t.dueDate?`, срок ${formatDate(x.t.dueDate)}`:''})`,26,400,IMG.ink));}
+    } else {
+      const rows=state.parents.filter(p=>!p.leader).map(p=>({p,d:parentDebtItems(p.id)})).filter(x=>x.d.total>0||x.d.other.length).sort((a,b)=>b.d.total-a.d.total);
+      const total=rows.reduce((a,x)=>a+x.d.total,0);
+      gap(30); text('Долги по взносам',52,800,IMG.ink); gap(8); text(rows.length?`${rows.length} ${plural(rows.length,['человек','человека','человек'])} · всего ${money(total)}`:'Долгов нет — все взносы сданы!',30,500,rows.length?IMG.red:IMG.accent); gap(26);
+      rows.forEach(x=>{
+        const top=y; const detail=[...x.d.money.map(m=>`${m.t.title} — ${money(m.o)}`),...x.d.other.map(o=>o.t.title)].join(' · ');
+        ctx.font=font(23,400); const dl=wrapLines(ctx,detail,IW-60);
+        const h=30+40+dl.length*31+20;
+        ops.push({t:'box',x:P,y:top,w:IW,h,fill:'#ffffff',stroke:IMG.line});
+        ops.push({t:'text',str:x.p.name,x:P+30,y:top+30+30,sz:32,wt:700,color:IMG.ink});
+        ops.push({t:'text',str:x.d.total>0?money(x.d.total):'поручения',x:W-P-30,y:top+30+30,sz:34,wt:800,color:IMG.red,align:'right'});
+        dl.forEach((l,i)=>ops.push({t:'text',str:l,x:P+30,y:top+30+40+22+i*31,sz:23,wt:400,color:IMG.muted}));
+        y=top+h+12;
+      });
+    }
+    if(opts.note){gap(24);ctx.font=font(26,500);const nl=wrapLines(ctx,opts.note,IW-60);const top=y,h=30+44+nl.length*36+20;ops.push({t:'box',x:P,y:top,w:IW,h,fill:IMG.goldBg,stroke:'#efd9a6'});ops.push({t:'text',str:'Куда переводить',x:P+30,y:top+30+26,sz:24,wt:700,color:'#8b5a1b'});nl.forEach((l,i)=>ops.push({t:'text',str:l,x:P+30,y:top+30+44+26+i*36,sz:26,wt:500,color:IMG.ink}));y=top+h;}
+    gap(40); ops.push({t:'text',str:`Данные на ${today}`,x:P,y:y+24,sz:22,wt:400,color:IMG.muted}); y+=60;
+    const H=Math.max(y,600); const dpr=1; c.width=W*dpr; c.height=H*dpr; ctx.scale(dpr,dpr);
+    ctx.fillStyle=IMG.bg; ctx.fillRect(0,0,W,H);
+    ops.forEach(o=>{
+      if(o.t==='header'){ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,120);ctx.fillStyle=IMG.line;ctx.fillRect(0,120,W,2);
+        ctx.fillStyle=IMG.goldBg;rr(ctx,P,26,68,68,18);ctx.fill();if(icon)ctx.drawImage(icon,P+8,34,52,52);
+        ctx.font=font(34,800);ctx.fillStyle=IMG.ink;ctx.textAlign='left';ctx.fillText('Родительский комитет',P+90,72);
+        ctx.font=font(22,500);ctx.fillStyle=IMG.muted;ctx.textAlign='right';ctx.fillText(today,W-P,70);ctx.textAlign='left';}
+      else if(o.t==='box'){rr(ctx,o.x,o.y,o.w,o.h,22);ctx.fillStyle=o.fill;ctx.fill();ctx.lineWidth=2;ctx.strokeStyle=o.stroke;ctx.stroke();}
+      else{ctx.font=font(o.sz,o.wt);ctx.fillStyle=o.color;ctx.textAlign=o.align||'left';ctx.fillText(o.str,o.x,o.y);ctx.textAlign='left';}
+    });
+    return c;
+  }
+  const canvasBlob=c=>new Promise(res=>c.toBlob(res,'image/png'));
+  async function openDebtImage(target){
+    const isAll=target==='all'; const par=isAll?null:getParent(target); if(!isAll&&!par) return;
+    openModal(isAll?'Картинка: список должников':'Картинка с долгом',`<div class="img-modal">
+      <div class="img-controls">${isAll?'':`<div class="field"><label for="imgParent">Родитель</label><select id="imgParent">${state.parents.filter(p=>!p.leader).map(p=>`<option value="${esc(p.id)}" ${p.id===target?'selected':''}>${esc(p.name)} — ${money(parentDebtItems(p.id).total)}</option>`).join('')}</select></div>`}
+      <div class="field"><label for="imgNote">Реквизиты или комментарий <span class="muted">(запоминается)</span></label><input id="imgNote" maxlength="300" placeholder="Например: карта ПриватБанка 5168 …, получатель — Иванова О." value="${esc(state.payNote||'')}"></div></div>
+      <div class="img-preview" id="imgPreview"><div class="muted small-text" style="padding:20px;text-align:center">Рисую…</div></div>
+      <div class="img-actions"><button type="button" class="btn" id="imgCopy">📋 Копировать</button><button type="button" class="btn" id="imgDownload">⇩ Скачать</button><button type="button" class="btn primary" id="imgShare">↗ Поделиться</button></div></div>`);
+    let canvas=null, cur=target;
+    const fileName=()=>isAll?`Долги по взносам ${formatDate(localDate())}.png`:`Долг — ${getParent(cur)?.name||''}.png`;
+    const draw=async()=>{canvas=await drawDebtImage(isAll?'all':'one',cur,{note:$('imgNote')?.value.trim()});const box=$('imgPreview');if(!box)return;box.innerHTML='';box.appendChild(canvas);};
+    await draw();
+    $('imgParent')?.addEventListener('change',e=>{cur=e.target.value;draw();});
+    let nt; $('imgNote').addEventListener('input',e=>{clearTimeout(nt);nt=setTimeout(()=>{state.payNote=e.target.value.trim();try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));cloudChanged();}catch(err){}draw();},350);});
+    $('imgDownload').addEventListener('click',async()=>{const blob=await canvasBlob(canvas);const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fileName();document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);showToast('Картинка скачана');});
+    $('imgCopy').addEventListener('click',async()=>{
+      try{if(!window.ClipboardItem||!navigator.clipboard?.write)throw new Error('no');await navigator.clipboard.write([new ClipboardItem({'image/png':canvasBlob(canvas)})]);showToast('Картинка скопирована — вставьте её в чат');}
+      catch(e){showToast('Этот браузер не умеет копировать картинки — нажмите «Поделиться» или «Скачать»',true);}
+    });
+    const shareBtn=$('imgShare');
+    shareBtn.addEventListener('click',async()=>{
+      try{const blob=await canvasBlob(canvas);const file=new File([blob],fileName(),{type:'image/png'});
+        if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:fileName().replace('.png','')});}
+        else{$('imgDownload').click();}
+      }catch(e){if(e?.name!=='AbortError')showToast('Не получилось поделиться — скачайте картинку',true);}
+    });
+    if(!(navigator.canShare)) shareBtn.textContent='⇩ Сохранить';
+  }
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-debt-image]');if(b){e.preventDefault();e.stopPropagation();openDebtImage(b.dataset.debtImage);}},true);
+
+
+  /* ===== Гостевой режим (только просмотр) ===== */
+  const GUEST_BLOCK='#saveBtn,[data-overview-action],#ovQuick,.overview-notes-panel,#taskFormPanel,.desktop-form-label,#openTaskFormBtn,[data-edit-task],[data-delete-task],[data-copy-task],[data-mark-paid],[data-mark-all],.task-amount-label,[data-set-amount],.carry-btn,.undo-btn,[data-task-include],[data-edit-parent],[data-add-contribution],.parent-task-done-toggle,.parent-task-amount-label,[data-parent-exclude],[data-parent-include],[data-edit-child],#transactionFormPanel,#openTxFormBtn,#openBalanceFormBtn,#balanceAdjustPanel,.mobile-row-actions,#addFamilyBtn,#safetyPanel,[data-split-task],.field:has(#imgNote),#backupBanner,.parent-contribution-note,[data-task-check],[data-qc],#qcForm [type=submit]';
+  function setGuestMode(on){
+    guestMode=!!on; document.body.classList.toggle('guest-mode',guestMode); $('guestBanner').hidden=!guestMode;
+    if(guestMode){ try{localStorage.removeItem(STORAGE_KEY+'_backupmeta');}catch(e){} if($('modalBackdrop').classList.contains('open')) closeModal(); }
+    renderAll();
+  }
+  const guestNo=()=>showToast('👁 Гостевой режим — можно только смотреть',true);
+  document.addEventListener('click',e=>{if(!guestMode)return;const t=e.target.closest(GUEST_BLOCK);if(t){e.preventDefault();e.stopImmediatePropagation();guestNo();}},true);
+  ['change','input'].forEach(ev=>document.addEventListener(ev,e=>{
+    if(!guestMode)return; const t=e.target; if(!(t instanceof Element)) return;
+    if(t.closest('main')&&t.matches('input,textarea,select')&&!t.matches('#parentSelect,#ovPerson,#hideCompletedTasks')){e.stopImmediatePropagation();guestNo();setTimeout(renderAll,0);}
+  },true));
+
   /* ===== Калькулятор и раздел сбора ===== */
   const calc={expr:'',history:[],tab:'calc',split:{title:'',total:'',fromCash:'',families:'',round:10}};
   function calcEval(src){
@@ -2188,14 +2336,14 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
         const mine = confirm('Данные в облаке изменили с другого устройства.\n\nОК — загрузить версию из облака (ваши последние правки на этом устройстве пропадут).\nОтмена — перезаписать облако своей версией.');
         if (mine) { applyServerState(r.state, r.rev); clNote(`☁ <strong>Загружена версия из облака · ${hhmm()}</strong>`, 'ok'); }
         else { CL.rev = r.rev; lsSet(K_REV, String(r.rev)); CL.pushing = false; return pushNow(); }
-      } else if (r.status === 401) { clNote('⚠ Пароль больше не подходит — войдите заново', 'err'); CL.ready = false; showLock('Пароль не подошёл. Введите заново.'); }
+      } else if (r.status === 403) { setGuestMode(true); lsSet(K_PEND, null); clNote('👁 Гостевой режим: изменения не сохраняются', 'err'); try{const g=await api('GET','/state');if(g.status===200&&g.state)applyServerState(g.state,g.rev);}catch(e){} } else if (r.status === 401) { clNote('⚠ Пароль больше не подходит — войдите заново', 'err'); CL.ready = false; showLock('Пароль не подошёл. Введите заново.'); }
       else { clNote(`⚠ Облако ответило ошибкой (${r.status}). Изменения сохранены на этом устройстве, отправлю позже`, 'err'); scheduleRetry(); }
     } catch (e) { clNote('⚠ Нет связи. Изменения сохранены на этом устройстве, отправлю позже', 'err'); scheduleRetry(); }
     CL.pushing = false;
   }
   const scheduleRetry = () => { clearTimeout(CL.timer); CL.timer = setTimeout(pushNow, 20000); };
   cloudChanged = () => {
-    if (!CL.ready) return;
+    if (!CL.ready || guestMode) return;
     lsSet(K_PEND, '1'); clNote('☁ Сохраняю…');
     clearTimeout(CL.timer); CL.timer = setTimeout(pushNow, 700);
   };
@@ -2225,6 +2373,12 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       if (r.status !== 200) { clErr.textContent = 'Хранилище ответило ошибкой: ' + (r.error || r.status); return; }
       lsSet(K_URL, CL.url);
       if (!auto || true) { if ($('clRemember').checked) lsSet(K_PASS, CL.pass); else lsSet(K_PASS, null); }
+      setGuestMode(r.role === 'guest');
+      if (guestMode) {
+        lsSet(K_PEND, null);
+        if (!r.state) { clErr.textContent = 'В хранилище пока нет данных — их должен загрузить руководитель.'; return; }
+        applyServerState(r.state, r.rev); enter(); clNote(`👁 <strong>Гостевой просмотр · обновлено ${hhmm()}</strong>`, 'ok'); return;
+      }
       if (r.state) {
         const pend = lsGet(K_PEND) === '1', localRev = Number(lsGet(K_REV)) || 0;
         if (pend && r.rev === localRev) { enter(); await pushNow(); return; }
