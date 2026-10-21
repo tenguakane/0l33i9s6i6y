@@ -541,6 +541,11 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 .credit-note{font-size:11px;color:var(--accent)}
 @media(max-width:700px){#overviewDebtsPanel{order:1}}
 
+.custom-tag{display:inline-block;margin-left:4px;padding:0 6px;border-radius:999px;font-size:10px;font-weight:700;background:color-mix(in srgb,var(--accent2) 22%,transparent);color:var(--text);vertical-align:1px}
+.amt-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.amt-chips .btn{min-height:36px;padding:4px 11px;font-size:12.5px}
+.amt-info{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:0 0 12px;font-size:13px}
+.amt-info span{color:var(--muted)}
 </style>
 <style></style><style>
   .imageye-selected {
@@ -783,7 +788,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   function normalizeState(s) {
     const p = s.parents.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),childId:String(x.childId||'')}));
     const c = s.children.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),birthday:/^\d{4}-\d{2}-\d{2}$/.test(x.birthday||'')?x.birthday:'',giftPreferences:String(x.giftPreferences||''),foodPreferences:String(x.foodPreferences||'')}));
-    const tasks = s.tasks.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,month:/^\d{4}-\d{2}$/.test(x.month||'')?x.month:monthKey(),title:String(x.title||'Без названия'),description:String(x.description||''),dueDate:/^\d{4}-\d{2}-\d{2}$/.test(x.dueDate||'')?x.dueDate:'',amountPerPerson:Number.isFinite(Number(x.amountPerPerson))&&x.amountPerPerson!==''?Math.max(0,Number(x.amountPerPerson)):0,statuses:x.statuses&&typeof x.statuses==='object'?x.statuses:{},excluded:Array.isArray(x.excluded)?x.excluded.filter(v=>typeof v==='string'):[],repeat:x.repeat===true,series:typeof x.series==='string'?x.series:'',carried:cleanMoneyMap(x.carried),credited:cleanMoneyMap(x.credited),createdAt:String(x.createdAt||'')}));
+    const tasks = s.tasks.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,month:/^\d{4}-\d{2}$/.test(x.month||'')?x.month:monthKey(),title:String(x.title||'Без названия'),description:String(x.description||''),dueDate:/^\d{4}-\d{2}-\d{2}$/.test(x.dueDate||'')?x.dueDate:'',amountPerPerson:Number.isFinite(Number(x.amountPerPerson))&&x.amountPerPerson!==''?Math.max(0,Number(x.amountPerPerson)):0,statuses:x.statuses&&typeof x.statuses==='object'?x.statuses:{},excluded:Array.isArray(x.excluded)?x.excluded.filter(v=>typeof v==='string'):[],repeat:x.repeat===true,series:typeof x.series==='string'?x.series:'',carried:cleanMoneyMap(x.carried),credited:cleanMoneyMap(x.credited),customAmounts:cleanAmountMap(x.customAmounts),createdAt:String(x.createdAt||'')}));
     const transactions = s.transactions.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,date:/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:localDate(),type:x.type==='expense'?'expense':'income',amount:Math.max(0,Number(x.amount)||0),description:String(x.description||''),parentId:String(x.parentId||''),createdAt:String(x.createdAt||'')}));
     const balanceAdjustment = Number.isFinite(Number(s.balanceAdjustment)) && s.balanceAdjustment !== '' && s.balanceAdjustment !== null ? Number(s.balanceAdjustment) : 0;
     let adj = balanceAdjustment;
@@ -832,13 +837,20 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   // Деньги, внесённые прямо в задачах со сбором, — тоже поступления в кассу.
   function taskIncome(month=null) { return state.tasks.filter(t=>Number(t.amountPerPerson)>0&&(!month||t.month===month)).reduce((sum,t)=>sum+state.parents.reduce((a,p)=>a+taskRawPaid(t,p.id),0),0); }
   function balance() { return (Number(state.balanceAdjustment)||0) + totalIncome() + taskIncome() - totalExpense(); }
+  // Сумма, которую должен конкретный человек: индивидуальная (если задана) или общая.
+  function taskRequired(task,parentId) {
+    const base=Math.max(0,Number(task.amountPerPerson)||0); if(base<=0) return 0;
+    const c=task.customAmounts?.[parentId];
+    return (typeof c==='number'&&Number.isFinite(c)&&c>=0)?c:base;
+  }
+  function taskHasCustom(task,parentId) { return Number(task.amountPerPerson)>0&&typeof task.customAmounts?.[parentId]==='number'; }
   function taskRawPaid(task,parentId) {
     const required=Math.max(0,Number(task.amountPerPerson)||0);
     if(required<=0) return 0;
     const value=task.statuses?.[parentId];
     if(typeof value==='number'&&Number.isFinite(value)) return Math.max(0,value);
     // Старые отметки true считаются полным взносом, чтобы не потерять прошлые данные.
-    return value===true?required:0;
+    return value===true?taskRequired(task,parentId):0;
   }
   // Учитываемая сумма = внесено + зачтено из чужой переплаты − перенесено в другие сборы.
   function taskPaidAmount(task,parentId) {
@@ -846,8 +858,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     return Math.max(0,taskRawPaid(task,parentId)+(task.credited?.[parentId]||0)-(task.carried?.[parentId]||0));
   }
   function taskParentDone(task,parentId) {
-    const required=Math.max(0,Number(task.amountPerPerson)||0);
-    if(required>0) return taskPaidAmount(task,parentId)>=required;
+    if(Number(task.amountPerPerson)>0) return taskPaidAmount(task,parentId)>=taskRequired(task,parentId);
     return task.statuses?.[parentId]===true;
   }
   // Родители, которых задача не касается, не считаются должниками и не входят в план сбора.
@@ -859,7 +870,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     const done=parts.filter(p=>taskParentDone(task,p.id)).length;
     const amount=Math.max(0,Number(task.amountPerPerson)||0);
     const collected=amount>0?state.parents.reduce((sum,p)=>sum+taskPaidAmount(task,p.id),0):0;
-    const target=amount*total;
+    const target=amount>0?parts.reduce((sum,p)=>sum+taskRequired(task,p.id),0):0;
     const ratio=amount>0?(target>0?Math.min(100,collected/target*100):0):(total?done/total*100:0);
     return {done,total,ratio,collected,target};
   }
@@ -964,8 +975,8 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     const parentTxs=monthTransactions().filter(t=>t.parentId===p.id).slice().sort((a,b)=>b.date.localeCompare(a.date));
     const bday=child?.birthday?birthdayInfo(child.birthday):null;
     const renderParentTask = (t, done) => {
-      const amount=Math.max(0,Number(t.amountPerPerson)||0), paid=taskPaidAmount(t,p.id);
-      const amountMeta=amount>0?`<div class="parent-task-amount-editor"><label class="parent-task-amount-label">Внесено, ₴<input class="parent-task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(t,p.id)>0?esc(taskRawPaid(t,p.id)):''}" data-parent-task-amount="${esc(t.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(t.title)}" placeholder="0"></label><div class="parent-task-amount-summary">${money(paid)} из ${money(amount)}${(t.credited?.[p.id]||0)>0?`<span class="credit-note">в т.ч. зачтено из переплаты ${money(t.credited[p.id])}</span>`:''}${paid>amount?`<span class="overpaid">Переплата: ${money(paid-amount)}</span><button type="button" class="mini-link" data-carry="${esc(t.id)}" data-parent-id="${esc(p.id)}">↪ Зачесть в следующий сбор</button>`:paid<amount?`<span>Осталось: ${money(amount-paid)}</span>`:'<span class="paid-done">Взнос выполнен</span>'}</div></div>`:'';
+      const amount=taskRequired(t,p.id), paid=taskPaidAmount(t,p.id), custom=taskHasCustom(t,p.id);
+      const amountMeta=amount>0?`<div class="parent-task-amount-editor"><label class="parent-task-amount-label">Внесено, ₴<input class="parent-task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(t,p.id)>0?esc(taskRawPaid(t,p.id)):''}" data-parent-task-amount="${esc(t.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(t.title)}" placeholder="0"></label><div class="parent-task-amount-summary">${money(paid)} из ${money(amount)}${custom?' <span class="custom-tag">своя сумма</span>':''}<button type="button" class="mini-link" data-set-amount="${esc(t.id)}" data-parent-id="${esc(p.id)}">✎ Изменить сумму</button>${(t.credited?.[p.id]||0)>0?`<span class="credit-note">в т.ч. зачтено из переплаты ${money(t.credited[p.id])}</span>`:''}${paid>amount?`<span class="overpaid">Переплата: ${money(paid-amount)}</span><button type="button" class="mini-link" data-carry="${esc(t.id)}" data-parent-id="${esc(p.id)}">↪ Зачесть в следующий сбор</button>`:paid<amount?`<span>Осталось: ${money(amount-paid)}</span>`:'<span class="paid-done">Взнос выполнен</span>'}</div></div>`:'';
       return `<li class="${done?'done-task':''}"><div class="parent-task-toggle-row"><div class="parent-task-copy"><div class="parent-task-name">${esc(t.title)}${t.month!==currentMonth()?`<span class="month-tag">${esc(monthLabel(t.month))}</span>`:''}</div>${t.description?`<div class="parent-task-meta">${esc(t.description)}</div>`:''}${t.dueDate?`<div class="parent-task-meta">Срок: ${formatDate(t.dueDate)}</div>`:''}</div><label class="parent-task-done-toggle"><input type="checkbox" data-parent-task-toggle="${esc(t.id)}" data-parent-id="${esc(p.id)}" ${done?'checked':''} aria-label="${done?'Снять выполнение':'Отметить выполненной'}: ${esc(t.title)}"><span>${done?'Выполнено':'Выполнить'}</span></label></div>${done?'':`<button type="button" class="mini-link" data-parent-exclude="${esc(t.id)}" data-parent-id="${esc(p.id)}">Задача не касается этой семьи</button>`}${amountMeta}</li>`;
     };
     const pendingHtml=pending.length
@@ -1023,10 +1034,11 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       let people='';
       if(amount>0){
         people=taskParticipants(task).map(p=>{
+          const amount=taskRequired(task,p.id), custom=taskHasCustom(task,p.id);
           const paid=taskPaidAmount(task,p.id), parentDone=taskParentDone(task,p.id), remaining=Math.max(0,amount-paid);
           const statusLabel=parentDone?(paid>amount?'Переплата':'Выполнено'):(paid>0?'Частично':'Не внесено');
           const note=parentDone?(paid>amount?`Переплата: ${money(paid-amount)}`:'Взнос выполнен'):(paid>0?`Осталось: ${money(remaining)}`:`К оплате: ${money(amount)}`);
-          return `<div class="task-person amount-person ${parentDone?'completed':''}"><div class="task-person-top"><span class="task-person-name">${esc(p.name)}</span><span class="pill ${parentDone?'good':paid>0?'warn':''}">${statusLabel}</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(task,p.id)>0?esc(taskRawPaid(task,p.id)):''}" data-task-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(task.title)}" placeholder="0"></label><small class="task-amount-note">${note}</small>${(task.credited?.[p.id]||0)>0?`<small class="credit-note">зачтено из переплаты ${money(task.credited[p.id])}</small>`:''}${(task.carried?.[p.id]||0)>0?`<small class="task-amount-note">перенесено в другой сбор ${money(task.carried[p.id])}</small>`:''}${paid>amount?`<button type="button" class="mini-link" data-carry="${esc(task.id)}" data-parent-id="${esc(p.id)}">↪ Зачесть в следующий сбор</button>`:''}</div>`;
+          return `<div class="task-person amount-person ${parentDone?'completed':''}"><div class="task-person-top"><span class="task-person-name">${esc(p.name)}${custom?`<span class="custom-tag" title="Индивидуальная сумма">${money(amount)}</span>`:''}</span><span class="pill ${parentDone?'good':paid>0?'warn':''}">${statusLabel}</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${taskRawPaid(task,p.id)>0?esc(taskRawPaid(task,p.id)):''}" data-task-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(task.title)}" placeholder="0"></label><small class="task-amount-note">${note}</small><button type="button" class="mini-link" data-set-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}">✎ ${custom?'Своя сумма · изменить':'Изменить сумму'}</button>${(task.credited?.[p.id]||0)>0?`<small class="credit-note">зачтено из переплаты ${money(task.credited[p.id])}</small>`:''}${(task.carried?.[p.id]||0)>0?`<small class="task-amount-note">перенесено в другой сбор ${money(task.carried[p.id])}</small>`:''}${paid>amount?`<button type="button" class="mini-link" data-carry="${esc(task.id)}" data-parent-id="${esc(p.id)}">↪ Зачесть в следующий сбор</button>`:''}</div>`;
         }).join('');
       } else {
         people=taskParticipants(task).map(p=>{
@@ -1036,7 +1048,8 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
       }
       const excludedPeople=state.parents.filter(p=>taskExcluded(task,p.id));
       people+=excludedPeople.map(p=>`<div class="task-person excluded"><span class="task-person-name">${esc(p.name)}</span><small>Не касается</small><button type="button" class="mini-link" data-task-include="${esc(task.id)}" data-parent-id="${esc(p.id)}">Вернуть в задачу</button></div>`).join('');
-      const exclMeta=(task.repeat?'<span class="repeat-tag">🔁 Ежемесячно</span>':'')+(excludedPeople.length?`<span class="pill">Не касается: ${excludedPeople.length}</span>`:'');
+      const customCount=amount>0?taskParticipants(task).filter(p=>taskHasCustom(task,p.id)).length:0;
+      const exclMeta=(customCount?`<span class="pill">Свои суммы: ${customCount}</span>`:'')+(task.repeat?'<span class="repeat-tag">🔁 Ежемесячно</span>':'')+(excludedPeople.length?`<span class="pill">Не касается: ${excludedPeople.length}</span>`:'');
       const moneyMeta=exclMeta+(amount>0?`<span class="pill ${pr.collected>=pr.target?'good':'warn'}">Собрано ${money(pr.collected)} из ${money(pr.target)}</span><span class="pill">${money(amount)} на человека</span>`:'');
       return `<article class="task-card ${collapsed?'collapsed':''}" data-task-card="${esc(task.id)}"><div class="task-head"><div style="min-width:0;flex:1"><button class="task-title-toggle" type="button" data-toggle-task="${esc(task.id)}" aria-expanded="${collapsed?'false':'true'}" aria-label="${collapsed?'Развернуть':'Свернуть'} задачу ${esc(task.title)}"><span class="task-title">${esc(task.title)} ${done?'<span class="pill good">✓ Готово</span>':''}</span><span class="task-toggle-indicator" aria-hidden="true">⌄</span></button><div class="task-description">${esc(task.description||'Описание не добавлено')}</div><div class="task-meta"><span class="pill ${done?'good':'warn'}">${pr.done} из ${pr.total} выполнено</span>${task.dueDate?`<span class="pill">Срок: ${formatDate(task.dueDate)}</span>`:''}${moneyMeta}</div></div><div class="card-actions" style="margin:0;flex-wrap:nowrap"><button class="btn small" type="button" data-copy-task="${esc(task.id)}" aria-label="Скопировать в следующий месяц" title="Скопировать в следующий месяц">⧉</button><button class="btn small" type="button" data-edit-task="${esc(task.id)}" aria-label="Редактировать задачу">✎</button><button class="btn small danger" type="button" data-delete-task="${esc(task.id)}" aria-label="Удалить задачу">×</button></div></div><div class="task-progress"><span style="width:${pr.ratio}%"></span></div><div class="task-people">${people}</div></article>`;
     }).join('');
@@ -1078,12 +1091,12 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     $('overviewCollections').innerHTML=collectionTasks.length?collectionTasks.map(t=>{
       const required=Math.max(0,Number(t.amountPerPerson)||0), pr=taskProgress(t);
       const rows=state.parents.map(p=>({parent:p,paid:taskPaidAmount(t,p.id)})).filter(x=>x.paid>0).map(x=>{
-        const delta=x.paid-required;
+        const delta=x.paid-taskRequired(t,x.parent.id);
         const status=delta>0.000001?`Переплата: ${money(delta)}`:delta< -0.000001?`Осталось: ${money(-delta)}`:'Взнос выполнен';
         return `<div class="overview-collection-person"><span class="overview-collection-person-name">${esc(x.parent.name)} · внесено ${money(x.paid)}</span><span class="overview-collection-person-value ${delta>0.000001?'overpaid':''}">${esc(status)}</span></div>`;
       }).join('');
       const noPayment=taskParticipants(t).filter(p=>taskPaidAmount(t,p.id)<=0).map(p=>p.name);
-      const foot=noPayment.length?`Пока не внесли: ${noPayment.map(esc).join(', ')}`:(taskParticipants(t).every(p=>taskPaidAmount(t,p.id)>=required)?'Все участники внесли необходимую сумму':'У всех есть взнос, но часть сумм ещё не набрана');
+      const foot=noPayment.length?`Пока не внесли: ${noPayment.map(esc).join(', ')}`:(taskParticipants(t).every(p=>taskParentDone(t,p.id))?'Все участники внесли необходимую сумму':'У всех есть взнос, но часть сумм ещё не набрана');
       return `<article class="overview-collection-card"><div class="overview-collection-head"><div class="overview-row-title">${esc(t.title)}</div><span class="overview-collection-total">${money(pr.collected)} / ${money(pr.target)}</span></div><div class="overview-row-meta">Сумма на человека: ${money(required)}</div><div class="overview-collection-people">${rows}</div><div class="overview-collection-foot">${foot}</div></article>`;
     }).join(''):'<div class="empty"><strong>Взносов по задачам пока нет</strong>Когда вы укажете сумму, внесённую родителем, здесь появятся взносы, остатки и переплаты.</div>';
     const latest=state.transactions.slice().sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,5);
@@ -1157,7 +1170,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     form.addEventListener('submit',e=>{e.preventDefault();const amount=Number($('qcAmount').value);if(!Number.isFinite(amount)||amount<=0){showToast('Укажите сумму больше нуля',true);return;}
       const par=getParent($('qcParent').value);
       const task=qcTask&&state.tasks.find(t=>t.id===qcTask);
-      if(task&&par){task.statuses=task.statuses||{};task.statuses[par.id]=taskRawPaid(task,par.id)+amount;const total=taskPaidAmount(task,par.id);closeModal();markChanged('Взнос по задаче внесён');showToast(`${par.name}: по задаче «${task.title}» внесено ${money(total)} из ${money(task.amountPerPerson)}`);return;}
+      if(task&&par){task.statuses=task.statuses||{};task.statuses[par.id]=taskRawPaid(task,par.id)+amount;const total=taskPaidAmount(task,par.id);closeModal();markChanged('Взнос по задаче внесён');showToast(`${par.name}: по задаче «${task.title}» внесено ${money(total)} из ${money(taskRequired(task,par.id))}`);return;}
       state.transactions.push({id:makeId(),date:currentDateForMonth(currentMonth()),type:'income',amount,description:$('qcDesc').value.trim()||'Взнос',parentId:par?.id||'',createdAt:new Date().toISOString()});
       closeModal();markChanged('Взнос внесён');showToast(`Внесено ${money(amount)} · ${par?.name||''}`);});
     setTimeout(()=>$('qcAmount')?.focus(),120);
@@ -1311,8 +1324,8 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     const task=state.tasks.find(t=>t.id===toggle.dataset.parentTaskToggle), parentId=toggle.dataset.parentId;
     if(!task||!getParent(parentId))return;
     task.statuses=task.statuses||{};
-    const required=Math.max(0,Number(task.amountPerPerson)||0);
-    if(required>0){
+    const required=taskRequired(task,parentId);
+    if(Number(task.amountPerPerson)>0){
       task.statuses[parentId]=toggle.checked?Math.max(taskRawPaid(task,parentId),required-(task.credited?.[parentId]||0)+(task.carried?.[parentId]||0)):0;
     } else task.statuses[parentId]=toggle.checked;
     markChanged(toggle.checked?'Задача отмечена выполненной':'Выполнение задачи отменено');
@@ -1376,7 +1389,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     const tasks=monthTasks();
     if(tasks.length){L.push('','Задачи:');tasks.forEach(t=>{const pr=taskProgress(t),req=Number(t.amountPerPerson)||0;
       const paid=state.parents.reduce((a,p)=>a+taskPaidAmount(t,p.id),0);
-      L.push(`• ${t.title}${t.dueDate?` (до ${short(t.dueDate)})`:''} — выполнено ${pr.done} из ${pr.total}${req>0?`, собрано ${money(paid)} из ${money(req*pr.total)}`:''}`);
+      L.push(`• ${t.title}${t.dueDate?` (до ${short(t.dueDate)})`:''} — выполнено ${pr.done} из ${pr.total}${req>0?`, собрано ${money(paid)} из ${money(pr.target)}`:''}`);
       if(opt.debtors){const nd=taskParticipants(t).filter(p=>!taskParentDone(t,p.id)).map(p=>p.name);if(nd.length&&nd.length<pr.total)L.push(`   ещё не сдали/не выполнили: ${nd.join(', ')}`);}});}
     L.push('','Спасибо всем за участие! 💛');return L.join('\n');
   }
@@ -1511,7 +1524,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
 
   /* ===== Долги прошлых месяцев ===== */
   function cleanMoneyMap(o){const r={};if(o&&typeof o==='object')Object.entries(o).forEach(([k,v])=>{const n=Number(v);if(typeof k==='string'&&Number.isFinite(n)&&n>0)r[k]=Math.round(n*100)/100;});return r;}
-  function taskOwed(task,pid){const a=Math.max(0,Number(task.amountPerPerson)||0);return a>0?Math.max(0,a-taskPaidAmount(task,pid)):0;}
+  function taskOwed(task,pid){const a=taskRequired(task,pid);return a>0?Math.max(0,a-taskPaidAmount(task,pid)):0;}
   function pastDebtTasksForParent(pid,month=currentMonth()){return state.tasks.filter(t=>t.month<month&&!taskExcluded(t,pid)&&!taskParentDone(t,pid)).sort((a,b)=>a.month.localeCompare(b.month)||(a.dueDate||'').localeCompare(b.dueDate||''));}
   function pastDebts(month=currentMonth()){
     return state.tasks.filter(t=>t.month<month).map(t=>({task:t,debtors:taskParticipants(t).filter(p=>!taskParentDone(t,p.id)).map(p=>({p,owed:taskOwed(t,p.id)}))}))
@@ -1549,7 +1562,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   }
   function cloneTaskTo(src,month,keepRepeat){
     const statuses={}; state.parents.forEach(p=>statuses[p.id]=false);
-    const nt={id:makeId(),month,title:retitle(src.title,month),description:src.description,dueDate:shiftDue(src.dueDate,src.month,month),amountPerPerson:src.amountPerPerson,statuses,excluded:(src.excluded||[]).filter(id=>getParent(id)),repeat:!!keepRepeat,series:'',carried:{},credited:{},createdAt:new Date().toISOString()};
+    const nt={id:makeId(),month,title:retitle(src.title,month),description:src.description,dueDate:shiftDue(src.dueDate,src.month,month),amountPerPerson:src.amountPerPerson,customAmounts:{...(src.customAmounts||{})},statuses,excluded:(src.excluded||[]).filter(id=>getParent(id)),repeat:!!keepRepeat,series:'',carried:{},credited:{},createdAt:new Date().toISOString()};
     nt.series=keepRepeat?(src.series||src.id):nt.id;
     applyCredits(nt);
     return nt;
@@ -1582,7 +1595,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   function applyCredits(task){
     const amount=Math.max(0,Number(task.amountPerPerson)||0); if(!amount||!state.credits) return 0;
     let used=0; task.credited=task.credited||{};
-    taskParticipants(task).forEach(p=>{const c=state.credits[p.id]||0;if(c<=0)return;const y=Math.min(c,Math.max(0,amount-taskPaidAmount(task,p.id)));if(y<=0)return;
+    taskParticipants(task).forEach(p=>{const c=state.credits[p.id]||0;if(c<=0)return;const y=Math.min(c,Math.max(0,taskRequired(task,p.id)-taskPaidAmount(task,p.id)));if(y<=0)return;
       task.credited[p.id]=(task.credited[p.id]||0)+y; state.credits[p.id]=Math.round((c-y)*100)/100; if(state.credits[p.id]<=0) delete state.credits[p.id]; used+=y;});
     if(used>0) setTimeout(()=>showToast(`В «${task.title}» зачтены авансы: ${money(used)}`),400);
     return used;
@@ -1592,7 +1605,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
     Object.entries(task.credited||{}).forEach(([pid,v])=>{if(v>0&&getParent(pid))state.credits[pid]=(state.credits[pid]||0)+v;});
   }
   function doCarry(src,pid,target){
-    const over=Math.round((taskPaidAmount(src,pid)-Number(src.amountPerPerson))*100)/100; if(over<=0) return;
+    const over=Math.round((taskPaidAmount(src,pid)-taskRequired(src,pid))*100)/100; if(over<=0) return;
     src.carried=src.carried||{}; state.credits=state.credits||{};
     let moved=0;
     if(target){const y=Math.min(over,taskOwed(target,pid)); if(y>0){target.credited=target.credited||{};target.credited[pid]=(target.credited[pid]||0)+y;moved=y;}}
@@ -1605,7 +1618,7 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   }
   function openCarry(taskId,pid){
     const src=state.tasks.find(t=>t.id===taskId), par=getParent(pid); if(!src||!par) return;
-    const over=Math.round((taskPaidAmount(src,pid)-Number(src.amountPerPerson))*100)/100; if(over<=0) return;
+    const over=Math.round((taskPaidAmount(src,pid)-taskRequired(src,pid))*100)/100; if(over<=0) return;
     const cands=state.tasks.filter(t=>t.id!==src.id&&Number(t.amountPerPerson)>0&&!taskExcluded(t,pid)&&!taskParentDone(t,pid))
       .sort((a,b)=>a.month.localeCompare(b.month)||(a.dueDate||'9999').localeCompare(b.dueDate||'9999'));
     openModal('Зачесть переплату',`<p style="margin:0 0 4px">Переплата <b>${money(over)}</b> — ${esc(par.name)}, задача «${esc(src.title)}».</p><p class="muted small-text" style="margin:0">Деньги остаются в кассе, просто засчитываются в другой сбор вместо нового взноса.</p>
@@ -1619,6 +1632,28 @@ html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;
   const _renderAllDebts=renderAll;
   renderAll=function(){ if(ensureRecurring()>0){persist('Созданы задачи на новый месяц');} _renderAllDebts(); renderDebts(); };
   renderAll();
+
+
+  /* ===== Индивидуальная сумма в задаче ===== */
+  function cleanAmountMap(o){const r={};if(o&&typeof o==='object')Object.entries(o).forEach(([k,v])=>{const n=Number(v);if(typeof k==='string'&&v!==''&&v!==null&&Number.isFinite(n)&&n>=0)r[k]=Math.round(n*100)/100;});return r;}
+  function openCustomAmount(taskId,pid){
+    const t=state.tasks.find(x=>x.id===taskId), par=getParent(pid); if(!t||!par||!(Number(t.amountPerPerson)>0)) return;
+    const base=Number(t.amountPerPerson), cur=taskRequired(t,pid), paid=taskPaidAmount(t,pid);
+    const chips=[...new Set([base,Math.round(base/2*100)/100,0])].map(v=>`<button type="button" class="btn" data-amt="${v}">${v===0?'0 — ничего не должен':v===base?`Общая ${money(v)}`:money(v)}</button>`).join('');
+    openModal('Индивидуальная сумма',`<form id="customAmtForm"><div class="amt-info"><span>Кто</span><b>${esc(par.name)}</b><span>Задача</span><b>${esc(t.title)}</b><span>Общая сумма на человека</span><b>${money(base)}</b><span>Уже внесено</span><b>${money(paid)}</b></div>
+      <div class="field"><label for="customAmt">Сумма для этого человека, ₴</label><input id="customAmt" type="number" min="0" step="0.01" inputmode="decimal" required value="${esc(cur)}"><div class="amt-chips">${chips}</div><div class="hint">Остальные участники продолжат сдавать по ${money(base)}. План сбора пересчитается.</div></div>
+      <div class="form-actions"><button type="button" class="btn" data-modal-cancel>Отмена</button>${taskHasCustom(t,pid)?'<button type="button" class="btn" data-amt-reset>Вернуть общую</button>':''}<button type="submit" class="btn primary">Сохранить</button></div></form>`);
+    const form=$('customAmtForm');
+    form.addEventListener('click',e=>{const b=e.target.closest('[data-amt]');if(b){$('customAmt').value=b.dataset.amt;}if(e.target.closest('[data-amt-reset]'))save(base);});
+    form.addEventListener('submit',e=>{e.preventDefault();const v=Number($('customAmt').value);if(!Number.isFinite(v)||v<0){showToast('Укажите сумму от нуля',true);return;}save(v);});
+    function save(v){
+      v=Math.round(v*100)/100; t.customAmounts=t.customAmounts||{};
+      if(v===base) delete t.customAmounts[pid]; else t.customAmounts[pid]=v;
+      closeModal(); markChanged('Сумма для человека изменена');
+      showToast(v===base?`${par.name}: снова общая сумма ${money(base)}`:`${par.name}: в «${t.title}» теперь ${money(v)} вместо ${money(base)}`);
+    }
+  }
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-set-amount]');if(b){e.preventDefault();openCustomAmount(b.dataset.setAmount,b.dataset.parentId);}});
 
   /* ===== Калькулятор и раздел сбора ===== */
   const calc={expr:'',history:[],tab:'calc',split:{title:'',total:'',fromCash:'',families:'',round:10}};
