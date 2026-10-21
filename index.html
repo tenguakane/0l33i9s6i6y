@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="auto"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="rgb(251, 246, 238)">
+<script>try{var t=localStorage.getItem("committeeThemeV1");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<title>Родительский комитет</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--bg:#0f1117;--panel:#171a22;--panel2:#1d212b;--line:#2a2f3b;--text:#e8eaf1;--muted:#8e95a8;--accent:#7aa2f7;--accent2:#bb9af7;--accent-bg:#202a43;--green:#9ece6a;--red:#f7768e;--yellow:#e0af68;--ctrl:#11141b;--radius:15px;--shadow:0 12px 30px -20px #000;--hover:#1e2331;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(1100px 560px at 8% -12%,#1a2444 0%,transparent 62%),radial-gradient(900px 520px at 108% -6%,#2b1d40 0%,transparent 58%),var(--bg);background-attachment:fixed;color:var(--text);font:15px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{position:sticky;top:0;z-index:30;background:rgba(15,17,23,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #ffffff0b}
+.header-inner,main{width:min(1500px,100%);margin:0 auto}.header-inner{padding:17px 24px 0}.topline{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px;min-width:200px}.brand-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#11141b;font-size:22px;box-shadow:0 5px 22px #7aa2f733}.brand h1{font-size:22px;line-height:1.2;margin:0;letter-spacing:-.03em}.brand p{font-size:12.5px;color:var(--muted);margin:4px 0 0}.header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 13px;min-height:38px;border:1px solid var(--line);border-radius:9px;background:var(--ctrl);color:var(--text);transition:background .15s,border-color .15s,transform .15s}.btn:hover{border-color:var(--accent);background:var(--accent-bg)}.btn.primary{border-color:#7aa2f766;background:var(--accent-bg);color:#c9d7ff}.btn.danger:hover{border-color:var(--red);background:#f7768e16}.btn.small{padding:5px 9px;min-height:30px;font-size:13px}.btn.icon{width:34px;padding:0}.save-note{font-size:12px;color:var(--muted);margin:11px 0 0;min-height:18px}.save-note strong{color:var(--green);font-weight:500}
+.monthbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:14px 0 12px;padding:11px 13px;background:linear-gradient(115deg,#1d2435,#191b26);border:1px solid #ffffff0e;border-radius:12px}.month-controls{display:flex;align-items:center;gap:8px}.month-controls .btn{width:36px;padding:0}#currentMonth{width:auto;padding:0 10px}.month-controls input{min-width:175px;font-weight:600;color:var(--text);font-size:15px}.month-caption{font-size:13px;color:var(--muted)}
+input,select,textarea{width:100%;min-width:0;background:var(--ctrl);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:9px 11px}input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent);cursor:pointer}input[type=date],input[type=month]{color-scheme:dark}textarea{resize:vertical;min-height:88px;line-height:1.45}label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}.field{min-width:0}.field .hint{font-size:12px;color:var(--muted);margin-top:5px}
+nav{display:flex;align-items:center;gap:7px;padding:0 0 12px;overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav button{white-space:nowrap;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);padding:8px 15px;transition:all .15s}nav button:hover{background:#ffffff09;color:var(--text)}nav button.active{color:var(--accent);background:var(--accent-bg);border-color:#7aa2f755}
+main{padding:22px 24px 54px}.tab{display:none}.tab.active{display:block;animation:fadeIn .22s ease}.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}.page-head h2{font-size:19px;margin:0;letter-spacing:-.02em}.page-head p{margin:4px 0 0;color:var(--muted);font-size:13.5px}.section-title{display:flex;align-items:center;gap:9px;margin:25px 0 11px;font-size:16px}.section-title:before{content:"";display:inline-block;width:4px;height:16px;border-radius:3px;background:linear-gradient(var(--accent),var(--accent2))}.section-title:first-child{margin-top:0}
+.summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 24px}.summary-card{--tile:var(--accent);position:relative;overflow:hidden;min-width:0;padding:16px 17px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(155deg,var(--panel2),var(--panel));box-shadow:var(--shadow)}.summary-card:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--tile),var(--accent2));opacity:.85}.summary-label{font-size:12.5px;color:var(--muted);letter-spacing:.035em}.summary-value{font-size:clamp(22px,2.3vw,30px);line-height:1.25;font-weight:650;letter-spacing:-.035em;margin:6px 0 4px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.summary-sub{font-size:12px;color:var(--muted)}.summary-card.money{--tile:var(--green)}.summary-card.spent{--tile:var(--red)}.summary-card.tasks{--tile:var(--accent2)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.panel{min-width:0;padding:16px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(155deg,var(--panel2),var(--panel));box-shadow:var(--shadow)}.panel h3{font-size:15px;margin:0 0 7px}.muted{color:var(--muted)}.small-text{font-size:12.5px}.parent-card{display:flex;flex-direction:column;gap:13px}.person-head{display:flex;gap:11px;align-items:center;min-width:0}.avatar{flex:0 0 42px;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#dbe5ff;background:linear-gradient(145deg,#2c3c60,#29213f);border:1px solid #7aa2f733;font-size:19px}.person-name{font-size:15px;font-weight:650;overflow-wrap:anywhere}.person-sub{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}.person-main{min-width:0;flex:1}.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mini-stat{padding:10px 11px;border:1px solid #ffffff0b;border-radius:10px;background:#080a101f;min-width:0}.mini-stat span{display:block;font-size:11.5px;color:var(--muted)}.mini-stat b{display:block;font-size:17px;font-weight:650;margin-top:2px;overflow-wrap:anywhere}.pending{border-top:1px solid var(--line);padding-top:10px}.pending-title{font-size:12px;color:var(--muted);margin-bottom:7px}.pending ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin:0;padding:0;font-size:12.5px}.pending li{min-width:0;padding:8px 10px;border:1px solid #f7768e2b;border-left:3px solid var(--red);border-radius:8px;background:#f7768e08;color:var(--text);overflow-wrap:anywhere}.pending-task-name{font-size:12.5px;color:#f0c6cd;line-height:1.35}.pending-task-meta{font-size:11.5px;color:var(--muted);margin-top:4px;white-space:pre-wrap;overflow-wrap:anywhere}.all-done{font-size:12.5px;color:var(--green)}.card-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto}.pill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:11.5px;color:var(--muted);white-space:nowrap}.pill.good{color:var(--green);border-color:#9ece6a44;background:#9ece6a0c}.pill.warn{color:var(--yellow);border-color:#e0af6844;background:#e0af680d}.pill.bad{color:var(--red);border-color:#f7768e44;background:#f7768e0d}
+.kid-card{display:flex;flex-direction:column;gap:13px}.kid-date{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.birthday-count{font-size:13px;border-radius:999px;padding:4px 9px;background:#7aa2f719;color:#c7d5ff;border:1px solid #7aa2f744}.birthday-count.today{background:#e0af6818;color:#ffe0a2;border-color:#e0af6866}.gift-box{padding:11px 12px;background:#ffffff05;border:1px solid #ffffff0b;border-radius:10px;min-height:63px}.gift-box h4{font-size:11.5px;font-weight:500;letter-spacing:.04em;color:var(--muted);margin:0 0 4px;text-transform:uppercase}.gift-box p{font-size:13px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.kid-card .card-actions{justify-content:flex-end}
+.empty{border:1px dashed var(--line);padding:24px 18px;border-radius:var(--radius);text-align:center;color:var(--muted);background:#ffffff03}.empty strong{display:block;color:var(--text);font-weight:550;margin-bottom:4px}.form-panel{margin:0 0 14px}.form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.form-grid .span-2{grid-column:span 2}.form-grid .span-all{grid-column:1/-1}.form-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:13px}.task-list{display:flex;flex-direction:column;gap:12px}.task-card{border:1px solid var(--line);background:linear-gradient(155deg,var(--panel2),var(--panel));border-radius:var(--radius);padding:15px 16px;box-shadow:var(--shadow);min-width:0}.task-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.task-title{font-size:15.5px;font-weight:650;margin:0 0 4px;overflow-wrap:anywhere}.task-description{font-size:13px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}.task-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.task-progress{margin:14px 0 9px;height:5px;background:#ffffff0c;border-radius:99px;overflow:hidden}.task-progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .2s}.task-people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.task-person{display:flex;align-items:flex-start;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;background:#080a101a;min-width:0;cursor:pointer}.task-person:has(input:checked){background:#9ece6a0c;border-color:#9ece6a55}.task-person input{flex:0 0 auto;margin:2px 0 0}.task-person span{font-size:12px;min-width:0;overflow-wrap:anywhere}.task-person small{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}.task-person.completed span{color:#c9e9ae}.table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}table{border-collapse:collapse;width:100%;min-width:650px;font-variant-numeric:tabular-nums}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#1b1f29;font-weight:500;font-size:12px;color:var(--muted);white-space:nowrap}tbody tr:hover{background:var(--hover)}tbody tr:last-child td{border-bottom:0}.amount{white-space:nowrap;font-variant-numeric:tabular-nums}.amount.income{color:var(--green)}.amount.expense{color:var(--red)}.td-main{font-size:13.5px}.td-sub{font-size:11.5px;color:var(--muted);margin-top:3px;white-space:pre-wrap;overflow-wrap:anywhere}.empty-cell{text-align:center;color:var(--muted);padding:24px}
+.data-top-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px}.data-split{display:grid;grid-template-columns:1fr 1fr;gap:10px}.balance-adjust{margin-top:15px;padding-top:13px;border-top:1px solid var(--line)}.balance-adjust h3{margin:0 0 5px;font-size:14px}.balance-adjust p{margin:0 0 10px;color:var(--muted);font-size:12.5px}.balance-adjust-form{display:flex;gap:9px;align-items:flex-end}.balance-adjust-form .field{flex:1;min-width:0}.balance-adjust-form button{flex:0 0 auto}.note-box{border:1px solid #7aa2f733;background:#7aa2f70a;border-radius:10px;padding:12px 13px;color:var(--muted);font-size:12.5px;margin-top:12px}.note-box strong{color:var(--text);font-weight:550}.month-empty{display:none}.month-empty.show{display:block}
+.modal-backdrop{position:fixed;inset:0;z-index:100;background:#05060bcc;display:none;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(6px)}.modal-backdrop.open{display:flex}.modal{width:min(560px,100%);max-height:min(88vh,850px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 25px 90px #000b;padding:19px}.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.modal-head h2{font-size:18px;margin:0}.modal .form-grid{grid-template-columns:1fr 1fr}.modal .form-grid .span-all{grid-column:1/-1}.toast{position:fixed;right:18px;bottom:18px;z-index:120;max-width:min(400px,calc(100vw - 36px));padding:12px 15px;background:#202a31;border:1px solid #9ece6a55;border-radius:11px;box-shadow:0 12px 35px #0008;color:var(--text);opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s,transform .2s}.toast.show{opacity:1;transform:translateY(0)}.toast.error{border-color:#f7768e77;background:#321d27}.footer-note{margin:25px 0 0;color:var(--muted);font-size:12px;text-align:center}
+@keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1100px){.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.task-people{grid-template-columns:repeat(2,minmax(0,1fr))}.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.data-top-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.balance-adjust-form{align-items:stretch}.balance-adjust-form button{white-space:normal}.header-inner{padding:13px 13px 0}.brand h1{font-size:19px}.brand-mark{width:38px;height:38px}.header-actions{gap:6px}.header-actions .btn{padding:7px 10px;min-height:34px;font-size:13px}.save-note{margin-top:7px;font-size:11.5px}.monthbar{padding:9px 10px;margin:10px 0 10px}.month-controls{width:100%}.month-controls input{flex:1;min-width:0}.month-caption{width:100%;font-size:12px}.month-controls .btn{height:35px}nav{position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(22,25,34,.97);backdrop-filter:blur(16px);padding:7px 5px calc(7px + env(safe-area-inset-bottom));border-top:1px solid var(--line);justify-content:space-around;gap:2px}nav button{padding:8px 3px;font-size:11px;flex:1;min-width:0;letter-spacing:-.025em}main{padding:16px 13px calc(82px + env(safe-area-inset-bottom))}.summary-grid{gap:8px;margin-bottom:20px}.summary-card{padding:13px}.summary-value{font-size:24px}.grid{grid-template-columns:1fr;gap:10px}.panel{padding:14px}.form-grid{grid-template-columns:1fr 1fr;gap:10px}.form-grid .span-2{grid-column:span 2}.task-people{grid-template-columns:repeat(2,minmax(0,1fr))}.task-head{gap:8px}.data-split{grid-template-columns:1fr}.section-title{margin-top:21px}.toast{bottom:calc(80px + env(safe-area-inset-bottom))}}
+@media(max-width:390px){.brand{min-width:0}.brand p{display:none}.header-actions{width:100%}.header-actions .btn{flex:1}.summary-card{padding:11px}.summary-value{font-size:21px}.form-grid,.modal .form-grid{grid-template-columns:1fr}.form-grid .span-2,.form-grid .span-all,.modal .form-grid .span-all{grid-column:auto}.task-people{grid-template-columns:1fr}.person-name{font-size:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Просмотр одной семьи на вкладке «Родители» */
+.parent-selector{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:14px;padding:13px 15px}
+.parent-select-field{flex:1;max-width:560px}
+.parent-selector .pill{margin-bottom:7px}
+#parentsGrid{display:block}
+.parent-detail{display:flex;flex-direction:column;gap:16px}
+.parent-detail-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.parent-detail-head .card-actions{margin-top:0}
+.parent-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.parent-detail-columns{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:13px;align-items:start}
+.parent-detail-section{min-width:0;border:1px solid var(--line);border-radius:12px;padding:13px;background:#080a1017}
+.parent-detail-section h3{font-size:14px;margin:0 0 9px}
+.parent-detail-section h3:not(:first-child){margin-top:17px}
+.parent-section-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}
+.parent-section-head h3{margin:0}
+.parent-task-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin:0;padding:0}
+.parent-task-list li{min-width:0;padding:9px 10px;border:1px solid #f7768e2b;border-left:3px solid var(--red);border-radius:9px;background:#f7768e08;overflow-wrap:anywhere}
+.parent-task-list li.done-task{border-color:#9ece6a33;border-left-color:var(--green);background:#9ece6a08}
+.parent-task-name{font-size:13px;color:var(--text);line-height:1.35}
+.parent-task-meta{font-size:11.5px;color:var(--muted);margin-top:4px;white-space:pre-wrap;overflow-wrap:anywhere}
+.parent-completed-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin:0;padding:0}
+.parent-completed-list li{font-size:12.5px;color:#c9e9ae;overflow-wrap:anywhere}
+.child-info-box{padding:10px 11px;border:1px solid #ffffff0b;border-radius:10px;background:#ffffff04}
+.child-info-row{font-size:12.5px;margin:0 0 7px;overflow-wrap:anywhere}
+.child-info-row:last-child{margin-bottom:0}
+.child-info-row span{color:var(--muted)}
+.parent-tx-list{display:flex;flex-direction:column}
+.parent-tx-item{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.parent-tx-item:first-child{padding-top:0}
+.parent-tx-item:last-child{border-bottom:0;padding-bottom:0}
+.parent-tx-main{min-width:0;flex:1}
+.parent-tx-title{font-size:12.5px;overflow-wrap:anywhere}
+.parent-tx-meta{font-size:11.5px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
+.parent-tx-amount{font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:1000px){.parent-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.parent-detail-columns{grid-template-columns:1fr}}
+@media(max-width:700px){.parent-selector{align-items:stretch;flex-direction:column;gap:8px}.parent-select-field{max-width:none}.parent-selector .pill{align-self:flex-start;margin-bottom:0}.parent-detail-head{align-items:flex-start;flex-direction:column}.parent-detail-head .card-actions{margin-top:0}}
+
+
+/* Mobile-first refinements: larger touch targets, readable layouts and no forced wide tables. */
+.nav-icon{font-size:14px;line-height:1}
+.nav-label{line-height:1.15}
+@media(max-width:700px){
+  html,body{max-width:100%;overflow-x:clip}
+  header{position:relative;top:auto;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .header-inner{padding:11px 12px 0}
+  .topline{align-items:center;gap:9px}
+  .brand{min-width:0;flex:1;gap:9px}
+  .brand-mark{flex:0 0 36px;width:36px;height:36px;font-size:19px;border-radius:11px}
+  .brand h1{font-size:18px;line-height:1.15}
+  .brand p{display:block;font-size:11px;line-height:1.25}
+  .header-actions{width:auto;flex:0 0 auto}
+  .header-actions .btn{min-height:44px;padding:8px 10px;font-size:12px;white-space:nowrap}
+  .save-note{font-size:11px;line-height:1.35;margin:7px 0 2px;min-height:0}
+  .monthbar{padding:9px;margin:8px 0 10px;gap:7px;border-radius:11px}
+  .month-controls{width:100%;display:grid;grid-template-columns:40px minmax(0,1fr) 40px 78px;gap:6px}
+  .month-controls .btn{width:auto;min-width:0;min-height:44px;height:44px;padding:0}
+  .month-controls input{width:100%;min-width:0;height:44px;padding:0 7px;font-size:14px}
+  #currentMonth{width:auto;min-width:0;padding:0 5px;font-size:12px}
+  .month-caption{width:100%;font-size:11.5px;line-height:1.3}
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;align-items:stretch;justify-content:space-between;gap:2px;overflow:hidden;padding:5px 3px calc(5px + env(safe-area-inset-bottom));background:rgba(22,25,34,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+  nav button{display:flex;flex:1 1 0;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;min-height:50px;height:auto;padding:5px 1px;border-radius:10px;font-size:10.5px;letter-spacing:-.035em;line-height:1.1;white-space:nowrap;overflow:hidden}
+  nav button .nav-icon{font-size:14px}
+  nav button .nav-label{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;font-size:10px}
+  main{padding:14px 12px calc(94px + env(safe-area-inset-bottom));touch-action:pan-y;overflow-x:clip}
+  .tab{min-width:0}
+  .page-head{gap:8px;margin-bottom:13px}
+  .page-head h2{font-size:18px}
+  .page-head p{font-size:12.5px;line-height:1.4}
+  .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:16px}
+  .summary-card{padding:12px;border-radius:12px}
+  .summary-label{font-size:10.5px;line-height:1.3;letter-spacing:0}
+  .summary-value{font-size:clamp(20px,6vw,25px);margin:5px 0 3px}
+  .summary-sub{font-size:10.5px;line-height:1.3}
+  .grid{grid-template-columns:minmax(0,1fr);gap:10px}
+  .panel,.task-card{padding:13px;border-radius:13px}
+  .form-grid{grid-template-columns:minmax(0,1fr);gap:11px}
+  .form-grid .span-2,.form-grid .span-all{grid-column:1/-1}
+  #transactionForm .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #transactionForm .form-grid .span-all{grid-column:1/-1}
+  input,select,textarea{min-height:44px;padding:10px 11px;font-size:16px}
+  textarea{min-height:100px}
+  input[type=checkbox]{min-height:20px;width:20px;height:20px}
+  .btn{min-height:44px;padding:9px 12px}
+  .btn.small{min-height:40px;padding:7px 10px;font-size:12.5px}
+  .btn.icon{min-height:42px;width:42px}
+  .form-actions{gap:8px}
+  .form-actions .btn{flex:1 1 auto}
+  .balance-adjust-form{display:flex;flex-direction:column;align-items:stretch;gap:9px}
+  .balance-adjust-form button{width:100%;min-height:44px}
+  .data-split{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .mini-stat{padding:9px}
+  .mini-stat span{font-size:11px;line-height:1.3}
+  .mini-stat b{font-size:15px;overflow-wrap:anywhere}
+  .task-people{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px}
+  .task-person{min-height:46px;align-items:center;padding:8px;gap:7px}
+  .task-person span{font-size:11.5px;line-height:1.25}
+  .task-person small{font-size:10px}
+  .task-head{gap:8px}
+  .task-head .card-actions .btn{min-width:38px;padding:6px 8px}
+  .parent-selector{padding:12px;gap:8px}
+  .parent-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .parent-detail-columns{grid-template-columns:minmax(0,1fr);gap:10px}
+  .parent-detail-section{padding:11px}
+  .parent-detail-head .card-actions{width:100%}
+  .parent-detail-head .card-actions .btn{flex:1}
+  .parent-tx-item{gap:8px}
+  .parent-tx-amount{font-size:12.5px}
+  .section-title{font-size:15px;margin:20px 0 10px}
+  .table-wrap{width:100%;overflow:visible;border:0;border-radius:0;background:transparent}
+  .table-wrap table{display:block;width:100%;min-width:0;border-collapse:separate;border-spacing:0}
+  .table-wrap thead{display:none}
+  .table-wrap tbody{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+  .table-wrap tbody tr{display:block;min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(155deg,var(--panel2),var(--panel));box-shadow:var(--shadow);overflow:hidden}
+  .table-wrap tbody tr:hover{background:linear-gradient(155deg,var(--panel2),var(--panel))}
+  .table-wrap tbody td{display:grid;grid-template-columns:minmax(82px,.72fr) minmax(0,1.28fr);align-items:start;gap:9px;width:100%;min-width:0;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;overflow-wrap:anywhere}
+  .table-wrap tbody td::before{content:attr(data-label);color:var(--muted);font-size:11.5px;line-height:1.35}
+  .table-wrap tbody td:last-child{border-bottom:0}
+  .table-wrap tbody td.empty-cell{display:block;text-align:center;border:0;padding:15px 6px}
+  .table-wrap tbody td.empty-cell::before{content:none}
+  .table-wrap .mobile-row-actions{flex-wrap:wrap;gap:6px}
+  .table-wrap .mobile-row-actions .btn{flex:1 1 auto}
+  .toast{left:12px;right:12px;bottom:calc(68px + env(safe-area-inset-bottom));max-width:none}
+  .footer-note{font-size:11.5px;line-height:1.4;margin-top:20px}
+}
+@media(max-width:390px){
+  .month-controls{grid-template-columns:36px minmax(0,1fr) 36px 70px;gap:5px}
+  .month-controls input{font-size:14px}
+  .header-inner{padding-left:10px;padding-right:10px}
+  .brand h1{font-size:16px}
+  .brand p{font-size:10px}
+  .brand-mark{width:33px;height:33px;flex-basis:33px}
+  .header-actions .btn{padding:7px 8px;font-size:11.5px}
+  main{padding-left:10px;padding-right:10px}
+  .summary-card{padding:10px}
+  .task-people{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .task-person{padding:7px 6px;gap:5px}
+  .task-person span{font-size:10.5px}
+  #transactionForm .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #transactionForm .form-grid .span-all{grid-column:1/-1}
+  .table-wrap tbody td{grid-template-columns:minmax(72px,.68fr) minmax(0,1.32fr);gap:7px}
+  .table-wrap .mobile-row-actions .btn{padding:6px 7px;font-size:11.5px}
+}
+@media(max-width:350px){
+  #transactionForm .form-grid{grid-template-columns:minmax(0,1fr)}
+  #transactionForm .form-grid .span-all{grid-column:1/-1}
+  .month-controls input{padding:0 4px;font-size:13px}
+}
+
+
+/* Главный экран со сводкой */
+.overview-page-head{align-items:center}
+.overview-actions{display:flex;gap:8px;flex-wrap:wrap}
+.overview-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:12px;align-items:start}
+.overview-column{display:flex;flex-direction:column;gap:12px;min-width:0}
+.overview-panel{min-width:0}
+.overview-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.overview-panel-head h3{margin:0;font-size:15px}
+.text-action{border:0;background:transparent;color:var(--accent);font:inherit;font-size:12px;white-space:nowrap;padding:5px 0}
+.text-action:hover{text-decoration:underline}
+.overview-list{display:flex;flex-direction:column;gap:8px;min-width:0}
+
+/* Взносы, внесённые непосредственно в задачах, отдельно от записей финансового журнала. */
+.overview-collection-card{border:1px solid var(--line);border-radius:10px;background:#080a101f;padding:10px 11px;min-width:0}
+.overview-collection-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.overview-collection-head .overview-row-title{min-width:0;flex:1}
+.overview-collection-total{font-size:11.5px;color:var(--green);white-space:nowrap;font-variant-numeric:tabular-nums}
+.overview-collection-people{display:flex;flex-direction:column;gap:5px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.overview-collection-person{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;font-size:11.5px;min-width:0}
+.overview-collection-person-name{color:var(--muted);min-width:0;overflow-wrap:anywhere}
+.overview-collection-person-value{text-align:right;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.overview-collection-person-value.overpaid{color:var(--yellow)}
+.overview-collection-foot{font-size:11px;color:var(--muted);margin-top:7px;overflow-wrap:anywhere}
+@media(max-width:700px){.overview-collection-card{padding:9px}.overview-collection-person{font-size:11px}}
+.overview-row,.overview-item{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-width:0;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:#080a101f;color:var(--text);text-align:left}
+.overview-item{width:100%;font:inherit;cursor:pointer;transition:border-color .15s,background .15s}
+.overview-item:hover{border-color:#7aa2f766;background:var(--accent-bg)}
+.overview-row-main{min-width:0;flex:1}
+.overview-row-title{font-size:13px;font-weight:600;line-height:1.35;overflow-wrap:anywhere}
+.overview-row-meta{font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:4px;overflow-wrap:anywhere}
+.overview-row-side{font-size:12px;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
+.overview-recent-panel .overview-list{display:flex;flex-direction:column}
+.overview-item .overview-chevron{align-self:center;color:var(--muted);font-size:17px;flex:0 0 auto}
+.task-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:-2px 0 12px}
+.hide-completed-control{display:inline-flex;align-items:center;gap:8px;margin:0;padding:9px 11px;min-height:40px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font-size:13px;cursor:pointer;user-select:none}
+.hide-completed-control input{flex:0 0 17px;margin:0}
+.task-title-toggle{display:flex;align-items:flex-start;gap:8px;width:100%;padding:0;border:0;background:transparent;color:var(--text);text-align:left;font:inherit;cursor:pointer}
+.task-title-toggle .task-title{flex:1;min-width:0}
+.task-toggle-indicator{flex:0 0 auto;color:var(--muted);font-size:17px;line-height:1.1;padding:1px 3px;transition:transform .15s}
+.task-card.collapsed .task-toggle-indicator{transform:rotate(-90deg)}
+.task-card.collapsed .task-description,.task-card.collapsed .task-progress,.task-card.collapsed .task-people{display:none}
+.task-card.collapsed{padding-top:12px;padding-bottom:12px}
+.task-card.collapsed .task-meta{margin-top:5px}
+.task-person.amount-person{display:flex;flex-direction:column;align-items:stretch;gap:7px;cursor:default}
+.task-person.amount-person.completed{background:#9ece6a0c;border-color:#9ece6a55}
+.task-person-top{display:flex;align-items:flex-start;justify-content:space-between;gap:5px;min-width:0}
+.task-person-name{font-size:12px;font-weight:600;line-height:1.25;overflow-wrap:anywhere;min-width:0}
+.task-person-top .pill{font-size:10px;padding:2px 6px;white-space:normal;flex:0 0 auto}
+.task-amount-label{display:block;margin:0;font-size:10.5px;color:var(--muted)}
+.task-person input.task-amount-input{display:block;width:100%;min-width:0;height:36px;min-height:36px;padding:5px 7px;margin:4px 0 0;font-size:14px;font-variant-numeric:tabular-nums}
+.task-person .task-amount-note{font-size:10.5px;color:var(--muted);line-height:1.25;overflow-wrap:anywhere}
+@media(max-width:900px){.overview-grid{grid-template-columns:minmax(0,1fr)}.overview-column{gap:10px}}
+@media(min-width:701px){nav button{display:inline-flex;align-items:center;gap:8px}}
+@media(max-width:700px){
+  .overview-page-head{align-items:stretch}
+  .overview-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}
+  .overview-actions .btn{min-width:0;white-space:normal;line-height:1.25;padding:9px 8px}
+  .overview-grid{display:flex;flex-direction:column;gap:10px}
+  .overview-column{display:contents}
+  #overviewTasksPanel{order:1}
+  #overviewBirthdaysPanel{order:2}
+  #overviewCollectionsPanel{order:3}
+  #overviewTransactionsPanel{order:4}
+  .overview-recent-panel .overview-list{display:flex;flex-direction:column}
+  .overview-row,.overview-item{padding:9px}
+  .overview-row-title{font-size:12.5px}
+  .task-toolbar{align-items:stretch}
+  .hide-completed-control{min-height:44px;flex:1}
+  .task-people{grid-template-columns:repeat(2,minmax(0,1fr))}
+  nav button{gap:4px}
+  nav button .nav-label{font-size:9.4px;letter-spacing:-.045em}
+}
+@media(max-width:390px){
+  .overview-actions{grid-template-columns:1fr}
+  .overview-row,.overview-item{gap:7px}
+  .task-people{grid-template-columns:minmax(0,1fr)}
+}
+
+
+/* Mobile form sheets, note-taking and navigation refinements */
+[hidden]{display:none!important}
+.page-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mobile-form-trigger{display:none}
+.desktop-form-label{display:block}
+.balance-adjust-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.balance-adjust-head>div{min-width:0;flex:1}
+.balance-adjust-head h3{margin:0 0 5px}
+.balance-adjust-head p{display:none;margin:0;color:var(--muted);font-size:12.5px}
+.desktop-balance-heading{display:none}
+.overview-notes-panel{margin-top:12px}
+.overview-notes-panel textarea{min-height:140px;line-height:1.55;background:#10131b;border-color:#353b49}
+#notesSaveStatus{white-space:normal;text-align:right}
+.modal-backdrop.open{overscroll-behavior:contain}
+.modal{transform:translateY(0)}
+@keyframes drawerRise{from{transform:translateY(28px);opacity:.75}to{transform:translateY(0);opacity:1}}
+@media(max-width:700px){
+  nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));justify-content:stretch;gap:2px;padding:6px 4px calc(6px + env(safe-area-inset-bottom));min-height:calc(62px + env(safe-area-inset-bottom));}
+  nav button{min-width:0;min-height:50px;padding:5px 0;gap:4px;overflow:hidden;}
+  nav button .nav-icon{display:block;font-size:17px;line-height:1.05}
+  nav button .nav-label{display:block;font-size:clamp(8px,2.5vw,10px);letter-spacing:-.03em;line-height:1.15;white-space:nowrap}
+  .mobile-form-trigger{display:inline-flex;min-height:44px;align-items:center;justify-content:center}
+  .desktop-form-label{display:none}
+  #taskFormPanel,#transactionFormPanel,#balanceAdjustPanel{display:none}
+  .modal #taskFormPanel,.modal #transactionFormPanel,.modal #balanceAdjustPanel{display:block!important}
+  .modal-backdrop{align-items:flex-end;justify-content:stretch;padding:0;border-radius:0;backdrop-filter:blur(5px)}
+  .modal-backdrop.open{display:flex}
+  .modal{width:100%;max-width:none;max-height:min(91dvh,900px);overflow-y:auto;overscroll-behavior:contain;border:1px solid var(--line);border-bottom:0;border-radius:22px 22px 0 0;padding:9px 15px calc(17px + env(safe-area-inset-bottom));box-shadow:0 -16px 50px #0009;animation:drawerRise .22s ease-out}
+  .modal:before{content:"";display:block;width:42px;height:4px;border-radius:99px;background:#697185;margin:2px auto 13px}
+  .modal-head{position:sticky;top:-9px;z-index:2;background:var(--panel);padding:8px 0 12px;margin:0 0 12px;border-bottom:1px solid var(--line)}
+  .modal .form-grid{grid-template-columns:1fr;gap:11px}
+  .modal .form-grid .span-2,.modal .form-grid .span-all{grid-column:1/-1}
+  .modal .form-actions{position:sticky;bottom:calc(-17px - env(safe-area-inset-bottom));padding:12px 0 calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,#171a22e8,var(--panel) 20%);margin-top:14px}
+  .modal .form-actions .btn{min-height:46px}
+  .modal #transactionFormPanel,.modal #taskFormPanel{box-shadow:none;border:0;background:transparent;padding:0;margin:0}
+  .modal #transactionFormPanel h3{margin:0 0 13px}
+  .modal .note-box{font-size:12px}
+  .balance-adjust-head{align-items:flex-start}
+  #balanceAdjustPanel .desktop-balance-heading,#balanceAdjustPanel .desktop-balance-description{display:none}
+  #balanceAdjustPanel .balance-adjust-head{margin-bottom:12px}
+  #balanceAdjustPanel .balance-adjust-head p{display:block}
+  .overview-notes-panel{margin-top:10px;padding:13px}
+  .overview-notes-panel textarea{min-height:155px}
+  #notesSaveStatus{font-size:10.5px;padding:3px 6px}
+  .page-head-actions{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:390px){
+  nav{padding-left:2px;padding-right:2px;gap:1px}
+  nav button{border-radius:8px}
+  nav button .nav-label{font-size:8.5px}
+  .modal{padding-left:12px;padding-right:12px}
+}
+@media(prefers-reduced-motion:reduce){.modal{animation:none!important}}
+
+
+/* Parent page: task status can be changed without leaving the selected family. */
+.parent-task-toggle-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-width:0}
+.parent-task-copy{flex:1;min-width:0}
+.parent-task-done-toggle{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;margin:0;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--ctrl);color:var(--muted);font-size:11px;cursor:pointer;white-space:nowrap}
+.parent-task-done-toggle input{width:16px;height:16px;min-height:16px;margin:0;flex:0 0 auto;accent-color:var(--green)}
+.parent-task-done-toggle:has(input:checked){color:var(--green);border-color:#9ece6a44;background:#9ece6a0c}
+.parent-contribution-note{margin:9px 1px 0;font-size:11.5px;color:var(--muted);line-height:1.4}
+@media(max-width:420px){.parent-task-toggle-row{gap:7px}.parent-task-done-toggle{padding:6px;font-size:10.5px}.parent-task-done-toggle span{max-width:58px;white-space:normal;line-height:1.15}}
+
+
+.parent-completed-list li{padding:8px 9px;border:1px solid #9ece6a24;border-radius:9px;background:#9ece6a06}
+.parent-completed-list .parent-task-toggle-row .parent-task-name{color:#c9e9ae}
+
+
+/* Amount entry for collection tasks directly in the parent profile. */
+.parent-task-amount-editor{display:grid;grid-template-columns:minmax(100px,150px) minmax(0,1fr);align-items:center;gap:10px;margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+.parent-task-amount-label{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--muted);min-width:0}
+.parent-task-amount-input{width:100%;min-width:0;height:36px;min-height:36px;padding:5px 8px;font-size:14px;font-variant-numeric:tabular-nums}
+.parent-task-amount-summary{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:12px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.parent-task-amount-summary>span{font-size:11px;color:var(--muted)}
+.parent-task-amount-summary .overpaid{color:var(--yellow)}
+.parent-task-amount-summary .paid-done{color:var(--green)}
+@media(max-width:420px){.parent-task-amount-editor{grid-template-columns:minmax(90px,115px) minmax(0,1fr);gap:8px}.parent-task-amount-input{font-size:16px}}
+
+
+/* ===== РЕДИЗАЙН v2: тёплая светлая тема, мобильный приоритет ===== */
+:root{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;--text:#2b2631;--muted:#7a7285;--accent:#3d958b;--accent2:#e09874;--accent-bg:#e2f4f1;--green:#2e9e6b;--red:#d9455f;--yellow:#c98a12;--ctrl:#fff;--hover:#f6ecdc;--radius:18px;--shadow:0 1px 2px #5a43200d,0 10px 24px -18px #5a43204d;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#171419;--panel:#211d26;--panel2:#211d26;--line:#352f3c;--text:#f2edf5;--muted:#a59dae;--accent:#72b5ab;--accent2:#d9a085;--accent-bg:#1d3633;--green:#7fc2a0;--red:#de8a9a;--yellow:#d4b36a;--ctrl:#1a171e;--hover:#2a2530;color-scheme:dark}}
+body{background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+header{background:color-mix(in srgb,var(--bg) 94%,transparent);border-bottom:1px solid var(--line)}
+.brand-mark{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--on,#fff);box-shadow:none;border-radius:14px}
+.brand h1{letter-spacing:-.02em}
+.panel,.summary-card,.task-card,.kid-card,.parent-card,.monthbar,.form-panel,.note-box,.balance-adjust{background:var(--panel);background-image:none;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius)}
+.summary-card:before{display:none}
+.summary-card{border-top:4px solid var(--accent)}.summary-card.money{border-top-color:var(--green)}.summary-card.spent{border-top-color:var(--accent2)}.summary-card.tasks{border-top-color:var(--yellow)}
+.summary-value{font-weight:800;letter-spacing:-.03em}
+.avatar{background:var(--accent-bg);color:var(--accent);font-weight:700}
+.btn,button.btn{min-height:44px;border-radius:13px;background:var(--panel);border:1px solid var(--line);color:var(--text);font-weight:600}
+.btn:hover{background:var(--hover)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on,#fff)}
+.btn.danger:hover{background:color-mix(in srgb,var(--red) 14%,var(--panel));color:var(--red)}
+.btn.small{min-height:36px}
+input,select,textarea{background:var(--ctrl);border:1.5px solid var(--line);border-radius:13px;color:var(--text);min-height:46px;font-size:16px}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+input[type=checkbox]{min-height:0;width:24px;height:24px;accent-color:var(--accent)}
+.pill.good{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green);border-color:transparent}
+.pill.warn{background:color-mix(in srgb,var(--yellow) 18%,transparent);color:var(--yellow);border-color:transparent}
+.pill.bad{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red);border-color:transparent}
+.task-person{min-height:48px;border-radius:13px}
+.task-person:has(input:checked){background:color-mix(in srgb,var(--green) 13%,var(--panel));border-color:var(--green)}
+.amount.income{color:var(--green)}.amount.expense{color:var(--red)}
+th{background:var(--hover);color:var(--muted)}tbody tr:hover{background:var(--hover)}
+.section-title:before{background:var(--accent2)}
+.modal{background:var(--panel);border-radius:24px;box-shadow:0 30px 80px #2b26324d}
+.modal-backdrop{background:#2b263266;backdrop-filter:blur(3px)}
+.toast{background:#2b2631;color:#fff;border:0;border-radius:14px}
+.toast.error{background:var(--red)}
+@media(min-width:701px){nav button.active{background:var(--accent-bg);color:var(--accent);border-color:transparent}nav button:hover{background:var(--hover)}}
+@media(max-width:700px){
+header{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--bg)}
+.header-inner{padding:10px 14px 0}.brand p,.month-caption{display:none}.brand h1{font-size:18px}.brand-mark{width:36px;height:36px;font-size:18px}
+.topline{flex-wrap:nowrap}.brand{min-width:0}.header-actions{width:auto}.header-actions .btn{min-height:40px;padding:0 14px}
+.save-note{margin:4px 0 0;font-size:11.5px}
+.monthbar{padding:6px;margin:8px 0 10px;border-radius:16px}.month-controls{flex-wrap:nowrap;gap:6px}.month-controls .btn{min-height:42px;height:42px}
+nav{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));padding:6px;gap:2px;border:1px solid var(--line);border-radius:22px;background:var(--panel);box-shadow:0 10px 30px -8px #2b263259;overflow:visible}
+nav button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 2px;border-radius:16px;font-size:10.5px;font-weight:600;color:var(--muted);min-height:54px}
+nav button .nav-icon{font-size:20px;line-height:1.1}
+nav button.active{background:var(--accent-bg);color:var(--accent);border-color:transparent}
+main{padding:14px 14px calc(96px + env(safe-area-inset-bottom))}
+.page-head h2{font-size:22px}
+.modal-backdrop{align-items:flex-end;padding:0}
+.modal{width:100%;max-height:92vh;border-radius:26px 26px 0 0;padding:12px 16px calc(18px + env(safe-area-inset-bottom));animation:sheet .22s ease}
+.modal-head:before{content:"";position:absolute;left:50%;top:7px;width:40px;height:4px;margin-left:-20px;border-radius:4px;background:var(--line)}
+.modal-head{position:relative;padding-top:12px}
+.toast{left:14px;right:14px;max-width:none;bottom:calc(88px + env(safe-area-inset-bottom))}
+}
+[data-overview-task],.pending li,.mini-stat,.gift-box{background:var(--hover);color:var(--text);border:1px solid var(--line);border-radius:14px}
+.task-person{background:var(--hover);border:1px solid var(--line);color:var(--text)}
+.task-person small,.person-sub,.pending-task-meta{color:var(--muted)}
+.modal-head{border:0}.modal-head:after{display:none}
+@keyframes sheet{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+
+.backup-banner{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:0 0 14px;padding:12px 14px;border-radius:16px;font-size:13.5px;line-height:1.45;background:color-mix(in srgb,var(--yellow) 16%,var(--panel));border:1.5px solid var(--yellow)}
+.backup-banner[hidden]{display:none}.backup-banner.critical{background:color-mix(in srgb,var(--red) 12%,var(--panel));border-color:var(--red)}
+.backup-actions{display:flex;gap:8px}.safety-panel{margin-bottom:14px;border-color:var(--yellow)}
+.tpl-chips,.qc-chips{display:flex;gap:8px;flex-wrap:wrap}.qc-chips .btn,.tpl-chips .btn{min-height:40px}
+.inline-check{display:flex;align-items:center;gap:10px;min-height:40px}
+html[data-theme="mono"]{--bg:#0a0a0a;--panel:#141414;--panel2:#141414;--line:#2b2b2b;--text:#f4f4f4;--muted:#9b9b9b;--accent:#f4f4f4;--accent2:#b5b5b5;--accent-bg:#262626;--ctrl:#0f0f0f;--hover:#1e1e1e;--on:#0a0a0a;--green:#cfd9d2;--red:#e3a9a9;--yellow:#ddd6bb;color-scheme:dark}
+html[data-theme="violet"]{--bg:#0f0a1a;--panel:#1a1228;--panel2:#1a1228;--line:#32244a;--text:#f0e9fb;--muted:#a493c2;--accent:#9d8fcf;--accent2:#b98fc9;--accent-bg:#251d3a;--ctrl:#140e20;--hover:#241a38;--on:#130a24;--green:#7fc2a0;--red:#de8a9a;--yellow:#d4b36a;color-scheme:dark}
+html[data-theme="midnight"]{--bg:#0a101c;--panel:#121b2d;--panel2:#121b2d;--line:#22324d;--text:#e8eefb;--muted:#8fa3c4;--accent:#7a9fd1;--accent2:#7fb5c4;--accent-bg:#172338;--ctrl:#0e1626;--hover:#1a2740;--on:#07101f;--green:#7fc2a0;--red:#de8a9a;--yellow:#d4b36a;color-scheme:dark}
+html[data-theme="emerald"]{--bg:#08130f;--panel:#10201a;--panel2:#10201a;--line:#1f3a2f;--text:#e6f6ee;--muted:#8fb5a2;--accent:#6bb59a;--accent2:#a3bd7f;--accent-bg:#14291f;--ctrl:#0b1914;--hover:#173028;--on:#04140d;--green:#7fc2a0;--red:#de8a9a;--yellow:#d4b36a;color-scheme:dark}
+html[data-theme="amber"]{--bg:#130f0a;--panel:#1e1812;--panel2:#1e1812;--line:#3a2f22;--text:#f7efe3;--muted:#b5a48c;--accent:#d1ac5e;--accent2:#d19a6a;--accent-bg:#2e2415;--ctrl:#17120d;--hover:#2a2218;--on:#1a1204;--green:#7fc2a0;--red:#de8a9a;--yellow:#d4b36a;color-scheme:dark}
+html[data-theme="light"]{--bg:#fbf6ee;--panel:#fff;--panel2:#fff;--line:#eadfce;--text:#2b2631;--muted:#7a7285;--accent:#3d958b;--accent2:#e09874;--accent-bg:#e2f4f1;--green:#2e9e6b;--red:#d9455f;--yellow:#c98a12;--ctrl:#fff;--hover:#f6ecdc;--on:#fff;color-scheme:light}
+.theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.theme-swatch{display:flex;align-items:center;gap:10px;min-height:54px;padding:8px 12px;border-radius:15px;border:2px solid var(--line);background:var(--panel);color:var(--text);font-weight:600;text-align:left}
+.theme-swatch .dot{flex:0 0 30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--sb) 50%,var(--sa) 50%);border:1px solid #8886}
+.theme-swatch.active{border-color:var(--accent);background:var(--accent-bg)}
+:root{--soft:color-mix(in srgb,var(--text) 5%,var(--panel))}
+.overview-collection-card,.overview-row,.overview-item,.parent-detail-section,.child-info-box,.mini-stat,.task-person,.gift-box,.empty{background:var(--soft);border-color:var(--line)}
+.overview-notes-panel textarea{background:var(--ctrl);border-color:var(--line);color:var(--text)}
+.overview-notes-panel textarea::placeholder,input::placeholder,textarea::placeholder{color:var(--muted);opacity:.8}
+.pending li,.parent-task-list li{background:color-mix(in srgb,var(--red) 8%,var(--panel));border-color:color-mix(in srgb,var(--red) 28%,transparent)}
+.parent-task-list li.done-task,.parent-completed-list li,.task-person:has(input:checked),.task-person.amount-person.completed,.parent-task-done-toggle:has(input:checked){background:color-mix(in srgb,var(--green) 9%,var(--panel));border-color:color-mix(in srgb,var(--green) 35%,transparent)}
+.pending-task-name{color:var(--text)}.task-person.completed span,.parent-completed-list li,.parent-completed-list .parent-task-toggle-row .parent-task-name{color:var(--green)}
+.birthday-count{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+.birthday-count.today{background:color-mix(in srgb,var(--yellow) 16%,transparent);color:var(--yellow);border-color:color-mix(in srgb,var(--yellow) 45%,transparent)}
+.avatar{border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
+.task-progress{background:color-mix(in srgb,var(--text) 12%,transparent)}
+.overview-item:hover{border-color:var(--accent)}
+.modal:before{background:var(--line)}.modal-head:before{display:none}
+.modal .form-actions{background:linear-gradient(180deg,color-mix(in srgb,var(--panel) 90%,transparent),var(--panel) 20%)}
+
+#cloudLock{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:18px;background:radial-gradient(900px 500px at 20% -10%,#1a2444 0%,transparent 60%),var(--bg)}
+#cloudLock[hidden]{display:none}
+.cl-box{width:min(420px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+.cl-box h2{margin:0 0 4px;font-size:20px}.cl-box p{margin:0 0 14px;color:var(--muted);font-size:13.5px}
+.cl-box label{display:block;font-size:12.5px;color:var(--muted);margin:10px 0 4px}
+.cl-box input[type=password],.cl-box input[type=text],.cl-box input[type=url]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--ctrl);color:var(--text);font-size:16px}
+.cl-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.cl-row .btn{flex:1 1 auto}
+.cl-err{color:var(--red);font-size:13.5px;min-height:20px;margin-top:10px}
+.cl-chk{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13.5px;color:var(--muted)}
+#backupBanner{display:none!important}
+#cloudNote{font-size:12px}#cloudNote.err{color:var(--red)}#cloudNote.ok strong{color:var(--green);font-weight:500}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="topline">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">✳</div><div><h1>Родительский комитет</h1><p>Задачи, сборы и общие расходы группы</p></div></div>
+      <div class="header-actions"><button type="button" class="btn icon" id="themeBtn" aria-label="Цветовая тема" title="Цветовая тема">🎨</button>
+        <button class="btn" id="cloudLogout" type="button" title="Выйти и забыть пароль на этом устройстве" hidden="">Выйти</button><button class="btn primary" id="saveBtn" type="button" title="Скачать HTML-файл со всеми текущими данными">⇩ Сохранить</button>
+      </div>
+    </div>
+    <div class="save-note" id="cloudNote" style="margin-bottom:-6px"></div>
+    <div class="save-note" id="saveNote">✓ <strong>Данные готовы к работе</strong></div>
+    <div class="monthbar">
+      <div class="month-controls">
+        <button class="btn" id="prevMonth" aria-label="Предыдущий месяц" type="button">‹</button>
+        <input id="monthPicker" type="month" aria-label="Выбрать месяц">
+        <button class="btn" id="nextMonth" aria-label="Следующий месяц" type="button">›</button>
+        <button class="btn small" id="currentMonth" type="button">Текущий</button>
+      </div>
+      <div class="month-caption" id="monthCaption">октябрь 2026 г. · месячная статистика и задачи за выбранный месяц</div>
+    </div>
+    <nav aria-label="Разделы">
+      <button type="button" class="active" data-tab="overview"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-label">Обзор</span></button>
+      <button type="button" data-tab="parents" class=""><span class="nav-icon" aria-hidden="true">♙</span><span class="nav-label">Родители</span></button>
+      <button type="button" data-tab="kids"><span class="nav-icon" aria-hidden="true">♡</span><span class="nav-label">Дети</span></button>
+      <button type="button" data-tab="tasks"><span class="nav-icon" aria-hidden="true">✓</span><span class="nav-label">Задачи</span></button>
+      <button type="button" data-tab="finances"><span class="nav-icon" aria-hidden="true">₴</span><span class="nav-label">Финансы</span></button>
+      <button type="button" data-tab="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-label">Настройки</span></button>
+    </nav>
+  </div>
+</header>
+<main><div class="backup-banner critical" id="backupBanner"><div id="backupBannerText"><strong>Сохраните копию данных!</strong> Всё хранится только в браузере этого телефона. Если очистить историю, сменить телефон или открыть файл в другом месте — <strong>все данные пропадут</strong>. Последняя копия: ещё ни разу.</div><div class="backup-actions"><button type="button" class="btn primary small" id="backupNow">⇩ Сохранить копию</button><button type="button" class="btn small" id="backupLater">Позже</button></div></div>
+  <section class="tab active" id="tab-overview">
+    <div class="page-head overview-page-head">
+      <div><h2>Обзор группы</h2><p id="overviewSubtitle">октябрь 2026 г. · состояние кассы и дел группы</p></div>
+      <div class="overview-actions"><button type="button" class="btn primary" data-overview-action="tasks">＋ Новая задача</button><button type="button" class="btn" data-overview-action="finances">＋ Финансовая операция</button><button type="button" class="btn" id="ovQuick">💸 Быстрый взнос</button><button type="button" class="btn" id="ovReport">📄 Отчёт для родителей</button></div>
+    </div>
+<section class="summary-grid" aria-label="Сводка за месяц">
+    <article class="summary-card money"><div class="summary-label">ПОСТУПИЛО ЗА МЕСЯЦ</div><div class="summary-value" id="sumIncome">0 ₴</div><div class="summary-sub" id="sumIncomeSub">0 операций</div></article>
+    <article class="summary-card spent"><div class="summary-label">ПОТРАЧЕНО ЗА МЕСЯЦ</div><div class="summary-value" id="sumExpense">0 ₴</div><div class="summary-sub" id="sumExpenseSub">0 операций</div></article>
+    <article class="summary-card"><div class="summary-label">ОСТАТОК В КАССЕ</div><div class="summary-value" id="sumBalance" style="color: var(--text);">0 ₴</div><div class="summary-sub">Общий баланс за всё время</div></article>
+    <article class="summary-card tasks"><div class="summary-label">ЗАДАЧИ ЗА МЕСЯЦ</div><div class="summary-value" id="sumTasks">0/0</div><div class="summary-sub" id="sumTasksSub">Пока нет задач</div></article>
+  </section>
+    <div class="overview-grid">
+      <div class="overview-column overview-column-left">
+        <section id="overviewTasksPanel" class="panel overview-panel">
+          <div class="overview-panel-head"><h3>Требуют внимания</h3><button type="button" class="text-action" data-open-tab="tasks">Все задачи →</button></div>
+          <div id="overviewTasks" class="overview-list"><div class="empty"><strong>Нет задач на этот месяц</strong>Создайте задачу или поручение — оно появится здесь.</div></div>
+        </section>
+        <section id="overviewCollectionsPanel" class="panel overview-panel">
+          <div class="overview-panel-head"><h3>Взносы по задачам</h3><button type="button" class="text-action" data-open-tab="tasks">Все задачи →</button></div>
+          <div id="overviewCollections" class="overview-list"><div class="empty"><strong>Взносов по задачам пока нет</strong>Когда вы укажете сумму, внесённую родителем, здесь появятся взносы, остатки и переплаты.</div></div>
+        </section>
+      </div>
+      <div class="overview-column overview-column-right">
+        <section id="overviewBirthdaysPanel" class="panel overview-panel">
+          <div class="overview-panel-head"><h3>Ближайшие дни рождения</h3><button type="button" class="text-action" data-open-tab="kids">Все дети →</button></div>
+          <div id="overviewBirthdays" class="overview-list"><div class="empty"><strong>Дни рождения не указаны</strong>Добавьте даты на вкладке «Дети».</div></div>
+        </section>
+        <section id="overviewTransactionsPanel" class="panel overview-panel overview-recent-panel">
+          <div class="overview-panel-head"><h3>Последние финансовые операции</h3><button type="button" class="text-action" data-open-tab="finances">Все финансы →</button></div>
+          <div id="overviewTransactions" class="overview-list"><div class="empty"><strong>Операций пока нет</strong>Добавьте поступление или расход во вкладке «Финансы».</div></div>
+        </section>
+      </div>
+    </div>
+    <section class="panel overview-notes-panel" aria-labelledby="overviewNotesTitle">
+      <div class="overview-panel-head"><div><h3 id="overviewNotesTitle">Заметки</h3><p class="muted small-text" style="margin:4px 0 0">Быстрые записи, напоминания и идеи для родительского комитета.</p></div><span class="pill" id="notesSaveStatus" aria-live="polite">Сохраняются автоматически</span></div>
+      <textarea id="overviewNotes" maxlength="10000" rows="5" placeholder="Например: уточнить у воспитателя дату праздника, обсудить бюджет подарков, заказать материалы…" aria-label="Заметки родительского комитета"></textarea>
+    </section>
+  </section>
+
+  <section class="tab" id="tab-parents">
+    <div class="page-head"><div><h2>Родители</h2><p>Выберите родителя, чтобы посмотреть его взносы, задачи и связанные операции.</p></div></div>
+    <div class="parent-selector panel">
+      <div class="field parent-select-field"><label for="parentSelect">Выбрать родителя</label><select id="parentSelect" aria-label="Выбрать родителя для просмотра"><option value="">Нет родителей</option></select></div>
+      <span class="pill" id="parentCount">0 родителей</span>
+    </div>
+    <div id="parentsGrid"><div class="empty"><strong>Пока нет родителей</strong>Добавьте пару во вкладке «Настройки».</div></div>
+    <p class="footer-note">Финансовые данные привязаны к выбранному родителю и выбранному месяцу. Общий остаток кассы отображается на вкладке «Обзор».</p>
+  </section>
+
+  <section class="tab" id="tab-kids">
+    <div class="page-head"><div><h2>Дети</h2><p>Дни рождения рассчитываются автоматически. Предпочтения можно записывать для идей подарков.</p></div><span class="pill" id="kidsCount">0 детей</span></div>
+    <div class="grid" id="kidsGrid"><div class="empty"><strong>Пока нет детей</strong>Добавьте пару во вкладке «Настройки».</div></div>
+  </section>
+
+  <section class="tab" id="tab-tasks">
+    <div class="page-head"><div><h2>Задачи</h2><p>Создавайте поручения и указывайте частичные взносы для задач с суммой на человека.</p></div><div class="page-head-actions"><span class="pill" id="monthTaskCount">0 задач в месяце</span><button type="button" class="btn primary mobile-form-trigger" id="openTaskFormBtn">＋ Новая задача</button></div></div>
+    <h3 class="section-title desktop-form-label">Добавить задачу</h3>
+    <div class="panel form-panel" id="taskFormPanel">
+      <form id="taskForm">
+        <div class="form-grid">
+          <div class="field span-all"><label>Шаблон задачи</label><div class="tpl-chips"><button type="button" class="btn small" data-tpl="0">🎉 Праздник</button><button type="button" class="btn small" data-tpl="1">🎁 Подарок на ДР</button><button type="button" class="btn small" data-tpl="2">✏️ Канцелярия</button><button type="button" class="btn small" data-tpl="3">🧹 Субботник</button><button type="button" class="btn small" data-tpl="4">🚌 Экскурсия</button><button type="button" class="btn small" data-tpl="5">🧸 Игрушки и ремонт</button></div></div><div class="field span-2"><label for="taskTitle">Название задачи *</label><input id="taskTitle" required="" maxlength="120" placeholder="Например, сбор на праздник"></div>
+          <div class="field"><label for="taskDue">Срок выполнения</label><input id="taskDue" type="date"></div>
+          <div class="field"><label for="taskAmount">Сумма на человека, ₴</label><input id="taskAmount" type="number" min="0" step="0.01" placeholder="Необязательно"></div>
+          <div class="field span-all"><label for="taskDescription">Описание задачи</label><textarea id="taskDescription" maxlength="1200" placeholder="Что нужно сделать, важные детали, реквизиты или условия"></textarea></div>
+        </div>
+        <div class="form-actions"><button type="button" class="btn" id="cancelTaskEdit" hidden="">Отмена</button><button type="submit" class="btn primary" id="taskSubmit">＋ Добавить задачу</button></div>
+      </form>
+    </div>
+    <h3 class="section-title">Задачи за выбранный месяц</h3>
+    <div class="task-toolbar">
+      <label class="hide-completed-control"><input id="hideCompletedTasks" type="checkbox"><span>Скрыть выполненные</span></label>
+      <span class="pill" id="taskFilterCount">0 задач</span>
+    </div>
+    <div id="tasksList" class="task-list"><div class="empty"><strong>В этом месяце задач пока нет</strong>Создайте задачу выше — например, сбор на праздник. После этого можно отмечать исполнение отдельно для каждого родителя.</div></div>
+  </section>
+
+  <section class="tab" id="tab-finances">
+    <div class="page-head"><div><h2>Финансы</h2><p>Учитывайте поступления и расходы, просматривайте историю и сравнивайте показатели за месяц и за всё время.</p></div><button type="button" class="btn primary mobile-form-trigger" id="openTxFormBtn">＋ Добавить операцию</button></div>
+    <div class="data-top-grid">
+      <div class="panel" id="transactionFormPanel">
+        <h3 id="transactionFormTitle">Добавить операцию</h3>
+        <form id="transactionForm">
+          <div class="form-grid">
+            <div class="field"><label for="txType">Тип операции *</label><select id="txType"><option value="income">Поступление</option><option value="expense">Расход</option></select></div>
+            <div class="field"><label for="txAmount">Сумма, ₴ *</label><input id="txAmount" type="number" min="0.01" step="0.01" required="" placeholder="0,00"></div>
+            <div class="field"><label for="txDate">Дата *</label><input id="txDate" type="date" required=""></div>
+            <div class="field"><label for="txParent" id="txParentLabel">Кто внёс деньги</label><select id="txParent"><option value="">Не указан</option></select></div>
+            <div class="field span-all"><label for="txDescription">Назначение / на что потратили *</label><input id="txDescription" required="" maxlength="240" placeholder="Например, сбор на праздник или материалы для поделок"></div>
+          </div>
+          <div class="form-actions"><button type="button" class="btn" id="cancelTxEdit" hidden="">Отмена</button><button type="submit" class="btn primary" id="txSubmit">＋ Добавить операцию</button></div>
+          <div class="note-box"><strong>Как учитываются деньги:</strong> поступление увеличивает кассу, расход уменьшает. Для каждой операции укажите тип, сумму, дату, кто внёс или потратил деньги, и назначение.</div>
+        </form>
+      </div>
+      <div class="panel">
+        <h3>Статистика за выбранный месяц</h3>
+        <div class="data-split">
+          <div class="mini-stat"><span>Поступления</span><b id="dataIncome">0 ₴</b></div>
+          <div class="mini-stat"><span>Расходы</span><b id="dataExpense">0 ₴</b></div>
+          <div class="mini-stat"><span>Разница за месяц</span><b id="dataDelta" style="color: var(--green);">0 ₴</b></div>
+        </div>
+        <h3 style="margin-top:18px">Статистика за всё время</h3>
+        <button type="button" class="btn small mobile-form-trigger" id="openBalanceFormBtn" style="margin:0 0 12px">Изменить баланс</button>
+        <div class="data-split">
+          <div class="mini-stat"><span>Все поступления</span><b id="dataIncomeAll">0 ₴</b></div>
+          <div class="mini-stat"><span>Все расходы</span><b id="dataExpenseAll">0 ₴</b></div>
+          <div class="mini-stat"><span>Чистый поток за всё время</span><b id="dataDeltaAll" style="color: var(--green);">0 ₴</b></div>
+          <div class="mini-stat"><span>Текущий баланс счёта</span><b id="dataBalance" style="color: var(--green);">0 ₴</b></div>
+        </div>
+        <div class="note-box">Месячная статистика меняется при переключении месяца вверху страницы. Общие показатели учитывают все финансовые операции.</div>
+        <div class="balance-adjust" id="balanceAdjustPanel">
+          <div class="balance-adjust-head"><div><h3>Установить текущий баланс счёта</h3><p>Скорректируйте остаток по фактическим данным.</p></div></div>
+          <h3 class="desktop-balance-heading">Установить текущий баланс счёта</h3>
+          <p class="desktop-balance-description">Укажите фактический остаток на счёте. История операций сохранится, а новые поступления и расходы будут изменять этот баланс.</p>
+          <form id="balanceForm" class="balance-adjust-form">
+            <div class="field"><label for="balanceTarget">Фактический остаток, ₴</label><input id="balanceTarget" type="number" step="0.01" inputmode="decimal" required="" placeholder="Например, 2450"></div>
+            <button type="submit" class="btn primary">Установить баланс</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <h3 class="section-title">История финансовых операций <span class="pill">Все месяцы</span></h3>
+    <div class="table-wrap"><table><thead><tr><th>Дата</th><th>Операция</th><th>Сумма</th><th>Кто внёс / потратил</th><th></th></tr></thead><tbody id="transactionsBody"><tr><td colspan="5" class="empty-cell">Финансовых операций пока нет.</td></tr></tbody></table></div>
+  </section>
+
+  <section class="tab" id="tab-settings">
+    <div class="page-head"><div><h2>Настройки</h2><p>Управляйте составом родительского комитета и связью родителей с детьми.</p></div></div><div class="panel safety-panel" id="safetyPanel"><h3>🛟 Сохранность данных</h3><p class="muted small-text">Данные живут только в браузере этого устройства. Их можно потерять: очистка браузера, режим инкогнито, сброс телефона, нехватка памяти или потеря телефона. Единственная надёжная копия — скачанный HTML-файл.</p><p style="margin:8px 0">Последняя копия: <strong id="safetyLast">ещё ни разу</strong></p><ol class="small-text muted" style="margin:0 0 12px;padding-left:18px"><li>Нажмите «Сохранить» — скачается файл.</li><li>Отправьте его себе в Telegram/Viber, на почту или в облако.</li><li>Делайте это после каждого сбора денег и раз в неделю.</li></ol><button type="button" class="btn primary" id="safetyNow">⇩ Сохранить копию сейчас</button></div><div class="panel" id="themePanel" style="margin-bottom:14px"><h3>🎨 Цветовая тема</h3><p class="muted small-text" style="margin:0 0 10px">Выбор запоминается на этом устройстве и сохраняется в скачанном файле.</p><div class="theme-grid"><button type="button" class="theme-swatch active" data-theme-pick="auto" style="--sb:#fbf6ee;--sa:#171419"><span class="dot"></span>Авто</button><button type="button" class="theme-swatch" data-theme-pick="mono" style="--sb:#0a0a0a;--sa:#f4f4f4"><span class="dot"></span>Чёрно-белая</button><button type="button" class="theme-swatch" data-theme-pick="violet" style="--sb:#0f0a1a;--sa:#9d8fcf"><span class="dot"></span>Фиолет</button><button type="button" class="theme-swatch" data-theme-pick="midnight" style="--sb:#0a101c;--sa:#7a9fd1"><span class="dot"></span>Полночь</button><button type="button" class="theme-swatch" data-theme-pick="emerald" style="--sb:#08130f;--sa:#6bb59a"><span class="dot"></span>Изумруд</button><button type="button" class="theme-swatch" data-theme-pick="amber" style="--sb:#130f0a;--sa:#d1ac5e"><span class="dot"></span>Янтарь</button><button type="button" class="theme-swatch" data-theme-pick="light" style="--sb:#fbf6ee;--sa:#3d958b"><span class="dot"></span>Светлая</button></div></div>
+    <h3 class="section-title">Состав группы</h3>
+    <div class="panel">
+      <div class="page-head" style="margin-bottom:10px"><div><h3 style="margin:0">Родители и дети</h3><p>Здесь можно изменить имена, связь в семье, добавить новую пару или удалить семью. Даты рождения и подарочные предпочтения редактируются во вкладке «Дети».</p></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Родитель</th><th>Ребёнок</th><th>Действия</th></tr></thead><tbody id="rosterBody"><tr><td colspan="3" class="empty-cell">Состав группы пока пуст.</td></tr></tbody></table></div>
+      <div class="form-actions"><button type="button" class="btn" id="addFamilyBtn">＋ Добавить пару</button></div>
+    </div>
+  </section>
+</main>
+
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal"><div class="modal-head"><h2 id="modalTitle">Редактирование</h2><button type="button" class="btn icon" id="closeModal" aria-label="Закрыть">×</button></div><div id="modalBody"></div></div>
+</div>
+<div id="cloudLock"><div class="cl-box">
+  <h2>Родительский комитет</h2><p id="clSub">Введите пароль, чтобы открыть данные.</p>
+  <div id="clUrlWrap"><label for="clUrl">Адрес хранилища</label><input type="url" id="clUrl" placeholder="https://….workers.dev" autocapitalize="off" spellcheck="false"></div>
+  <label for="clPass">Пароль</label><input type="password" id="clPass" autocomplete="current-password">
+  <label class="cl-chk"><input type="checkbox" id="clRemember" checked=""> Запомнить на этом устройстве</label>
+  <div class="cl-err" id="clErr" role="alert"></div>
+  <div class="cl-row"><button class="btn primary" id="clGo" type="button">Войти</button><button class="btn" id="clOffline" type="button" hidden="">Работать офлайн</button></div>
+  <div id="clSeed" hidden="">
+    <p style="margin-top:14px">В хранилище пока пусто. Загрузите данные из старого файла блокнота (нажмите в нём «Сохранить» и выберите скачанный .html) или начните с пустой базы.</p>
+    <div class="cl-row"><button class="btn primary" id="clImport" type="button">Загрузить из файла…</button><button class="btn" id="clEmpty" type="button">Начать с нуля</button></div>
+    <input type="file" id="clFile" accept=".html,.htm,.json,text/html,application/json" hidden="">
+  </div>
+</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(() => {
+  'use strict';
+  let cloudChanged = () => {};
+  const STORAGE_KEY = 'kindergartenCommitteeData_cloud_v1'; // STORAGE_KEY_MARKER
+  // При сохранении в отдельный HTML эти значения заполняются актуальными данными.
+  const EMBEDDED_STATE = null; // EMBEDDED_STATE_MARKER
+  const EMBEDDED_VIEW = {}; // EMBEDDED_VIEW_MARKER
+  const $ = (id) => document.getElementById(id);
+  const monthInput = $('monthPicker');
+  const today = new Date();
+  const pad2 = n => String(n).padStart(2,'0');
+  const localDate = (d = new Date()) => `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+  const monthKey = (d = new Date()) => `${d.getFullYear()}-${pad2(d.getMonth()+1)}`;
+  const makeId = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `id_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+  const defaultState = () => {
+    const families = [];
+    const children = families.map(([parent,child,birthday]) => ({id:makeId(),name:child,birthday,giftPreferences:'',foodPreferences:''}));
+    const parents = families.map(([parent,child],i) => ({id:makeId(),name:parent,childId:children[i].id}));
+    return {version:1,parents,children,tasks:[],transactions:[],balanceAdjustment:0,notes:'',createdAt:new Date().toISOString()};
+  };
+  function validState(s) {
+    return !!s && s.version === 1 && Array.isArray(s.parents) && Array.isArray(s.children) && Array.isArray(s.tasks) && Array.isArray(s.transactions);
+  }
+  function normalizeState(s) {
+    const p = s.parents.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),childId:String(x.childId||'')}));
+    const c = s.children.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),birthday:/^\d{4}-\d{2}-\d{2}$/.test(x.birthday||'')?x.birthday:'',giftPreferences:String(x.giftPreferences||''),foodPreferences:String(x.foodPreferences||'')}));
+    const tasks = s.tasks.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,month:/^\d{4}-\d{2}$/.test(x.month||'')?x.month:monthKey(),title:String(x.title||'Без названия'),description:String(x.description||''),dueDate:/^\d{4}-\d{2}-\d{2}$/.test(x.dueDate||'')?x.dueDate:'',amountPerPerson:Number.isFinite(Number(x.amountPerPerson))&&x.amountPerPerson!==''?Math.max(0,Number(x.amountPerPerson)):0,statuses:x.statuses&&typeof x.statuses==='object'?x.statuses:{},createdAt:String(x.createdAt||'')}));
+    const transactions = s.transactions.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,date:/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:localDate(),type:x.type==='expense'?'expense':'income',amount:Math.max(0,Number(x.amount)||0),description:String(x.description||''),parentId:String(x.parentId||''),createdAt:String(x.createdAt||'')}));
+    const balanceAdjustment = Number.isFinite(Number(s.balanceAdjustment)) && s.balanceAdjustment !== '' && s.balanceAdjustment !== null ? Number(s.balanceAdjustment) : 0;
+    return {version:1,parents:p,children:c,tasks,transactions,balanceAdjustment,notes:String(s.notes||'').slice(0,10000),createdAt:s.createdAt||new Date().toISOString()};
+  }
+  function loadLocal() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) { const parsed = JSON.parse(raw); if (validState(parsed)) return normalizeState(parsed); }
+    } catch (e) { /* В режиме file:// хранилище может быть недоступно — используем встроенные данные. */ }
+    return validState(EMBEDDED_STATE) ? normalizeState(EMBEDDED_STATE) : defaultState();
+  }
+  let state = loadLocal();
+  const validTabs = ['overview','parents','kids','tasks','finances','settings'];
+  let activeTab = EMBEDDED_VIEW && validTabs.includes(EMBEDDED_VIEW.activeTab) ? EMBEDDED_VIEW.activeTab : 'overview';
+  let editingTaskId = null;
+  let editingTxId = null;
+  let selectedParentId = EMBEDDED_VIEW?.selectedParentId || null;
+  let collapsedTaskIds = new Set(Array.isArray(EMBEDDED_VIEW?.collapsedTaskIds) ? EMBEDDED_VIEW.collapsedTaskIds : []);
+  let hideCompletedTasks = EMBEDDED_VIEW?.hideCompletedTasks === true;
+  let toastTimer = null;
+  let dirtyTimer = null;
+  let notesTimer = null;
+  let modalRestore = null;
+  monthInput.value = EMBEDDED_VIEW && /^\d{4}-\d{2}$/.test(EMBEDDED_VIEW.month || '') ? EMBEDDED_VIEW.month : monthKey();
+  $('overviewNotes').value = state.notes || '';
+
+  function esc(value) { return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+  function money(n) { return new Intl.NumberFormat('uk-UA',{maximumFractionDigits:2,minimumFractionDigits:0}).format(Number(n)||0) + ' ₴'; }
+  function formatDate(s) { if (!s || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return '—'; const [y,m,d]=s.split('-'); return `${d}.${m}.${y}`; }
+  function monthLabel(key) { if (!/^\d{4}-\d{2}$/.test(key||'')) return key||''; const [y,m]=key.split('-').map(Number); return new Intl.DateTimeFormat('ru-RU',{month:'long',year:'numeric'}).format(new Date(y,m-1,1)); }
+  function getParent(id) { return state.parents.find(p=>p.id===id); }
+  function getChild(id) { return state.children.find(c=>c.id===id); }
+  function childForParent(p) { return getChild(p?.childId); }
+  function txMonth(tx) { return (tx.date||'').slice(0,7); }
+  function currentMonth() { return monthInput.value || monthKey(); }
+  function monthTransactions() { return state.transactions.filter(tx=>txMonth(tx)===currentMonth()); }
+  function monthTasks() { return state.tasks.filter(t=>t.month===currentMonth()); }
+  function totalIncome(txs=state.transactions) { return txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0); }
+  function totalExpense(txs=state.transactions) { return txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0); }
+  function balance() { return (Number(state.balanceAdjustment)||0) + totalIncome() - totalExpense(); }
+  function taskPaidAmount(task,parentId) {
+    const required=Math.max(0,Number(task.amountPerPerson)||0);
+    if(required<=0) return 0;
+    const value=task.statuses?.[parentId];
+    if(typeof value==='number'&&Number.isFinite(value)) return Math.max(0,value);
+    // Старые отметки true считаются полным взносом, чтобы не потерять прошлые данные.
+    return value===true?required:0;
+  }
+  function taskParentDone(task,parentId) {
+    const required=Math.max(0,Number(task.amountPerPerson)||0);
+    if(required>0) return taskPaidAmount(task,parentId)>=required;
+    return task.statuses?.[parentId]===true;
+  }
+  function taskProgress(task) {
+    const total=state.parents.length;
+    const done=state.parents.filter(p=>taskParentDone(task,p.id)).length;
+    const amount=Math.max(0,Number(task.amountPerPerson)||0);
+    const collected=amount>0?state.parents.reduce((sum,p)=>sum+taskPaidAmount(task,p.id),0):0;
+    const target=amount*total;
+    const ratio=amount>0?(target>0?Math.min(100,collected/target*100):0):(total?done/total*100:0);
+    return {done,total,ratio,collected,target};
+  }
+  function taskIsComplete(task) { const p=taskProgress(task); return p.total>0&&p.done===p.total; }
+  function showToast(message, error=false) { const el=$('toast'); el.textContent=message; el.classList.toggle('error',error); el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3200); }
+  function persist(message='Изменения сохранены в этом браузере') {
+    if(!/^Данные готовы/.test(message)){ meta.dirty=(meta.dirty||0)+1; saveMeta(); updateBackupUi(); if(meta.dirty%10===0) setTimeout(()=>showToast(`⚠ ${meta.dirty} изменений без копии файла. Нажмите «Сохранить»`,true),600); }
+    try { cloudChanged(); } catch (e) {}
+    try { localStorage.setItem(STORAGE_KEY,JSON.stringify(state)); $('saveNote').innerHTML=`✓ <strong>${esc(message)}</strong>`; }
+    catch (e) { $('saveNote').textContent='Автосохранение браузера недоступно. Используйте «Сохранить», чтобы скачать HTML-файл с данными.'; }
+  }
+  function markChanged(message) { persist(message); renderAll(); }
+  function currentDateForMonth(key) { const now=localDate(); return key===monthKey()?now:`${key}-01`; }
+  function setDefaultTxDate() { $('txDate').value=currentDateForMonth(currentMonth()); }
+  function setTaskFormMode(task=null) {
+    editingTaskId = task?.id || null;
+    $('taskTitle').value=task?.title||'';
+    $('taskDescription').value=task?.description||'';
+    $('taskDue').value=task?.dueDate||'';
+    $('taskAmount').value=task?.amountPerPerson>0?task.amountPerPerson:'';
+    $('taskSubmit').textContent=task?'Сохранить задачу':'＋ Добавить задачу';
+    $('cancelTaskEdit').hidden=!task;
+    if(task && !isMobileLayout()) $('taskTitle').focus();
+  }
+  function setTxFormMode(tx=null) {
+    editingTxId=tx?.id||null;
+    $('txType').value=tx?.type||'income';
+    $('txAmount').value=tx?tx.amount:'';
+    $('txDate').value=tx?.date||currentDateForMonth(currentMonth());
+    $('txDescription').value=tx?.description||'';
+    $('txParent').value=tx?.parentId||'';
+    $('txSubmit').textContent=tx?'Сохранить изменения':'＋ Добавить операцию';
+    $('cancelTxEdit').hidden=!tx;
+    $('transactionFormTitle').textContent=tx?'Изменить операцию':'Добавить операцию';
+    updateTxParentLabel();
+    if(tx && !isMobileLayout()) $('txAmount').focus();
+  }
+  function updateTxParentLabel() { $('txParentLabel').textContent=$('txType').value==='income'?'Кто внёс деньги':'Кто потратил / ответственный'; }
+  function renderSummary() {
+    const txs=monthTransactions(), tasks=monthTasks();
+    const income=totalIncome(txs), expense=totalExpense(txs), p=tasks.reduce((sum,t)=>sum+taskProgress(t).done,0), max=tasks.length*state.parents.length;
+    $('sumIncome').textContent=money(income); $('sumIncomeSub').textContent=`${txs.filter(t=>t.type==='income').length} ${plural(txs.filter(t=>t.type==='income').length,['операция','операции','операций'])}`;
+    $('sumExpense').textContent=money(expense); $('sumExpenseSub').textContent=`${txs.filter(t=>t.type==='expense').length} ${plural(txs.filter(t=>t.type==='expense').length,['операция','операции','операций'])}`;
+    $('sumBalance').textContent=money(balance()); $('sumBalance').style.color=balance()<0?'var(--red)':'var(--text)'; $('balanceTarget').value=Number(balance().toFixed(2));
+    $('sumTasks').textContent=`${tasks.filter(taskIsComplete).length}/${tasks.length}`;
+    const collection=tasks.reduce((sum,t)=>sum+taskProgress(t).collected,0), target=tasks.reduce((sum,t)=>sum+taskProgress(t).target,0);
+    $('sumTasksSub').textContent=tasks.length?(target>0?`${p} из ${max} исполнений полностью · собрано ${money(collection)} из ${money(target)}`:`${p} из ${max} отметок исполнения`):'Пока нет задач';
+    const allIncome=totalIncome(), allExpense=totalExpense(), allDelta=allIncome-allExpense;
+    $('dataIncome').textContent=money(income); $('dataExpense').textContent=money(expense); $('dataDelta').textContent=money(income-expense);
+    $('dataIncomeAll').textContent=money(allIncome); $('dataExpenseAll').textContent=money(allExpense); $('dataDeltaAll').textContent=money(allDelta); $('dataBalance').textContent=money(balance());
+    $('dataDelta').style.color=income-expense<0?'var(--red)':'var(--green)'; $('dataDeltaAll').style.color=allDelta<0?'var(--red)':'var(--green)'; $('dataBalance').style.color=balance()<0?'var(--red)':'var(--green)';
+    $('monthTaskCount').textContent=`${tasks.length} ${plural(tasks.length,['задача','задачи','задач'])} в месяце`;
+    $('monthCaption').textContent=`${monthLabel(currentMonth())} · месячная статистика и задачи за выбранный месяц`;
+  }
+  function plural(n, forms) { const n10=n%10,n100=n%100; if(n10===1&&n100!==11)return forms[0];if(n10>=2&&n10<=4&&(n100<12||n100>14))return forms[1];return forms[2]; }
+  // Суммы, введённые непосредственно в задачах со сбором, входят в статистику взносов родителей.
+  function parentTaskContribution(parentId, month=null) {
+    return state.tasks.filter(t=>Number(t.amountPerPerson)>0&&(!month||t.month===month))
+      .reduce((sum,t)=>sum+taskPaidAmount(t,parentId),0);
+  }
+  function parentIncome(parentId) {
+    const transactionIncome=monthTransactions().filter(t=>t.type==='income'&&t.parentId===parentId).reduce((s,t)=>s+t.amount,0);
+    return transactionIncome+parentTaskContribution(parentId,currentMonth());
+  }
+  function parentIncomeAll(parentId) {
+    const transactionIncome=state.transactions.filter(t=>t.type==='income'&&t.parentId===parentId).reduce((s,t)=>s+t.amount,0);
+    return transactionIncome+parentTaskContribution(parentId);
+  }
+  function openTasksForParent(parentId) { return monthTasks().filter(t=>!taskParentDone(t,parentId)); }
+  function renderParents() {
+    const select=$('parentSelect'), grid=$('parentsGrid');
+    $('parentCount').textContent=`${state.parents.length} ${plural(state.parents.length,['родитель','родителя','родителей'])}`;
+    if(!state.parents.length){
+      selectedParentId=null;
+      select.innerHTML='<option value="">Нет родителей</option>';
+      grid.innerHTML='<div class="empty"><strong>Пока нет родителей</strong>Добавьте пару во вкладке «Настройки».</div>';
+      return;
+    }
+    if(!state.parents.some(p=>p.id===selectedParentId)) selectedParentId=state.parents[0].id;
+    select.innerHTML=state.parents.map(p=>{const pendingCount=openTasksForParent(p.id).length;return `<option value="${esc(p.id)}">${pendingCount?`⚠ ${p.name} (${pendingCount})`:p.name}</option>`;}).join('');
+    select.value=selectedParentId;
+    const p=getParent(selectedParentId);
+    if(!p){grid.innerHTML='<div class="empty">Выберите родителя.</div>';return;}
+    const child=childForParent(p);
+    const tasksInMonth=monthTasks();
+    const pending=openTasksForParent(p.id);
+    const completed=tasksInMonth.filter(t=>taskParentDone(t,p.id));
+    const contributed=parentIncome(p.id);
+    const contributedAll=parentIncomeAll(p.id);
+    const parentTxs=monthTransactions().filter(t=>t.parentId===p.id).slice().sort((a,b)=>b.date.localeCompare(a.date));
+    const bday=child?.birthday?birthdayInfo(child.birthday):null;
+    const renderParentTask = (t, done) => {
+      const amount=Math.max(0,Number(t.amountPerPerson)||0), paid=taskPaidAmount(t,p.id);
+      const amountMeta=amount>0?`<div class="parent-task-amount-editor"><label class="parent-task-amount-label">Внесено, ₴<input class="parent-task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${paid>0?esc(paid):''}" data-parent-task-amount="${esc(t.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(t.title)}" placeholder="0"></label><div class="parent-task-amount-summary">${money(paid)} из ${money(amount)}${paid>amount?`<span class="overpaid">Переплата: ${money(paid-amount)}</span>`:paid<amount?`<span>Осталось: ${money(amount-paid)}</span>`:'<span class="paid-done">Взнос выполнен</span>'}</div></div>`:'';
+      return `<li class="${done?'done-task':''}"><div class="parent-task-toggle-row"><div class="parent-task-copy"><div class="parent-task-name">${esc(t.title)}</div>${t.description?`<div class="parent-task-meta">${esc(t.description)}</div>`:''}${t.dueDate?`<div class="parent-task-meta">Срок: ${formatDate(t.dueDate)}</div>`:''}</div><label class="parent-task-done-toggle"><input type="checkbox" data-parent-task-toggle="${esc(t.id)}" data-parent-id="${esc(p.id)}" ${done?'checked':''} aria-label="${done?'Снять выполнение':'Отметить выполненной'}: ${esc(t.title)}"><span>${done?'Выполнено':'Выполнить'}</span></label></div>${amountMeta}</li>`;
+    };
+    const pendingHtml=pending.length
+      ? `<ul class="parent-task-list">${pending.map(t=>renderParentTask(t,false)).join('')}</ul>`
+      : (tasksInMonth.length?'<div class="all-done">✓ Все задачи выбранного месяца отмечены как выполненные.</div>':'<div class="muted small-text">На выбранный месяц задач нет.</div>');
+    const completedHtml=completed.length
+      ? `<ul class="parent-completed-list">${completed.map(t=>renderParentTask(t,true)).join('')}</ul>`
+      : '<div class="muted small-text">Пока нет выполненных задач за этот месяц.</div>';
+    const txHtml=parentTxs.length
+      ? `<div class="parent-tx-list">${parentTxs.map(tx=>`<div class="parent-tx-item"><div class="parent-tx-main"><div class="parent-tx-title">${esc(tx.description)}</div><div class="parent-tx-meta">${formatDate(tx.date)}</div></div><div class="parent-tx-amount amount ${tx.type}">${tx.type==='income'?'+':'−'}${money(tx.amount)}</div></div>`).join('')}</div>`
+      : '<div class="muted small-text">Операций с привязкой к этому родителю за выбранный месяц нет.</div>';
+    grid.innerHTML=`<article class="panel parent-detail">
+      <div class="parent-detail-head"><div class="person-head"><div class="avatar">${esc(String(state.parents.indexOf(p)+1).padStart(2,'0'))}</div><div class="person-main"><div class="person-name">${esc(p.name)}</div><div class="person-sub">Ребёнок: ${esc(child?.name||'не указан')}</div></div></div><div class="card-actions"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">✎ Изменить данные</button><button type="button" class="btn small" data-add-contribution="${esc(p.id)}">＋ Взнос</button></div></div>
+      <div class="parent-stats"><div class="mini-stat"><span>Внесено за выбранный месяц</span><b>${money(contributed)}</b></div><div class="mini-stat"><span>Внесено за всё время</span><b>${money(contributedAll)}</b></div><div class="mini-stat"><span>Открытые задачи</span><b style="color:${pending.length?'var(--yellow)':'var(--green)'}">${pending.length}</b></div><div class="mini-stat"><span>Задач выполнено за месяц</span><b>${completed.length} из ${tasksInMonth.length}</b></div></div><p class="parent-contribution-note">Итог включает поступления из «Финансов» и взносы, указанные в задачах со сбором средств. Один платёж учитывайте только в одном месте, иначе статистика сложит его дважды.</p>
+      <div class="parent-detail-columns">
+        <section class="parent-detail-section"><div class="parent-section-head"><h3>Открытые задачи</h3><span class="pill ${pending.length?'warn':'good'}">${pending.length?`${pending.length} ${plural(pending.length,['задача','задачи','задач'])}`:'Нет открытых задач'}</span></div>${pendingHtml}<h3>Выполненные задачи за месяц</h3>${completedHtml}</section>
+        <section class="parent-detail-section"><h3>Информация о ребёнке</h3><div class="child-info-box"><p class="child-info-row"><span>Имя:</span> ${esc(child?.name||'Не указано')}</p><p class="child-info-row"><span>Дата рождения:</span> ${child?.birthday?formatDate(child.birthday):'Не указана'}</p><p class="child-info-row"><span>Ближайший день рождения:</span> ${esc(bday?.label||'Дата рождения не указана')}</p><p class="child-info-row"><span>Предпочтения в подарках:</span> ${esc(child?.giftPreferences?.trim()||'Не заполнены')}</p><p class="child-info-row"><span>Предпочтения в еде:</span> ${esc(child?.foodPreferences?.trim()||'Не заполнены')}</p></div><h3>Операции за ${esc(monthLabel(currentMonth()))}</h3>${txHtml}</section>
+      </div>
+    </article>`;
+  }
+  function birthdayInfo(birthday) {
+    if(!birthday || !/^\d{4}-\d{2}-\d{2}$/.test(birthday)) return {label:'Дата рождения не указана',days:null,today:false,next:''};
+    const [,mm,dd]=birthday.split('-').map(Number); const now=new Date(); const start=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
+    let year=now.getFullYear(); let next=Date.UTC(year,mm-1,dd);
+    // For a 29 February birthday in non-leap years, observe it on 1 March.
+    const candidate = y => { const dt=new Date(Date.UTC(y,mm-1,dd)); if(mm===2&&dd===29&&dt.getUTCMonth()!==1)return Date.UTC(y,2,1); return dt.getTime(); };
+    next=candidate(year); if(next<start) next=candidate(++year);
+    const days=Math.round((next-start)/86400000); const date=new Date(next); const nextStr=`${pad2(date.getUTCDate())}.${pad2(date.getUTCMonth()+1)}.${date.getUTCFullYear()}`;
+    return {label:days===0?'Сегодня день рождения!':days===1?'Завтра день рождения':`Через ${days} ${plural(days,['день','дня','дней'])}`,days,today:days===0,next:nextStr};
+  }
+  function renderKids() {
+    $('kidsCount').textContent=`${state.children.length} ${plural(state.children.length,['ребёнок','ребёнка','детей'])}`;
+    const grid=$('kidsGrid');
+    if(!state.children.length){grid.innerHTML='<div class="empty"><strong>Пока нет детей</strong>Добавьте пару во вкладке «Настройки».</div>';return;}
+    // Сначала показываем детей, у которых ближайший день рождения наступит раньше.
+    // Дети без указанной даты идут в конце; при равном сроке сохраняется исходный порядок.
+    const sortedChildren=state.children.map((child,index)=>({child,index,days:birthdayInfo(child.birthday).days}))
+      .sort((a,b)=>(a.days??Infinity)-(b.days??Infinity)||a.index-b.index)
+      .map(item=>item.child);
+    grid.innerHTML=sortedChildren.map((c,i)=>{
+      const parent=state.parents.find(p=>p.childId===c.id), b=birthdayInfo(c.birthday);
+      return `<article class="panel kid-card"><div class="person-head"><div class="avatar">♡</div><div class="person-main"><div class="person-name">${esc(c.name)}</div><div class="person-sub">Родитель: ${esc(parent?.name||'не указан')}</div></div></div><div class="kid-date"><span class="muted small-text">День рождения: ${formatDate(c.birthday)}</span><span class="birthday-count ${b.today?'today':''}">${esc(b.label)}</span></div><div class="gift-box"><h4>Предпочтения в подарках</h4><p>${esc(c.giftPreferences.trim()||'Пока не заполнено')}</p></div><div class="gift-box"><h4>Предпочтения в еде</h4><p>${esc(c.foodPreferences.trim()||'Пока не заполнено')}</p></div><div class="card-actions"><button type="button" class="btn small" data-edit-child="${esc(c.id)}">✎ Изменить данные</button></div></article>`;
+    }).join('');
+  }
+  function renderTasks() {
+    const allTasks=monthTasks().slice().sort((a,b)=>(a.dueDate||'9999-99-99').localeCompare(b.dueDate||'9999-99-99'));
+    const root=$('tasksList');
+    $('hideCompletedTasks').checked=hideCompletedTasks;
+    const tasks=hideCompletedTasks?allTasks.filter(t=>!taskIsComplete(t)):allTasks;
+    $('taskFilterCount').textContent=hideCompletedTasks?`${tasks.length} из ${allTasks.length} задач`:`${allTasks.length} ${plural(allTasks.length,['задача','задачи','задач'])}`;
+    if(!allTasks.length){root.innerHTML='<div class="empty"><strong>В этом месяце задач пока нет</strong>Создайте задачу выше — например, сбор на праздник. После этого можно отмечать исполнение отдельно для каждого родителя.</div>';return;}
+    if(!tasks.length){root.innerHTML='<div class="empty"><strong>Все задачи выполнены</strong>Снимите галочку «Скрыть выполненные», чтобы посмотреть их снова.</div>';return;}
+    root.innerHTML=tasks.map(task=>{
+      const pr=taskProgress(task); const done=taskIsComplete(task); const collapsed=collapsedTaskIds.has(task.id); const amount=Math.max(0,Number(task.amountPerPerson)||0);
+      let people='';
+      if(amount>0){
+        people=state.parents.map(p=>{
+          const paid=taskPaidAmount(task,p.id), parentDone=taskParentDone(task,p.id), remaining=Math.max(0,amount-paid);
+          const statusLabel=parentDone?(paid>amount?'Переплата':'Выполнено'):(paid>0?'Частично':'Не внесено');
+          const note=parentDone?(paid>amount?`Переплата: ${money(paid-amount)}`:'Взнос выполнен'):(paid>0?`Осталось: ${money(remaining)}`:`К оплате: ${money(amount)}`);
+          return `<div class="task-person amount-person ${parentDone?'completed':''}"><div class="task-person-top"><span class="task-person-name">${esc(p.name)}</span><span class="pill ${parentDone?'good':paid>0?'warn':''}">${statusLabel}</span></div><label class="task-amount-label">Внесено, ₴<input class="task-amount-input" type="number" min="0" step="0.01" inputmode="decimal" value="${paid>0?esc(paid):''}" data-task-amount="${esc(task.id)}" data-parent-id="${esc(p.id)}" aria-label="Сколько внёс ${esc(p.name)} на задачу ${esc(task.title)}" placeholder="0"></label><small class="task-amount-note">${note}</small></div>`;
+        }).join('');
+      } else {
+        people=state.parents.map(p=>{
+          const parentDone=taskParentDone(task,p.id);
+          return `<label class="task-person ${parentDone?'completed':''}"><input type="checkbox" data-task-check="${esc(task.id)}" data-parent-id="${esc(p.id)}" ${parentDone?'checked':''} aria-label="Отметить исполнение: ${esc(p.name)}"><span>${esc(p.name)}<small>${parentDone?'Выполнено':'Не выполнено'}</small></span></label>`;
+        }).join('');
+      }
+      const moneyMeta=amount>0?`<span class="pill ${pr.collected>=pr.target?'good':'warn'}">Собрано ${money(pr.collected)} из ${money(pr.target)}</span><span class="pill">${money(amount)} на человека</span>`:'';
+      return `<article class="task-card ${collapsed?'collapsed':''}" data-task-card="${esc(task.id)}"><div class="task-head"><div style="min-width:0;flex:1"><button class="task-title-toggle" type="button" data-toggle-task="${esc(task.id)}" aria-expanded="${collapsed?'false':'true'}" aria-label="${collapsed?'Развернуть':'Свернуть'} задачу ${esc(task.title)}"><span class="task-title">${esc(task.title)} ${done?'<span class="pill good">✓ Готово</span>':''}</span><span class="task-toggle-indicator" aria-hidden="true">⌄</span></button><div class="task-description">${esc(task.description||'Описание не добавлено')}</div><div class="task-meta"><span class="pill ${done?'good':'warn'}">${pr.done} из ${pr.total} выполнено</span>${task.dueDate?`<span class="pill">Срок: ${formatDate(task.dueDate)}</span>`:''}${moneyMeta}</div></div><div class="card-actions" style="margin:0;flex-wrap:nowrap"><button class="btn small" type="button" data-edit-task="${esc(task.id)}" aria-label="Редактировать задачу">✎</button><button class="btn small danger" type="button" data-delete-task="${esc(task.id)}" aria-label="Удалить задачу">×</button></div></div><div class="task-progress"><span style="width:${pr.ratio}%"></span></div><div class="task-people">${people}</div></article>`;
+    }).join('');
+  }
+  function renderTransactions() {
+    const tbody=$('transactionsBody'); const txs=state.transactions.slice().sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||'').localeCompare(a.createdAt||''));
+    if(!txs.length){tbody.innerHTML='<tr><td colspan="5" class="empty-cell">Финансовых операций пока нет.</td></tr>';return;}
+    tbody.innerHTML=txs.map(tx=>`<tr><td data-label="Дата" class="td-main">${formatDate(tx.date)}</td><td data-label="Операция"><div class="td-main">${tx.type==='income'?'Поступление':'Расход'}</div><div class="td-sub">${esc(tx.description)}</div></td><td data-label="Сумма" class="amount ${tx.type}">${tx.type==='income'?'+':'−'}${money(tx.amount)}</td><td data-label="${tx.type==='income'?'Кто внёс':'Кто потратил'}" class="td-main">${esc(getParent(tx.parentId)?.name||'—')}</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px"><button class="btn small" type="button" data-edit-tx="${esc(tx.id)}" aria-label="Изменить операцию">✎ Изменить</button><button class="btn small danger" type="button" data-delete-tx="${esc(tx.id)}" aria-label="Удалить операцию">× Удалить</button></div></td></tr>`).join('');
+  }
+  function renderRoster() {
+    const tbody=$('rosterBody');
+    if(!state.parents.length){tbody.innerHTML='<tr><td colspan="3" class="empty-cell">Состав группы пока пуст.</td></tr>';return;}
+    tbody.innerHTML=state.parents.map(p=>`<tr><td data-label="Родитель">${esc(p.name)}</td><td data-label="Ребёнок">${esc(childForParent(p)?.name||'—')}</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">Изменить</button><button type="button" class="btn small danger" data-delete-family="${esc(p.id)}">Удалить</button></div></td></tr>`).join('');
+  }
+  function renderParentSelect() {
+    const select=$('txParent'); const current=select.value;
+    select.innerHTML='<option value="">Не указан</option>'+state.parents.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('');
+    if(state.parents.some(p=>p.id===current)) select.value=current;
+  }
+  function renderOverview() {
+    const tasks=monthTasks().filter(t=>!taskIsComplete(t)).slice().sort((a,b)=>(a.dueDate||'9999-99-99').localeCompare(b.dueDate||'9999-99-99'));
+    const tasksRoot=$('overviewTasks');
+    if(!tasksRoot) return;
+    if(!tasks.length){
+      const any=monthTasks().length>0;
+      tasksRoot.innerHTML=`<div class="empty"><strong>${any?'Все задачи выполнены':'Нет задач на этот месяц'}</strong>${any?'На выбранный месяц открытых задач не осталось.':'Создайте задачу или поручение — оно появится здесь.'}</div>`;
+    } else {
+      tasksRoot.innerHTML=tasks.slice(0,6).map(t=>{
+        const pr=taskProgress(t), amount=Math.max(0,Number(t.amountPerPerson)||0);
+        const detail=[`${pr.done} из ${pr.total} выполнено`,t.dueDate?`Срок: ${formatDate(t.dueDate)}`:'Без срока'];
+        if(amount>0) detail.push(`Собрано ${money(pr.collected)} из ${money(pr.target)}`);
+        return `<button type="button" class="overview-item" data-overview-task="${esc(t.id)}"><span class="overview-row-main"><span class="overview-row-title">${esc(t.title)}</span><span class="overview-row-meta">${detail.map(esc).join(' · ')}</span></span><span class="overview-chevron" aria-hidden="true">›</span></button>`;
+      }).join('')+(tasks.length>6?`<button type="button" class="text-action" data-open-tab="tasks">Ещё ${tasks.length-6} задач →</button>`:'');
+    }
+    const upcoming=state.children.map((child,index)=>({child,index,parent:state.parents.find(p=>p.childId===child.id),info:birthdayInfo(child.birthday)}))
+      .filter(x=>x.child.birthday&&x.info.days!==null).sort((a,b)=>a.info.days-b.info.days||a.index-b.index).slice(0,4);
+    $('overviewBirthdays').innerHTML=upcoming.length?upcoming.map(x=>`<div class="overview-row"><div class="overview-row-main"><div class="overview-row-title">${esc(x.child.name)}</div><div class="overview-row-meta">${esc(x.parent?.name||'Родитель не указан')} · ${esc(x.info.next)}</div></div><span class="birthday-count ${x.info.today?'today':''}">${esc(x.info.label)}</span></div>`).join(''):'<div class="empty"><strong>Дни рождения не указаны</strong>Добавьте даты на вкладке «Дети».</div>';
+    const collectionTasks=monthTasks().filter(t=>Number(t.amountPerPerson)>0&&state.parents.some(p=>taskPaidAmount(t,p.id)>0)).slice().sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,6);
+    $('overviewCollections').innerHTML=collectionTasks.length?collectionTasks.map(t=>{
+      const required=Math.max(0,Number(t.amountPerPerson)||0), pr=taskProgress(t);
+      const rows=state.parents.map(p=>({parent:p,paid:taskPaidAmount(t,p.id)})).filter(x=>x.paid>0).map(x=>{
+        const delta=x.paid-required;
+        const status=delta>0.000001?`Переплата: ${money(delta)}`:delta< -0.000001?`Осталось: ${money(-delta)}`:'Взнос выполнен';
+        return `<div class="overview-collection-person"><span class="overview-collection-person-name">${esc(x.parent.name)} · внесено ${money(x.paid)}</span><span class="overview-collection-person-value ${delta>0.000001?'overpaid':''}">${esc(status)}</span></div>`;
+      }).join('');
+      const noPayment=state.parents.filter(p=>taskPaidAmount(t,p.id)<=0).map(p=>p.name);
+      const foot=noPayment.length?`Пока не внесли: ${noPayment.map(esc).join(', ')}`:(state.parents.every(p=>taskPaidAmount(t,p.id)>=required)?'Все участники внесли необходимую сумму':'У всех есть взнос, но часть сумм ещё не набрана');
+      return `<article class="overview-collection-card"><div class="overview-collection-head"><div class="overview-row-title">${esc(t.title)}</div><span class="overview-collection-total">${money(pr.collected)} / ${money(pr.target)}</span></div><div class="overview-row-meta">Сумма на человека: ${money(required)}</div><div class="overview-collection-people">${rows}</div><div class="overview-collection-foot">${foot}</div></article>`;
+    }).join(''):'<div class="empty"><strong>Взносов по задачам пока нет</strong>Когда вы укажете сумму, внесённую родителем, здесь появятся взносы, остатки и переплаты.</div>';
+    const latest=state.transactions.slice().sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,5);
+    $('overviewTransactions').innerHTML=latest.length?latest.map(tx=>`<div class="overview-row"><div class="overview-row-main"><div class="overview-row-title">${esc(tx.description)}</div><div class="overview-row-meta">${formatDate(tx.date)} · ${esc(getParent(tx.parentId)?.name||'Родитель не указан')}</div></div><div class="overview-row-side amount ${tx.type}">${tx.type==='income'?'+':'−'}${money(tx.amount)}</div></div>`).join(''):'<div class="empty"><strong>Операций пока нет</strong>Добавьте поступление или расход во вкладке «Финансы».</div>';
+    $('overviewSubtitle').textContent=`${monthLabel(currentMonth())} · состояние кассы и дел группы`;
+  }
+  function renderAll() { renderSummary(); renderParents(); renderKids(); renderTasks(); renderTransactions(); renderRoster(); renderParentSelect(); renderOverview(); }
+  function isMobileLayout() { return window.matchMedia('(max-width:700px)').matches; }
+  function openModal(title,html) {
+    if($('modalBackdrop').classList.contains('open')) closeModalNow();
+    modalRestore=null;
+    $('modalTitle').textContent=title; $('modalBody').innerHTML=html; $('modalBackdrop').classList.add('open'); document.body.style.overflow='hidden'; navPushModal();
+    const first=$('modalBody').querySelector('input:not([type=hidden]),textarea,select,button'); if(first) setTimeout(()=>first.focus({preventScroll:true}),80);
+  }
+  function openFormDrawer(title,panel,focusId=null) {
+    if(!isMobileLayout()) return false;
+    if($('modalBackdrop').classList.contains('open')) closeModalNow();
+    const marker=document.createComment('form return position');
+    panel.parentNode.insertBefore(marker,panel);
+    modalRestore={panel,marker};
+    $('modalTitle').textContent=title;
+    $('modalBody').innerHTML=''; $('modalBody').appendChild(panel);
+    $('modalBackdrop').classList.add('open'); document.body.style.overflow='hidden'; navPushModal();
+    const focus=focusId?$(focusId):panel.querySelector('input:not([type=hidden]),textarea,select');
+    if(focus) setTimeout(()=>focus.focus({preventScroll:true}),100);
+    return true;
+  }
+  function closeModalNow() {
+    if(modalRestore){
+      const {panel,marker}=modalRestore;
+      if(marker.parentNode) marker.parentNode.insertBefore(panel,marker.nextSibling);
+      marker.remove(); modalRestore=null;
+    }
+    $('modalBackdrop').classList.remove('open'); document.body.style.overflow=''; $('modalBody').innerHTML='';
+  }
+  function closeModal() {
+    const wasOpen=$('modalBackdrop').classList.contains('open');
+    closeModalNow();
+    if(wasOpen && history.state && history.state.nbModal){ try{history.back();}catch(e){} }
+  }
+  function closeDrawerFor(panel){ if(modalRestore?.panel===panel) closeModal(); }
+  function editParent(parentId) {
+    const p=getParent(parentId); if(!p)return; const c=childForParent(p);
+    openModal('Данные семьи',`<form id="parentEditForm"><div class="form-grid"><div class="field span-all"><label for="editParentName">Имя родителя</label><input id="editParentName" required maxlength="100" value="${esc(p.name)}"></div><div class="field span-all"><label for="editChildName">Имя ребёнка</label><input id="editChildName" maxlength="100" value="${esc(c?.name||'')}"></div></div><div class="form-actions"><button class="btn" type="button" data-modal-cancel>Отмена</button><button class="btn primary" type="submit">Сохранить</button></div></form>`);
+    $('parentEditForm').addEventListener('submit',e=>{e.preventDefault();const pn=$('editParentName').value.trim(), cn=$('editChildName').value.trim();if(!pn){showToast('Укажите имя родителя',true);return;}p.name=pn;if(c) c.name=cn||'Без имени';else if(cn){const child={id:makeId(),name:cn,birthday:'',giftPreferences:'',foodPreferences:''};state.children.push(child);p.childId=child.id;}closeModal();markChanged('Данные семьи обновлены');showToast('Данные семьи сохранены');});
+  }
+  function editChild(childId) {
+    const c=getChild(childId); if(!c)return;
+    openModal('Данные ребёнка',`<form id="childEditForm"><div class="form-grid"><div class="field span-all"><label for="editKidName">Имя ребёнка</label><input id="editKidName" required maxlength="100" value="${esc(c.name)}"></div><div class="field span-all"><label for="editKidBirthday">Дата рождения</label><input id="editKidBirthday" type="date" value="${esc(c.birthday)}"></div><div class="field span-all"><label for="editKidGift">Предпочтения в подарках</label><textarea id="editKidGift" maxlength="1600" placeholder="Любимые игрушки, персонажи, цвета, интересы, что лучше не дарить">${esc(c.giftPreferences||'')}</textarea><div class="hint">Идеи для будущих подарков и особенности ребёнка.</div></div><div class="field span-all"><label for="editKidFood">Предпочтения в еде</label><textarea id="editKidFood" maxlength="1600" placeholder="Любимые блюда, нелюбимые продукты, аллергии или ограничения">${esc(c.foodPreferences||'')}</textarea><div class="hint">Укажите любимую еду, продукты, которых следует избегать, и другие важные особенности.</div></div></div><div class="form-actions"><button class="btn" type="button" data-modal-cancel>Отмена</button><button class="btn primary" type="submit">Сохранить</button></div></form>`);
+    $('childEditForm').addEventListener('submit',e=>{e.preventDefault();c.name=$('editKidName').value.trim()||'Без имени';c.birthday=$('editKidBirthday').value;c.giftPreferences=$('editKidGift').value.trim();c.foodPreferences=$('editKidFood').value.trim();closeModal();markChanged('Данные ребёнка обновлены');showToast('Данные ребёнка сохранены');});
+  }
+  function addFamily() {
+    openModal('Добавить семью',`<form id="familyAddForm"><div class="form-grid"><div class="field span-all"><label for="newParentName">Имя родителя *</label><input id="newParentName" required maxlength="100" placeholder="Имя и фамилия"></div><div class="field span-all"><label for="newChildName">Имя ребёнка *</label><input id="newChildName" required maxlength="100" placeholder="Имя и фамилия"></div><div class="field span-all"><label for="newChildBirthday">Дата рождения</label><input id="newChildBirthday" type="date"></div></div><div class="form-actions"><button class="btn" type="button" data-modal-cancel>Отмена</button><button class="btn primary" type="submit">Добавить</button></div></form>`);
+    $('familyAddForm').addEventListener('submit',e=>{e.preventDefault();const pName=$('newParentName').value.trim(), cName=$('newChildName').value.trim();if(!pName||!cName)return;const c={id:makeId(),name:cName,birthday:$('newChildBirthday').value,giftPreferences:'',foodPreferences:''};const p={id:makeId(),name:pName,childId:c.id};state.children.push(c);state.parents.push(p);closeModal();markChanged('Состав группы обновлён');showToast('Семья добавлена');});
+  }
+  function quickContribution(parentId) {
+    if(!state.parents.length){showToast('Сначала добавьте семьи в «Настройках»',true);return;}
+    const pid=parentId||selectedParentId||state.parents[0].id;
+    const opts=state.parents.map(p=>`<option value="${p.id}" ${p.id===pid?'selected':''}>${esc(p.name)}</option>`).join('');
+    const taskChips=monthTasks().filter(t=>Number(t.amountPerPerson)>0).map(t=>`<button type="button" class="btn small" data-qc="${t.amountPerPerson}" data-qc-desc="${esc(t.title)}">${esc(t.title)} · ${money(t.amountPerPerson)}</button>`).join('');
+    openModal('Быстрый взнос',`<form id="qcForm"><div class="form-grid">
+      <div class="field span-all"><label for="qcParent">Кто внёс</label><select id="qcParent">${opts}</select></div>
+      <div class="field span-all"><label for="qcAmount">Сумма, ₴</label><input id="qcAmount" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0" required></div>
+      <div class="span-all qc-chips">${[50,100,200,500,1000].map(v=>`<button type="button" class="btn small" data-qc="${v}">${v}</button>`).join('')}${taskChips}</div>
+      <div class="field span-all"><label for="qcDesc">Назначение</label><input id="qcDesc" value="Взнос" maxlength="120"></div></div>
+      <div class="form-actions"><button type="button" class="btn" data-modal-cancel>Отмена</button><button type="submit" class="btn primary">＋ Внести</button></div></form>`);
+    const form=$('qcForm');
+    form.addEventListener('click',e=>{const b=e.target.closest('[data-qc]');if(!b)return;$('qcAmount').value=b.dataset.qc;if(b.dataset.qcDesc)$('qcDesc').value=b.dataset.qcDesc;});
+    form.addEventListener('submit',e=>{e.preventDefault();const amount=Number($('qcAmount').value);if(!Number.isFinite(amount)||amount<=0){showToast('Укажите сумму больше нуля',true);return;}
+      const par=getParent($('qcParent').value);state.transactions.push({id:makeId(),date:currentDateForMonth(currentMonth()),type:'income',amount,description:$('qcDesc').value.trim()||'Взнос',parentId:par?.id||'',createdAt:new Date().toISOString()});
+      closeModal();markChanged('Взнос внесён');showToast(`Внесено ${money(amount)} · ${par?.name||''}`);});
+    setTimeout(()=>$('qcAmount')?.focus(),120);
+  }
+  function changeMonth(offset) { const [y,m]=currentMonth().split('-').map(Number); const d=new Date(y,m-1+offset,1);monthInput.value=`${d.getFullYear()}-${pad2(d.getMonth()+1)}`; setDefaultTxDate();setTaskFormMode();setTxFormMode();renderAll(); }
+  function exportHtml() {
+    const now = new Date();
+    const day = `${pad2(now.getDate())}.${pad2(now.getMonth()+1)}.${now.getFullYear()}`;
+    const clock = `${pad2(now.getHours())}-${pad2(now.getMinutes())}`;
+    // Двоеточие запрещено в именах файлов Windows, поэтому в имени используется дефис.
+    const fileName = `Блокнот ${day} ${clock}.html`;
+    const embeddedState = JSON.stringify(state).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+    meta.at=Date.now(); meta.dirty=0; saveMeta(); updateBackupUi();
+    const embeddedView = JSON.stringify({month: currentMonth(), activeTab, selectedParentId, collapsedTaskIds:[...collapsedTaskIds], hideCompletedTasks, backupAt:meta.at, theme:currentTheme});
+    let html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    html = html.replace(/const STORAGE_KEY = '[^']*'; \/\/ STORAGE_KEY_MARKER/, `const STORAGE_KEY = 'kindergartenCommitteeData_v1_${now.getTime()}'; // STORAGE_KEY_MARKER`);
+    html = html.replace(/const EMBEDDED_STATE = .*; \/\/ EMBEDDED_STATE_MARKER/, `const EMBEDDED_STATE = ${embeddedState}; // EMBEDDED_STATE_MARKER`);
+    html = html.replace(/const EMBEDDED_VIEW = .*; \/\/ EMBEDDED_VIEW_MARKER/, `const EMBEDDED_VIEW = ${embeddedView}; // EMBEDDED_VIEW_MARKER`);
+    const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = fileName;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500);
+    $('saveNote').innerHTML = `✓ <strong>HTML-файл сохранён: ${esc(fileName)}</strong>`;
+    showToast('Файл скачан. Теперь отправьте его себе в Telegram, на почту или в облако — иначе копия останется только на этом телефоне',false);
+  }
+
+  // Navigation, including deliberate horizontal swipes on phones.
+  const navButtons=[...document.querySelectorAll('nav [data-tab]')];
+  const tabOrder=navButtons.map(btn=>btn.dataset.tab);
+  /* ---- История браузера: «Назад» возвращает на шаг назад (вкладка / окно), а не закрывает файл ---- */
+  let navRestoring=false, navBaseReady=false;
+  function navEnsureBase(){
+    // Выполняется внутри действия пользователя: запись истории для текущей вкладки.
+    // Запись №0 означает «Обзор» (меню), поэтому Назад из любой вкладки ведёт сначала туда.
+    if(navBaseReady) return; navBaseReady=true;
+    if(activeTab!=='overview'){ try{history.pushState({nbNav:true,tab:activeTab},'');}catch(e){} }
+  }
+  function navPushModal(){
+    if(navRestoring || (history.state && history.state.nbModal)) return;
+    navEnsureBase();
+    try{history.pushState({nbNav:true,tab:activeTab,nbModal:true},'');}catch(e){}
+  }
+  try{
+    if(history.state && history.state.nbNav){ navBaseReady=true; history.replaceState({nbNav:true,tab:activeTab},''); }
+    else history.replaceState({nbNav:true,tab:'overview'},'');
+  }catch(e){}
+  ['pointerup','keydown'].forEach(ev=>document.addEventListener(ev,navEnsureBase,{capture:true,once:true}));
+  window.addEventListener('popstate',e=>{
+    const st=e.state;
+    if($('modalBackdrop').classList.contains('open') && !(st && st.nbModal)) closeModalNow();
+    if(st && st.nbNav && st.tab && st.tab!==activeTab){
+      navRestoring=true; try{activateTab(st.tab,true);}finally{navRestoring=false;}
+    }
+  });
+  function activateTab(name, scrollToTop=true) {
+    if(!tabOrder.includes(name)) return;
+    const tabChanged=name!==activeTab;
+    if(tabChanged && !navRestoring) navEnsureBase();
+    activeTab=name;
+    navButtons.forEach(btn=>btn.classList.toggle('active',btn.dataset.tab===name));
+    document.querySelectorAll('.tab').forEach(tab=>tab.classList.toggle('active',tab.id===`tab-${name}`));
+    if(scrollToTop) window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    if(tabChanged && !navRestoring){ try{history.pushState({nbNav:true,tab:name},'');}catch(e){} }
+  }
+  navButtons.forEach(btn=>btn.addEventListener('click',()=>activateTab(btn.dataset.tab,true)));
+  navButtons.forEach(btn=>btn.classList.toggle('active',btn.dataset.tab===activeTab));
+  document.querySelectorAll('.tab').forEach(tab=>tab.classList.toggle('active',tab.id===`tab-${activeTab}`));
+  let swipeStart=null;
+  const mainElement=document.querySelector('main');
+  mainElement.addEventListener('touchstart',e=>{
+    const target=e.target instanceof Element?e.target:null;
+    if(e.touches.length!==1 || !target || !target.closest('.tab.active') || target.closest('input,textarea,select,button,a,label,.table-wrap,.task-people,[contenteditable="true"]') || $('modalBackdrop').classList.contains('open')){swipeStart=null;return;}
+    const t=e.touches[0];
+    if(t.clientX<18 || t.clientX>window.innerWidth-18){swipeStart=null;return;}
+    swipeStart={x:t.clientX,y:t.clientY,time:Date.now()};
+  },{passive:true});
+  mainElement.addEventListener('touchend',e=>{
+    if(!swipeStart || e.changedTouches.length!==1 || $('modalBackdrop').classList.contains('open')){swipeStart=null;return;}
+    const t=e.changedTouches[0],dx=t.clientX-swipeStart.x,dy=t.clientY-swipeStart.y,elapsed=Date.now()-swipeStart.time;
+    swipeStart=null;
+    if(Math.abs(dx)<72 || Math.abs(dy)>62 || elapsed>900)return;
+    const i=tabOrder.indexOf(activeTab),next=i+(dx<0?1:-1);
+    if(next>=0 && next<tabOrder.length)activateTab(tabOrder[next],true);
+  },{passive:true});
+  mainElement.addEventListener('touchcancel',()=>{swipeStart=null;},{passive:true});
+  $('prevMonth').addEventListener('click',()=>changeMonth(-1));$('nextMonth').addEventListener('click',()=>changeMonth(1));$('currentMonth').addEventListener('click',()=>{monthInput.value=monthKey();setDefaultTxDate();setTaskFormMode();setTxFormMode();renderAll();});monthInput.addEventListener('change',()=>{if(!monthInput.value)monthInput.value=monthKey();setDefaultTxDate();setTaskFormMode();setTxFormMode();renderAll();});
+  $('overviewNotes').addEventListener('input',e=>{
+    state.notes=e.target.value.slice(0,10000);
+    $('notesSaveStatus').textContent='Сохранение…';
+    clearTimeout(notesTimer);
+    notesTimer=setTimeout(()=>{
+      try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));$('notesSaveStatus').textContent='Сохранено в браузере';try{cloudChanged();}catch(e){}}
+      catch(err){$('notesSaveStatus').textContent='Сохраните HTML-файл для резервной копии';}
+    },220);
+  });
+  $('saveBtn').addEventListener('click', exportHtml);
+  $('openTaskFormBtn').addEventListener('click',()=>{setTaskFormMode();openFormDrawer('Новая задача',$('taskFormPanel'),'taskTitle');});
+  $('openTxFormBtn').addEventListener('click',()=>{setTxFormMode();openFormDrawer('Новая финансовая операция',$('transactionFormPanel'),'txAmount');});
+  $('openBalanceFormBtn').addEventListener('click',()=>openFormDrawer('Текущий баланс счёта',$('balanceAdjustPanel'),'balanceTarget'));
+  $('closeModal').addEventListener('click',closeModal);$('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});$('modalBody').addEventListener('click',e=>{if(e.target.closest('[data-modal-cancel]'))closeModal();});
+
+  $('taskForm').addEventListener('submit',e=>{e.preventDefault();const title=$('taskTitle').value.trim();if(!title){showToast('Укажите название задачи',true);return;}const data={title,description:$('taskDescription').value.trim(),dueDate:$('taskDue').value,amountPerPerson:Math.max(0,Number($('taskAmount').value)||0)};const wasEdit=!!editingTaskId;if(wasEdit){const t=state.tasks.find(x=>x.id===editingTaskId);if(t){if(Number(t.amountPerPerson)>0&&data.amountPerPerson===0){t.statuses=t.statuses||{};state.parents.forEach(p=>{t.statuses[p.id]=taskParentDone(t,p.id);});}Object.assign(t,data);}}else{const statuses={};state.parents.forEach(p=>statuses[p.id]=false);state.tasks.push({id:makeId(),month:currentMonth(),...data,statuses,createdAt:new Date().toISOString()});}setTaskFormMode();markChanged(wasEdit?'Задача обновлена':'Задача добавлена');closeDrawerFor($('taskFormPanel'));showToast(wasEdit?'Изменения задачи сохранены':'Задача добавлена');});
+  $('cancelTaskEdit').addEventListener('click',()=>{setTaskFormMode();closeDrawerFor($('taskFormPanel'));});
+  $('hideCompletedTasks').addEventListener('change',e=>{hideCompletedTasks=e.target.checked;renderTasks();});
+  $('tasksList').addEventListener('change',e=>{
+    const cb=e.target.closest('[data-task-check]');
+    if(cb){const t=state.tasks.find(x=>x.id===cb.dataset.taskCheck);if(!t)return;t.statuses=t.statuses||{};t.statuses[cb.dataset.parentId]=cb.checked;markChanged('Отметка исполнения сохранена');return;}
+    const input=e.target.closest('[data-task-amount]');
+    if(input){const t=state.tasks.find(x=>x.id===input.dataset.taskAmount);if(!t)return;t.statuses=t.statuses||{};const raw=input.value.trim();const value=raw===''?0:Number(raw);if(!Number.isFinite(value)||value<0){showToast('Укажите сумму от нуля и выше',true);setTimeout(()=>renderTasks(),0);return;}t.statuses[input.dataset.parentId]=value;persist('Частичный взнос по задаче сохранён');setTimeout(()=>renderAll(),0);}
+  });
+  $('tasksList').addEventListener('click',e=>{
+    const toggle=e.target.closest('[data-toggle-task]');
+    if(toggle){const id=toggle.dataset.toggleTask;if(collapsedTaskIds.has(id))collapsedTaskIds.delete(id);else collapsedTaskIds.add(id);renderTasks();return;}
+    const edit=e.target.closest('[data-edit-task]');const del=e.target.closest('[data-delete-task]');
+    if(edit){const t=state.tasks.find(x=>x.id===edit.dataset.editTask);setTaskFormMode(t);if(isMobileLayout())openFormDrawer('Изменить задачу',$('taskFormPanel'),'taskTitle');else $('taskForm').scrollIntoView({behavior:'smooth',block:'center'});}
+    if(del){const t=state.tasks.find(x=>x.id===del.dataset.deleteTask);if(t&&confirm(`Удалить задачу «${t.title}» и все её отметки?`)){state.tasks=state.tasks.filter(x=>x.id!==t.id);collapsedTaskIds.delete(t.id);setTaskFormMode();markChanged('Задача удалена');showToast('Задача удалена');}}
+  });
+  $('overviewTasks').addEventListener('click',e=>{const item=e.target.closest('[data-overview-task]');if(!item)return;const id=item.dataset.overviewTask;collapsedTaskIds.delete(id);activateTab('tasks',true);renderTasks();requestAnimationFrame(()=>{const card=document.querySelector(`[data-task-card="${CSS.escape(id)}"]`);if(card)card.scrollIntoView({behavior:'smooth',block:'center'});});});
+  document.addEventListener('click',e=>{const btn=e.target.closest('[data-open-tab]');if(btn)activateTab(btn.dataset.openTab,true);});
+  document.querySelectorAll('[data-overview-action]').forEach(btn=>btn.addEventListener('click',()=>{
+    const tab=btn.dataset.overviewAction;activateTab(tab,true);
+    if(isMobileLayout()){
+      if(tab==='tasks'){setTaskFormMode();openFormDrawer('Новая задача',$('taskFormPanel'),'taskTitle');}
+      else{setTxFormMode();openFormDrawer('Новая финансовая операция',$('transactionFormPanel'),'txAmount');}
+      return;
+    }
+    setTimeout(()=>{const target=tab==='tasks' ? $('taskForm') : $('transactionForm');target?.scrollIntoView({behavior:'smooth',block:'center'});const focus=tab==='tasks'?'taskTitle':'txAmount';$(focus)?.focus({preventScroll:true});},80);
+  }));
+
+  $('balanceForm').addEventListener('submit',e=>{e.preventDefault();const target=Number($('balanceTarget').value);if(!Number.isFinite(target)){showToast('Укажите корректную сумму баланса',true);return;}state.balanceAdjustment=target-(totalIncome()-totalExpense());markChanged('Текущий баланс счёта установлен');closeDrawerFor($('balanceAdjustPanel'));showToast(`Текущий баланс установлен: ${money(balance())}`);});
+  $('txType').addEventListener('change',updateTxParentLabel);
+  $('transactionForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('txAmount').value);const desc=$('txDescription').value.trim();if(!Number.isFinite(amount)||amount<=0){showToast('Сумма должна быть больше нуля',true);return;}if(!desc){showToast('Укажите назначение операции',true);return;}const d={date:$('txDate').value||currentDateForMonth(currentMonth()),type:$('txType').value,amount,description:desc,parentId:$('txParent').value};if(editingTxId){const t=state.transactions.find(x=>x.id===editingTxId);if(t)Object.assign(t,d);}else state.transactions.push({id:makeId(),...d,createdAt:new Date().toISOString()});const wasEdit=!!editingTxId;setTxFormMode();markChanged(wasEdit?'Операция обновлена':'Операция добавлена');closeDrawerFor($('transactionFormPanel'));showToast(wasEdit?'Операция обновлена':'Операция добавлена');});
+  $('cancelTxEdit').addEventListener('click',()=>{setTxFormMode();closeDrawerFor($('transactionFormPanel'));});
+  $('transactionsBody').addEventListener('click',e=>{const edit=e.target.closest('[data-edit-tx]'),del=e.target.closest('[data-delete-tx]');if(edit){const tx=state.transactions.find(t=>t.id===edit.dataset.editTx);setTxFormMode(tx);if(isMobileLayout())openFormDrawer('Изменить операцию',$('transactionFormPanel'),'txAmount');else $('transactionForm').scrollIntoView({behavior:'smooth',block:'center'});}if(del){const tx=state.transactions.find(t=>t.id===del.dataset.deleteTx);if(tx&&confirm(`Удалить операцию «${tx.description}» на сумму ${money(tx.amount)}?`)){state.transactions=state.transactions.filter(t=>t.id!==tx.id);setTxFormMode();markChanged('Операция удалена');showToast('Операция удалена');}}});
+  $('parentSelect').addEventListener('change',()=>{selectedParentId=$('parentSelect').value;renderParents();});
+  $('parentsGrid').addEventListener('change',e=>{
+    const amountInput=e.target.closest('[data-parent-task-amount]');
+    if(amountInput){
+      const task=state.tasks.find(t=>t.id===amountInput.dataset.parentTaskAmount), parentId=amountInput.dataset.parentId;
+      if(!task||!getParent(parentId)||!(Number(task.amountPerPerson)>0))return;
+      const raw=amountInput.value.trim(), value=raw===''?0:Number(raw);
+      if(!Number.isFinite(value)||value<0){showToast('Укажите сумму от нуля и выше',true);setTimeout(()=>renderAll(),0);return;}
+      task.statuses=task.statuses||{};
+      task.statuses[parentId]=value;
+      markChanged('Взнос по задаче обновлён');
+      showToast(`Внесено ${money(value)} на задачу «${task.title}»`);
+      return;
+    }
+    const toggle=e.target.closest('[data-parent-task-toggle]');
+    if(!toggle)return;
+    const task=state.tasks.find(t=>t.id===toggle.dataset.parentTaskToggle), parentId=toggle.dataset.parentId;
+    if(!task||!getParent(parentId))return;
+    task.statuses=task.statuses||{};
+    const required=Math.max(0,Number(task.amountPerPerson)||0);
+    if(required>0){
+      task.statuses[parentId]=toggle.checked?Math.max(required,taskPaidAmount(task,parentId)):0;
+    } else task.statuses[parentId]=toggle.checked;
+    markChanged(toggle.checked?'Задача отмечена выполненной':'Выполнение задачи отменено');
+    showToast(toggle.checked?'Задача отмечена выполненной':'Отметка выполнения снята');
+  });
+  $('parentsGrid').addEventListener('click',e=>{const edit=e.target.closest('[data-edit-parent]'),contrib=e.target.closest('[data-add-contribution]');if(edit)editParent(edit.dataset.editParent);if(contrib)quickContribution(contrib.dataset.addContribution);});
+  $('kidsGrid').addEventListener('click',e=>{const edit=e.target.closest('[data-edit-child]');if(edit)editChild(edit.dataset.editChild);});
+  $('rosterBody').addEventListener('click',e=>{const edit=e.target.closest('[data-edit-parent]'),del=e.target.closest('[data-delete-family]');if(edit)editParent(edit.dataset.editParent);if(del){const p=getParent(del.dataset.deleteFamily);if(!p)return;if(confirm(`Удалить семью «${p.name}» из списка? Связанные с родителем операции сохранятся в истории, но родитель больше не будет отображаться в списке.`)){state.parents=state.parents.filter(x=>x.id!==p.id);state.tasks.forEach(t=>{if(t.statuses)delete t.statuses[p.id];});markChanged('Состав группы обновлён');showToast('Родитель удалён из состава');}}});
+  $('addFamilyBtn').addEventListener('click',addFamily);
+
+
+  /* ===== Сохранность данных ===== */
+  const META_KEY=STORAGE_KEY+'_backupmeta';
+  const meta={at:0,dirty:0};
+  try{Object.assign(meta,JSON.parse(localStorage.getItem(META_KEY)||'{}'));}catch(e){}
+  meta.at=Math.max(Number(meta.at)||0,Number(EMBEDDED_VIEW?.backupAt)||0);
+  function saveMeta(){try{localStorage.setItem(META_KEY,JSON.stringify(meta));}catch(e){}}
+  function backupAgeText(){if(!meta.at)return 'ещё ни разу';const d=Math.floor((Date.now()-meta.at)/864e5);return d<=0?'сегодня':d===1?'вчера':`${d} ${plural(d,['день','дня','дней'])} назад`;}
+  let bannerHidden=false;
+  function updateBackupUi(){
+    const age=meta.at?(Date.now()-meta.at)/864e5:Infinity;
+    const need=(meta.dirty>0&&(age>2||meta.dirty>=8))||age>7;
+    const b=$('backupBanner');
+    if(b){b.hidden=bannerHidden||!need;b.classList.toggle('critical',!meta.at||age>7);
+      $('backupBannerText').innerHTML=`<strong>Сохраните копию данных!</strong> Всё хранится только в браузере этого телефона. Если очистить историю, сменить телефон или открыть файл в другом месте — <strong>все данные пропадут</strong>. Последняя копия: ${backupAgeText()}${meta.dirty?` · несохранённых изменений: ${meta.dirty}`:''}.`;}
+    const l=$('safetyLast');if(l)l.textContent=`${backupAgeText()}${meta.dirty?` · изменений после копии: ${meta.dirty}`:''}`;
+  }
+  if(!$('backupBanner')){
+    document.querySelector('main').insertAdjacentHTML('afterbegin',`<div class="backup-banner" id="backupBanner" hidden><div id="backupBannerText"></div><div class="backup-actions"><button type="button" class="btn primary small" id="backupNow">⇩ Сохранить копию</button><button type="button" class="btn small" id="backupLater">Позже</button></div></div>`);
+  }
+  if(!$('safetyPanel')){
+    document.querySelector('#tab-settings .page-head').insertAdjacentHTML('afterend',`<div class="panel safety-panel" id="safetyPanel"><h3>🛟 Сохранность данных</h3><p class="muted small-text">Данные живут только в браузере этого устройства. Их можно потерять: очистка браузера, режим инкогнито, сброс телефона, нехватка памяти или потеря телефона. Единственная надёжная копия — скачанный HTML-файл.</p><p style="margin:8px 0">Последняя копия: <strong id="safetyLast"></strong></p><ol class="small-text muted" style="margin:0 0 12px;padding-left:18px"><li>Нажмите «Сохранить» — скачается файл.</li><li>Отправьте его себе в Telegram/Viber, на почту или в облако.</li><li>Делайте это после каждого сбора денег и раз в неделю.</li></ol><button type="button" class="btn primary" id="safetyNow">⇩ Сохранить копию сейчас</button></div>`);
+  }
+  ['backupNow','safetyNow'].forEach(id=>$(id)?.addEventListener('click',exportHtml));
+  $('backupLater')?.addEventListener('click',()=>{bannerHidden=true;updateBackupUi();});
+  window.addEventListener('beforeunload',e=>{const age=meta.at?(Date.now()-meta.at)/864e5:Infinity;if(meta.dirty>0&&age>1){e.preventDefault();e.returnValue='';}});
+  try{navigator.storage?.persist?.();}catch(e){}
+
+  /* ===== Шаблоны задач ===== */
+  const TASK_TEMPLATES=[
+    ['🎉 Праздник','Сбор на праздник','Сбор средств на праздник группы. Укажите, на что идут деньги и реквизиты для перевода.'],
+    ['🎁 Подарок на ДР','Подарок имениннику','Общий подарок имениннику. Сумма и реквизиты — по договорённости в чате.'],
+    ['✏️ Канцелярия','Канцелярия для группы','Закупка канцтоваров и расходных материалов для группы.'],
+    ['🧹 Субботник','Уборка / субботник','Кто, когда и что приносит. Отметьте участников в списке семей.'],
+    ['🚌 Экскурсия','Экскурсия','Транспорт, билеты, список участников и ответственный.'],
+    ['🧸 Игрушки и ремонт','Игрушки и ремонт в группе','Покупка или ремонт игрушек, мебели, оформление группы.']];
+  if(!document.querySelector('.tpl-chips')){
+    $('taskTitle').closest('.field').insertAdjacentHTML('beforebegin',`<div class="field span-all"><label>Шаблон задачи</label><div class="tpl-chips">${TASK_TEMPLATES.map((t,i)=>`<button type="button" class="btn small" data-tpl="${i}">${t[0]}</button>`).join('')}</div></div>`);
+  }
+  $('taskForm').addEventListener('click',e=>{const b=e.target.closest('[data-tpl]');if(!b)return;const t=TASK_TEMPLATES[b.dataset.tpl];$('taskTitle').value=t[1];$('taskDescription').value=t[2];(Number($('taskAmount').value)>0?$('taskTitle'):$('taskAmount')).focus();});
+
+  /* ===== Отчёт для родителей ===== */
+  function buildReport(opt){
+    const m=currentMonth(),txs=monthTransactions().slice().sort((a,b)=>a.date.localeCompare(b.date));
+    const inc=totalIncome(txs),exp=totalExpense(txs),short=d=>formatDate(d).slice(0,5);
+    const L=[`📋 Отчёт родительского комитета за ${monthLabel(m)}`,'',`💰 Поступило: ${money(inc)}`,`🧾 Потрачено: ${money(exp)}`,`🏦 Остаток в кассе (всего): ${money(balance())}`];
+    const ex=txs.filter(t=>t.type==='expense');
+    L.push('','Расходы:');ex.length?ex.forEach(t=>L.push(`• ${short(t.date)} — ${t.description}: ${money(t.amount)}`)):L.push('• расходов не было');
+    if(opt.contrib){const by={};txs.filter(t=>t.type==='income').forEach(t=>{const n=getParent(t.parentId)?.name||'Без указания';by[n]=(by[n]||0)+t.amount;});
+      L.push('','Взносы:');const k=Object.keys(by);k.length?k.forEach(n=>L.push(`• ${n}: ${money(by[n])}`)):L.push('• взносов не было');}
+    const tasks=monthTasks();
+    if(tasks.length){L.push('','Задачи:');tasks.forEach(t=>{const pr=taskProgress(t),req=Number(t.amountPerPerson)||0;
+      const paid=state.parents.reduce((a,p)=>a+taskPaidAmount(t,p.id),0);
+      L.push(`• ${t.title}${t.dueDate?` (до ${short(t.dueDate)})`:''} — выполнено ${pr.done} из ${pr.total}${req>0?`, собрано ${money(paid)} из ${money(req*pr.total)}`:''}`);
+      if(opt.debtors){const nd=state.parents.filter(p=>!taskParentDone(t,p.id)).map(p=>p.name);if(nd.length&&nd.length<pr.total)L.push(`   ещё не сдали/не выполнили: ${nd.join(', ')}`);}});}
+    L.push('','Спасибо всем за участие! 💛');return L.join('\n');
+  }
+  function openReport(){
+    openModal('Отчёт для родителей',`<div class="form-grid"><div class="span-all"><label class="inline-check"><input type="checkbox" id="rpContrib" checked> Список взносов по семьям</label></div><div class="span-all"><label class="inline-check"><input type="checkbox" id="rpDebtors"> Показать, кто ещё не сдал</label></div><div class="field span-all"><label for="rpText">Текст (можно править)</label><textarea id="rpText" rows="14"></textarea></div></div><div class="form-actions"><button type="button" class="btn" id="rpShare" hidden>Поделиться</button><button type="button" class="btn primary" id="rpCopy">Скопировать</button></div>`);
+    const gen=()=>{$('rpText').value=buildReport({contrib:$('rpContrib').checked,debtors:$('rpDebtors').checked});};
+    gen();$('rpContrib').onchange=gen;$('rpDebtors').onchange=gen;
+    $('rpCopy').onclick=async()=>{const t=$('rpText');try{await navigator.clipboard.writeText(t.value);}catch(e){t.select();document.execCommand('copy');}showToast('Отчёт скопирован — вставьте в чат группы');};
+    if(navigator.share){$('rpShare').hidden=false;$('rpShare').onclick=()=>navigator.share({text:$('rpText').value}).catch(()=>{});}
+  }
+
+  /* ===== Кнопки на «Обзоре» ===== */
+  const oa=document.querySelector('.overview-actions');
+  if(oa&&!$('ovQuick')){oa.insertAdjacentHTML('beforeend','<button type="button" class="btn" id="ovQuick">💸 Быстрый взнос</button><button type="button" class="btn" id="ovReport">📄 Отчёт для родителей</button>');}
+  $('ovQuick')?.addEventListener('click',()=>quickContribution());
+  $('ovReport')?.addEventListener('click',openReport);
+  updateBackupUi();
+
+
+  /* ===== Цветовые темы ===== */
+  const THEME_KEY='committeeThemeV1';
+  const THEMES=[['auto','Авто','#fbf6ee','#171419'],['mono','Чёрно-белая','#0a0a0a','#f4f4f4'],['violet','Фиолет','#0f0a1a','#9d8fcf'],['midnight','Полночь','#0a101c','#7a9fd1'],['emerald','Изумруд','#08130f','#6bb59a'],['amber','Янтарь','#130f0a','#d1ac5e'],['light','Светлая','#fbf6ee','#3d958b']];
+  let currentTheme='auto';
+  try{currentTheme=localStorage.getItem(THEME_KEY)||EMBEDDED_VIEW?.theme||'auto';}catch(e){currentTheme=EMBEDDED_VIEW?.theme||'auto';}
+  const themeGridHtml=()=>`<div class="theme-grid">${THEMES.map(t=>`<button type="button" class="theme-swatch" data-theme-pick="${t[0]}" style="--sb:${t[2]};--sa:${t[3]}"><span class="dot"></span>${t[1]}</button>`).join('')}</div>`;
+  function applyTheme(t){
+    if(!THEMES.some(x=>x[0]===t))t='auto';
+    currentTheme=t;document.documentElement.dataset.theme=t;
+    try{localStorage.setItem(THEME_KEY,t);}catch(e){}
+    document.querySelector('meta[name=theme-color]')?.setAttribute('content',getComputedStyle(document.body).backgroundColor);
+    document.querySelectorAll('[data-theme-pick]').forEach(b=>b.classList.toggle('active',b.dataset.themePick===t));
+  }
+  if(!$('themePanel')){
+    const anchor=$('safetyPanel')||document.querySelector('#tab-settings .page-head');
+    anchor.insertAdjacentHTML('afterend',`<div class="panel" id="themePanel" style="margin-bottom:14px"><h3>🎨 Цветовая тема</h3><p class="muted small-text" style="margin:0 0 10px">Выбор запоминается на этом устройстве и сохраняется в скачанном файле.</p>${themeGridHtml()}</div>`);
+  }
+  const ha=document.querySelector('.header-actions');
+  if(ha&&!$('themeBtn'))ha.insertAdjacentHTML('afterbegin','<button type="button" class="btn icon" id="themeBtn" aria-label="Цветовая тема" title="Цветовая тема">🎨</button>');
+  $('themeBtn')?.addEventListener('click',()=>{openModal('Цветовая тема',themeGridHtml());applyTheme(currentTheme);});
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-theme-pick]');if(b)applyTheme(b.dataset.themePick);});
+  applyTheme(currentTheme);
+
+  // Normalize references on initial load. Missing statuses remain unchecked.
+  state.tasks.forEach(t=>{t.statuses=t.statuses||{};state.parents.forEach(p=>{const v=t.statuses[p.id];if(typeof v!=='boolean'&&!(typeof v==='number'&&Number.isFinite(v)&&v>=0))t.statuses[p.id]=false;});});
+  $('hideCompletedTasks').checked=hideCompletedTasks;
+  setDefaultTxDate();setTxFormMode();renderAll();persist('Данные готовы к работе');
+
+  /* ================= Облачное хранилище (Cloudflare Worker + KV) ================= */
+  const DEFAULT_CLOUD_URL = '';
+  const K_URL='committeeCloudUrlV1', K_PASS='committeeCloudPassV1', K_REV='committeeCloudRevV1', K_PEND='committeeCloudPendingV1';
+  const CL = {url:'', pass:'', rev:0, ready:false, timer:0, pushing:false, poll:0};
+  const lsGet = k => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
+  const lsSet = (k,v) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} };
+  const clNote = (t, cls='') => { const el=$('cloudNote'); if(el){ el.className='save-note '+cls; el.innerHTML=t; } };
+  const hhmm = (ts=Date.now()) => { const d=new Date(ts); return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`; };
+  CL.url = (lsGet(K_URL) || DEFAULT_CLOUD_URL).replace(/\/+$/,'');
+  CL.pass = lsGet(K_PASS);
+  CL.rev = Number(lsGet(K_REV)) || 0;
+
+  async function api(method, path, body){
+    const r = await fetch(CL.url + path, {method, headers:Object.assign({'X-Pass':CL.pass}, body ? {'Content-Type':'application/json'} : {}), body: body ? JSON.stringify(body) : undefined});
+    let j = {}; try { j = await r.json(); } catch (e) {}
+    return {status:r.status, ...j};
+  }
+  function applyServerState(st, rev){
+    state = normalizeState(st);
+    state.tasks.forEach(t=>{t.statuses=t.statuses||{};});
+    CL.rev = rev; lsSet(K_REV, String(rev)); lsSet(K_PEND, null);
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    $('overviewNotes').value = state.notes || '';
+    setDefaultTxDate(); renderAll();
+  }
+  async function pushNow(){
+    if (!CL.ready || CL.pushing) return;
+    CL.pushing = true; clearTimeout(CL.timer);
+    try {
+      const sent = JSON.stringify(state);
+      const r = await api('PUT', '/state', {state, baseRev:CL.rev});
+      if (r.status === 200) {
+        CL.rev = r.rev; lsSet(K_REV, String(r.rev));
+        if (JSON.stringify(state) === sent) { lsSet(K_PEND, null); clNote(`☁ <strong>Сохранено в облаке · ${hhmm(r.at)}</strong>`, 'ok'); }
+        else { CL.pushing = false; return pushNow(); }
+      } else if (r.status === 409) {
+        const mine = confirm('Данные в облаке изменили с другого устройства.\n\nОК — загрузить версию из облака (ваши последние правки на этом устройстве пропадут).\nОтмена — перезаписать облако своей версией.');
+        if (mine) { applyServerState(r.state, r.rev); clNote(`☁ <strong>Загружена версия из облака · ${hhmm()}</strong>`, 'ok'); }
+        else { CL.rev = r.rev; lsSet(K_REV, String(r.rev)); CL.pushing = false; return pushNow(); }
+      } else if (r.status === 401) { clNote('⚠ Пароль больше не подходит — войдите заново', 'err'); CL.ready = false; showLock('Пароль не подошёл. Введите заново.'); }
+      else { clNote(`⚠ Облако ответило ошибкой (${r.status}). Изменения сохранены на этом устройстве, отправлю позже`, 'err'); scheduleRetry(); }
+    } catch (e) { clNote('⚠ Нет связи. Изменения сохранены на этом устройстве, отправлю позже', 'err'); scheduleRetry(); }
+    CL.pushing = false;
+  }
+  const scheduleRetry = () => { clearTimeout(CL.timer); CL.timer = setTimeout(pushNow, 20000); };
+  cloudChanged = () => {
+    if (!CL.ready) return;
+    lsSet(K_PEND, '1'); clNote('☁ Сохраняю…');
+    clearTimeout(CL.timer); CL.timer = setTimeout(pushNow, 700);
+  };
+  window.addEventListener('online', () => { if (CL.ready && lsGet(K_PEND)) pushNow(); });
+  async function pollRemote(){
+    if (!CL.ready || CL.pushing || document.hidden || lsGet(K_PEND) || $('modalBackdrop')?.classList.contains('open')) return;
+    try {
+      const r = await api('GET', '/state?rev=' + CL.rev);
+      if (r.status === 200 && !r.unchanged && r.state && r.rev !== CL.rev && !lsGet(K_PEND)) { applyServerState(r.state, r.rev); showToast('Данные обновлены с другого устройства'); clNote(`☁ <strong>Обновлено из облака · ${hhmm()}</strong>`, 'ok'); }
+    } catch (e) {}
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) pollRemote(); });
+
+  /* ---- окно входа ---- */
+  const lock = $('cloudLock'), clErr = $('clErr');
+  function showLock(msg){ lock.hidden = false; clErr.textContent = msg || ''; $('clUrlWrap').hidden = !!(CL.url && DEFAULT_CLOUD_URL) && !msg?.includes('адрес'); if (!CL.url) $('clUrlWrap').hidden = false; $('clPass').value = ''; setTimeout(() => ($('clUrlWrap').hidden ? $('clPass') : $('clUrl')).focus(), 50); }
+  function enter(){ lock.hidden = true; CL.ready = true; $('cloudLogout').hidden = false; clearInterval(CL.poll); CL.poll = setInterval(pollRemote, 30000); }
+  async function login(auto){
+    clErr.textContent = '';
+    if (!auto) { CL.url = ($('clUrl').value.trim() || CL.url).replace(/\/+$/,''); CL.pass = $('clPass').value; }
+    if (!CL.url) { clErr.textContent = 'Укажите адрес хранилища'; $('clUrlWrap').hidden = false; return; }
+    if (!CL.pass) { clErr.textContent = 'Введите пароль'; return; }
+    $('clGo').disabled = true; $('clGo').textContent = 'Входим…';
+    try {
+      const r = await api('GET', '/state');
+      if (r.status === 401) { clErr.textContent = 'Неверный пароль'; lsSet(K_PASS, null); showLock('Неверный пароль'); return; }
+      if (r.status !== 200) { clErr.textContent = 'Хранилище ответило ошибкой: ' + (r.error || r.status); return; }
+      lsSet(K_URL, CL.url);
+      if (!auto || true) { if ($('clRemember').checked) lsSet(K_PASS, CL.pass); else lsSet(K_PASS, null); }
+      if (r.state) {
+        const pend = lsGet(K_PEND) === '1', localRev = Number(lsGet(K_REV)) || 0;
+        if (pend && r.rev === localRev) { enter(); await pushNow(); return; }
+        if (pend && r.rev !== localRev && !confirm('На этом устройстве есть неотправленные правки, а в облаке данные уже новее.\n\nОК — взять версию из облака (правки с этого устройства пропадут).\nОтмена — отправить мою версию поверх облачной.')) { CL.rev = r.rev; enter(); await pushNow(); return; }
+        applyServerState(r.state, r.rev); enter(); clNote(`☁ <strong>Данные загружены из облака · ${hhmm()}</strong>`, 'ok');
+      } else {
+        $('clSeed').hidden = false; $('clGo').hidden = true;
+        $('clSub').textContent = 'Пароль принят.'; CL.rev = 0;
+      }
+    } catch (e) {
+      clErr.textContent = 'Нет связи с хранилищем.';
+      if (state.parents.length || state.tasks.length || state.transactions.length) $('clOffline').hidden = false;
+    } finally { $('clGo').disabled = false; $('clGo').textContent = 'Войти'; }
+  }
+  $('clGo').addEventListener('click', () => login(false));
+  $('clPass').addEventListener('keydown', e => { if (e.key === 'Enter') login(false); });
+  $('clOffline').addEventListener('click', () => { CL.ready = true; lock.hidden = true; clNote('⚠ Работаю офлайн. Изменения сохранятся на этом устройстве и отправятся, когда появится связь', 'err'); $('cloudLogout').hidden = false; if (lsGet(K_PEND)) scheduleRetry(); });
+  async function seed(newState){
+    const st = normalizeState(newState);
+    const r = await api('PUT', '/state', {state:st, baseRev:0});
+    if (r.status === 409) { clErr.textContent = 'В хранилище уже появились данные — войдите заново.'; $('clSeed').hidden = true; $('clGo').hidden = false; return; }
+    if (r.status !== 200) { clErr.textContent = 'Не удалось сохранить: ' + (r.error || r.status); return; }
+    applyServerState(st, r.rev); enter(); clNote(`☁ <strong>Данные отправлены в облако · ${hhmm()}</strong>`, 'ok');
+  }
+  $('clEmpty').addEventListener('click', () => seed(defaultState()));
+  $('clImport').addEventListener('click', () => { $('clFile').value = ''; $('clFile').click(); });
+  $('clFile').addEventListener('change', async () => {
+    const f = $('clFile').files[0]; if (!f) return; clErr.textContent = '';
+    try {
+      const t = await f.text(); let st = null;
+      const m = t.match(/const EMBEDDED_STATE = (.*); \/\/ EMBEDDED_STATE_MARKER/);
+      if (m) st = JSON.parse(m[1]); else st = JSON.parse(t);
+      if (st && st.state) st = st.state;
+      if (!validState(st)) throw new Error('в файле нет данных блокнота');
+      if (!confirm(`Загрузить в облако: родителей ${st.parents.length}, детей ${st.children.length}, задач ${st.tasks.length}, операций ${st.transactions.length}?`)) return;
+      await seed(st);
+    } catch (e) { clErr.textContent = 'Не удалось прочитать файл: ' + (e.message || e); }
+  });
+  $('cloudLogout').addEventListener('click', () => { if (!confirm('Выйти? На этом устройстве пароль будет забыт.')) return; lsSet(K_PASS, null); try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} lsSet(K_REV, null); lsSet(K_PEND, null); location.reload(); });
+
+  /* ---- старт ---- */
+  if (CL.url && CL.pass) { $('clPass').value = CL.pass; login(true).then(() => { if (!CL.ready) showLock(clErr.textContent); }); }
+  else showLock('');
+})();
+</script>
+
+
+</body></html>
