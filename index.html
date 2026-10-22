@@ -665,6 +665,12 @@ body.guest-mode #tab-settings .page-head p{display:none}
 body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund-btn{display:none!important}
 @media(max-width:700px){.fin-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}.fin-tabs button{padding:6px 4px;font-size:12.5px;gap:4px}.fund-actions .btn{flex:1 1 auto}}
 @media(max-width:700px){.fin-long{display:none}}
+/* Уведомления: полупрозрачные, исчезают по нажатию; фоновые — маленькой «таблеткой» сверху */
+.toast:not(.error){background:color-mix(in srgb,#2b2631 80%,transparent)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.toast.error{background:color-mix(in srgb,var(--red) 88%,transparent)}
+.toast.show{pointer-events:auto;cursor:pointer}
+.toast.quiet{left:50%!important;right:auto!important;top:calc(10px + env(safe-area-inset-top));bottom:auto!important;width:max-content;max-width:calc(100vw - 32px)!important;padding:6px 13px;border-radius:999px;font-size:12.5px;background:color-mix(in srgb,#2b2631 55%,transparent)!important;box-shadow:none;transform:translate(-50%,-8px);pointer-events:none!important}
+.toast.quiet.show{opacity:.9;transform:translate(-50%,0)}
 </style>
 <style></style><style>
   .imageye-selected {
@@ -898,7 +904,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
     <input type="file" id="clFile" accept=".html,.htm,.json,text/html,application/json" hidden="">
   </div>
 </div></div>
-<div class="toast show" id="toast" role="status" aria-live="polite">Данные обновлены с другого устройства</div>
+<div class="toast" id="toast" role="status" aria-live="polite">Данные обновлены с другого устройства</div>
 <script>
 (() => {
   'use strict';
@@ -1020,7 +1026,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
     return {done,total,ratio,collected,target};
   }
   function taskIsComplete(task) { const p=taskProgress(task); return p.total>0&&p.done===p.total; }
-  function showToast(message, error=false) { const el=$('toast'); el.textContent=message; el.classList.toggle('error',error); el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3200); }
+  function showToast(message, error=false, quiet=false) { const el=$('toast'); el.textContent=message; el.classList.toggle('error',error); el.classList.toggle('quiet',!!quiet); el.classList.add('show'); clearTimeout(toastTimer); const ms=error?3500:quiet?1500:Math.min(3000,Math.max(1800,String(message).length*45)); toastTimer=setTimeout(()=>el.classList.remove('show'),ms); }
   function persist(message='Изменения сохранены в этом браузере') {
     if(guestMode) return;
     if(!/^Данные готовы/.test(message)){ meta.dirty=(meta.dirty||0)+1; saveMeta(); updateBackupUi(); if(meta.dirty%10===0) setTimeout(()=>showToast(`⚠ ${meta.dirty} изменений без копии файла. Нажмите «Сохранить»`,true),600); }
@@ -2451,6 +2457,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   renderAll=function(){_renderAllFund();renderFund();};
   renderFund();
 
+  $('toast').addEventListener('click',()=>{clearTimeout(toastTimer);$('toast').classList.remove('show');});
   /* ===== Калькулятор и раздел сбора ===== */
   const calc={expr:'',history:[],tab:'calc',split:{title:'',total:'',fromCash:'',families:'',round:10}};
   function calcEval(src){
@@ -2635,7 +2642,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
     if (!CL.ready || CL.pushing || document.hidden || lsGet(K_PEND) || $('modalBackdrop')?.classList.contains('open')) return;
     try {
       const r = await api('GET', '/state?rev=' + CL.rev);
-      if (r.status === 200 && !r.unchanged && r.state && r.rev !== CL.rev && !lsGet(K_PEND)) { applyServerState(r.state, r.rev); showToast('Данные обновлены с другого устройства'); clNote(`☁ <strong>Обновлено из облака · ${hhmm()}</strong>`, 'ok'); }
+      if (r.status === 200 && !r.unchanged && r.state && r.rev !== CL.rev && !lsGet(K_PEND)) { applyServerState(r.state, r.rev); showToast('Данные обновлены с другого устройства',false,true); clNote(`☁ <strong>Обновлено из облака · ${hhmm()}</strong>`, 'ok'); }
     } catch (e) {}
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden) pollRemote(); });
