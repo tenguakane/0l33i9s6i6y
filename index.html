@@ -7,6 +7,7 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="rgb(23, 20, 25)">
+<meta name="application-name" content="Группа 4"><meta name="apple-mobile-web-app-title" content="Группа 4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
 <script>try{var t=localStorage.getItem("committeeThemeV1");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <title>Родительский комитет</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cpath%20d%3D%22M24%2018.5C21%2015%2015.5%2011%2016.5%207.5c4%20.3%207%202.3%2010%202.3%202%200%203.6-1.3%205.5-1.3s3.5%201.3%205.5%201.3c3%200%206-2%2010-2.3%201%203.5-4.5%207.5-7.5%2011z%22%20fill%3D%22%23d49a36%22/%3E%3Cpath%20d%3D%22M27%2017c-.8-2.3-1.6-4.3-1.8-6.2M37%2017c.8-2.3%201.6-4.3%201.8-6.2%22%20stroke%3D%22%23b07a24%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M32%2019.5c-10.5%200-19%207.5-19%2020.5%200%2012.5%207.5%2019%2019%2019s19-6.5%2019-19c0-13-8.5-20.5-19-20.5z%22%20fill%3D%22%23e2ad48%22/%3E%3Cpath%20d%3D%22M32%2019.5c-10.5%200-19%207.5-19%2020.5%200%203%20.4%205.6%201.2%207.8C16%2037%2022.5%2028%2032%2026.5c9.5%201.5%2016%2010.5%2017.8%2021.3.8-2.2%201.2-4.8%201.2-7.8%200-13-8.5-20.5-19-20.5z%22%20fill%3D%22%23ecc06a%22%20opacity%3D%22.55%22/%3E%3Crect%20x%3D%2221.5%22%20y%3D%2216%22%20width%3D%2221%22%20height%3D%225.5%22%20rx%3D%222.75%22%20fill%3D%22%238b5a1b%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2250%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-weight%3D%22700%22%20font-size%3D%2222%22%20fill%3D%22%23fff7e2%22%3E%E2%82%B4%3C/text%3E%3C/svg%3E">
@@ -671,6 +672,25 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
 .toast.show{pointer-events:auto;cursor:pointer}
 .toast.quiet{left:50%!important;right:auto!important;top:calc(10px + env(safe-area-inset-top));bottom:auto!important;width:max-content;max-width:calc(100vw - 32px)!important;padding:6px 13px;border-radius:999px;font-size:12.5px;background:color-mix(in srgb,#2b2631 55%,transparent)!important;box-shadow:none;transform:translate(-50%,-8px);pointer-events:none!important}
 .toast.quiet.show{opacity:.9;transform:translate(-50%,0)}
+/* ===== Переливающийся текст (эффекты FX) =====
+   Красный — долги, золотой — у кого всё хорошо, радужный — особые поводы (всё собрано, день рождения).
+   ВЫКЛЮЧИТЬ ВСЁ: в скрипте найди строку «const FX = {» и поставь enabled:false.
+   Можно выключить и отдельный эффект: debt:false / gold:false / rainbow:false.
+   Цвета переливов берутся из выбранной темы, поэтому подходят и к светлой, и к тёмным темам. */
+:root{--fx-l:38%}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--fx-l:70%}}
+:root:is([data-theme=mono],[data-theme=violet],[data-theme=midnight],[data-theme=emerald],[data-theme=amber]){--fx-l:70%}
+.fx-debt,.fx-gold,.fx-rainbow{-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 100%;background-repeat:repeat;animation:fxShift var(--fx-speed,3s) linear infinite}
+.fx-debt{--fx-speed:2.4s;background-image:linear-gradient(90deg,var(--red) 0%,color-mix(in srgb,var(--red) 50%,var(--text)) 25%,color-mix(in srgb,var(--red) 70%,var(--yellow)) 50%,color-mix(in srgb,var(--red) 50%,var(--text)) 75%,var(--red) 100%)}
+.fx-gold{--fx-speed:3.6s;background-image:linear-gradient(90deg,var(--yellow) 0%,color-mix(in srgb,var(--yellow) 55%,var(--text)) 20%,color-mix(in srgb,var(--yellow) 80%,#fff3c4) 35%,var(--yellow) 50%,color-mix(in srgb,var(--yellow) 55%,var(--text)) 70%,var(--yellow) 100%)}
+.fx-rainbow{--fx-speed:4s;background-image:linear-gradient(90deg,hsl(0 85% var(--fx-l)),hsl(40 90% var(--fx-l)),hsl(110 70% var(--fx-l)),hsl(190 80% var(--fx-l)),hsl(260 75% var(--fx-l)),hsl(320 80% var(--fx-l)),hsl(360 85% var(--fx-l)))}
+/* Мелкие подписи внутри переливающегося блока остаются обычным цветом */
+.fx-debt small,.fx-gold small,.fx-rainbow small,.fx-debt .leader-badge,.fx-gold .leader-badge{-webkit-text-fill-color:currentcolor}
+.fx-in{display:inline}
+/* Полоса прогресса у полностью собранной задачи — радужная */
+.task-progress span.fx-bar{background:linear-gradient(90deg,hsl(0 85% 60%),hsl(40 90% 55%),hsl(110 70% 50%),hsl(190 80% 50%),hsl(260 75% 62%),hsl(320 80% 60%),hsl(360 85% 60%));background-size:200% 100%;animation:fxShift 4s linear infinite}
+@keyframes fxShift{from{background-position:0% 50%}to{background-position:-200% 50%}}
+@media(prefers-reduced-motion:reduce){.fx-debt,.fx-gold,.fx-rainbow,.task-progress span.fx-bar{animation:none!important}}
 </style>
 <style></style><style>
   .imageye-selected {
@@ -2457,6 +2477,57 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   renderAll=function(){_renderAllFund();renderFund();};
   renderFund();
 
+  /* ===== Переливающийся текст (эффекты FX) =====
+     ВЫКЛЮЧИТЬ ВСЕ ЭФФЕКТЫ: enabled:false.
+     Отдельно: debt — красный перелив у долгов, gold — золотой у тех, у кого всё сдано,
+     rainbow — радужный у полностью собранных задач, дней рождения сегодня и «долгов нет». */
+  const FX = {enabled:true, debt:true, gold:true, rainbow:true};
+  const FX_CLASSES=['fx-debt','fx-gold','fx-rainbow'];
+  function fxApply(){
+    if(!FX.enabled) return;
+    // Снимаем прежние отметки с постоянных элементов (сами классы ставятся заново ниже, анимация не сбрасывается).
+    document.querySelectorAll('.fx-debt,.fx-gold,.fx-rainbow').forEach(el=>{if(!el.classList.contains('fx-in'))el.classList.remove(...FX_CLASSES);});
+    document.querySelectorAll('.fx-bar').forEach(el=>el.classList.remove('fx-bar'));
+    const ok=k=>FX[k]!==false;
+    // Обычный элемент — просто класс.
+    const mark=(el,k)=>{if(el&&ok(k)){el.classList.remove(...FX_CLASSES);el.classList.add('fx-'+k);}};
+    // Элемент со своим фоном (кнопка, «таблетка») — текст оборачивается во внутренний span, чтобы фон не пропал.
+    const wrap=(el,k)=>{if(!el||!ok(k)||!el.textContent.trim())return;const has=el.querySelector(':scope > .fx-in');if(has){has.className='fx-in fx-'+k;return;}const sp=document.createElement('span');sp.className='fx-in fx-'+k;while(el.firstChild)sp.appendChild(el.firstChild);el.appendChild(sp);};
+    const all=(sel,fn)=>document.querySelectorAll(sel).forEach(fn);
+    const hasDigit=el=>/\d/.test(el.textContent);
+
+    // ——— Долги: красный перелив ———
+    all('.debt-amt:not(.zero),.debt-sum,.ov-amt.r',el=>mark(el,'debt'));
+    all('.debt-total',el=>{if(!el.querySelector(':scope > span'))mark(el,'debt');});
+    all('.mini-stat b[style*="--red"]',el=>mark(el,'debt'));
+    all('.month-tag,#overviewDebtTotal',el=>wrap(el,'debt'));
+    all('.task-person.amount-person:not(.completed) .task-amount-note',el=>mark(el,'debt'));
+    all('.parent-task-amount-summary > span:not([class])',el=>mark(el,'debt'));
+    all('.overview-collection-person-value:not(.overpaid)',el=>mark(el,hasDigit(el)?'debt':'gold'));
+    {const b=$('sumBalance');if(b&&/--red/.test(b.getAttribute('style')||''))mark(b,'debt');}
+
+    // ——— Всё хорошо: золотой перелив ———
+    all('.debt-amt.zero,.all-done,.paid-done,.ov-amt.g',el=>mark(el,'gold'));
+    all('.mini-stat b[style*="--green"]',el=>mark(el,'gold'));
+    all('.pay-btn.done,.leader-badge',el=>wrap(el,'gold'));
+    all('.task-person.completed .task-person-name',el=>mark(el,'gold'));
+    all('.debt-row',row=>{if(row.querySelector('.debt-amt.zero'))mark(row.querySelector('.debt-row-name'),'gold');});
+    if(selectedParentId&&getParent(selectedParentId)){const d=parentDebtTotal(selectedParentId);if(d.sum<=0&&!d.other)mark(document.querySelector('.parent-detail .person-name'),'gold');}
+
+    // ——— Особые поводы: радужный перелив ———
+    all('.task-title .pill.good,.birthday-count.today',el=>wrap(el,'rainbow'));
+    all('.debt-total > span',el=>mark(el,'rainbow'));
+    {const t=$('sumTasks'),m=/^(\d+)\/(\d+)$/.exec((t?.textContent||'').trim());if(m&&+m[2]>0&&m[1]===m[2])mark(t,'rainbow');}
+    if(ok('rainbow')) all('.task-progress span',el=>{if(el.style.width==='100%'&&el.closest('.task-card')?.querySelector('.task-title .pill.good'))el.classList.add('fx-bar');});
+  }
+  if(FX.enabled){
+    let fxQueued=false;
+    const fxSchedule=()=>{if(fxQueued)return;fxQueued=true;requestAnimationFrame(()=>{fxQueued=false;fxApply();});};
+    // Следим за перерисовками страницы: эффекты сами появляются после любых изменений.
+    new MutationObserver(fxSchedule).observe(document.body,{childList:true,subtree:true});
+    fxApply();
+  }
+
   $('toast').addEventListener('click',()=>{clearTimeout(toastTimer);$('toast').classList.remove('show');});
   /* ===== Калькулятор и раздел сбора ===== */
   const calc={expr:'',history:[],tab:'calc',split:{title:'',total:'',fromCash:'',families:'',round:10}};
@@ -2716,4 +2787,61 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
 </script>
 
 
-<div id="extension-mmplj"></div><div id="extension-mmplj"></div></body></html>
+<div id="extension-mmplj"></div><div id="extension-mmplj"></div><style id="g4-pwa-css">@media(max-width:700px){#g4InstallBtn{display:none!important}}</style>
+<script id="g4-pwa-js">
+/* ===================== Установка как приложение «Группа 4» ===================== */
+(function () {
+  'use strict';
+  if (window.__g4Pwa) return;
+  var deferred = null;
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  var http = /^https?:$/.test(location.protocol);
+  var T = {
+    ru: { title: '📲 Приложение «Группа 4»', desc: 'Установите сайт как приложение: значок на экране, запуск без адресной строки, открывается и без интернета.', btn: 'Установить приложение', ios: 'На iPhone: Safari → «Поделиться» → «На экран „Домой“».', done: 'Сайт уже открыт как приложение ✓', no: 'Установка доступна, когда сайт открыт по адресу http(s):// в Chrome, Edge или Safari, а рядом с ним лежат файлы приложения.', ok: 'Приложение «Группа 4» установлено 🎉', iosToast: 'В Safari нажмите «Поделиться» и выберите «На экран „Домой“»' },
+    uk: { title: '📲 Застосунок «Группа 4»', desc: 'Встановіть сайт як застосунок: значок на екрані, запуск без адресного рядка, відкривається й без інтернету.', btn: 'Встановити застосунок', ios: 'На iPhone: Safari → «Поділитися» → «На початковий екран».', done: 'Сайт уже відкрито як застосунок ✓', no: 'Встановлення доступне, коли сайт відкрито за адресою http(s):// у Chrome, Edge або Safari, а поруч лежать файли застосунку.', ok: 'Застосунок «Группа 4» встановлено 🎉', iosToast: 'У Safari натисніть «Поділитися» й оберіть «На початковий екран»' }
+  };
+  var t = function () { return T[document.documentElement.lang === 'uk' ? 'uk' : 'ru']; };
+  function toast(msg) {
+    var el = document.getElementById('toast'); if (!el) return;
+    el.textContent = msg; el.classList.remove('error', 'quiet'); el.classList.add('show');
+    clearTimeout(toast.t); toast.t = setTimeout(function () { el.classList.remove('show'); }, 4000);
+  }
+  var can = function () { return !standalone && (!!deferred || isIOS); };
+  function install() {
+    if (deferred) { deferred.prompt(); deferred.userChoice.then(function () { deferred = null; render(); }, function () {}); return; }
+    if (isIOS) toast(t().iosToast);
+  }
+  window.__g4Pwa = { can: can, install: install };
+  function render() {
+    var L = t();
+    // Кнопка в шапке — только когда установка действительно доступна.
+    var acts = document.querySelector('.header-actions');
+    if (acts) {
+      var hb = document.getElementById('g4InstallBtn');
+      if (!hb) { hb = document.createElement('button'); hb.type = 'button'; hb.className = 'btn icon'; hb.id = 'g4InstallBtn'; hb.textContent = '📲'; acts.insertBefore(hb, acts.firstChild); }
+      hb.title = L.btn; hb.setAttribute('aria-label', L.btn); hb.hidden = !(deferred && !standalone);
+    }
+    // Блок в «Настройках».
+    var lang = document.getElementById('langPanel');
+    if (lang) {
+      var p = document.getElementById('g4AppPanel');
+      if (!p) { p = document.createElement('div'); p.className = 'panel'; p.id = 'g4AppPanel'; p.style.marginBottom = '14px'; lang.after(p); }
+      var body = standalone ? '<p class="muted small-text" style="margin:0">' + L.done + '</p>'
+        : can() ? '<p class="muted small-text" style="margin:0 0 10px">' + L.desc + '</p>' + (deferred ? '<button type="button" class="btn primary" data-g4-install>' + L.btn + '</button>' : '<p class="muted small-text" style="margin:0">' + L.ios + '</p>')
+        : '<p class="muted small-text" style="margin:0 0 6px">' + L.desc + '</p><p class="muted small-text" style="margin:0">' + L.no + '</p>';
+      p.innerHTML = '<h3>' + L.title + '</h3>' + body;
+    }
+  }
+  document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-g4-install], #g4InstallBtn')) install(); });
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; render(); });
+  window.addEventListener('appinstalled', function () { deferred = null; standalone = true; render(); toast(t().ok); });
+  new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  if (http) {
+    if (!document.querySelector('link[rel="manifest"]')) { var l = document.createElement('link'); l.rel = 'manifest'; l.href = 'manifest.webmanifest'; document.head.appendChild(l); }
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render); else render();
+})();
+</script>
+</body></html>
