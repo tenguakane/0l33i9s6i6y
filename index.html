@@ -954,7 +954,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
     return !!s && s.version === 1 && Array.isArray(s.parents) && Array.isArray(s.children) && Array.isArray(s.tasks) && Array.isArray(s.transactions);
   }
   function normalizeState(s) {
-    const p = s.parents.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),childId:String(x.childId||''),leader:x.leader===true}));
+    const p = s.parents.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),childId:String(x.childId||''),leader:x.leader===true,frozen:x.frozen===true}));
     const c = s.children.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),birthday:/^\d{4}-\d{2}-\d{2}$/.test(x.birthday||'')?x.birthday:'',giftPreferences:String(x.giftPreferences||''),foodPreferences:String(x.foodPreferences||'')}));
     const tasks = s.tasks.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,month:/^\d{4}-\d{2}$/.test(x.month||'')?x.month:monthKey(),title:String(x.title||'Без названия'),description:String(x.description||''),dueDate:/^\d{4}-\d{2}-\d{2}$/.test(x.dueDate||'')?x.dueDate:'',amountPerPerson:Number.isFinite(Number(x.amountPerPerson))&&x.amountPerPerson!==''?Math.max(0,Number(x.amountPerPerson)):0,statuses:x.statuses&&typeof x.statuses==='object'?x.statuses:{},excluded:Array.isArray(x.excluded)?x.excluded.filter(v=>typeof v==='string'):[],autoExcluded:Array.isArray(x.autoExcluded)?x.autoExcluded.filter(v=>typeof v==='string'):[],repeat:x.repeat===true,series:typeof x.series==='string'?x.series:'',carried:cleanMoneyMap(x.carried),credited:cleanMoneyMap(x.credited),customAmounts:cleanAmountMap(x.customAmounts),fundPaid:cleanMoneyMap(x.fundPaid),toFund:cleanMoneyMap(x.toFund),createdAt:String(x.createdAt||'')}));
     const transactions = s.transactions.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,date:/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:localDate(),type:x.type==='expense'?'expense':'income',amount:Math.max(0,Number(x.amount)||0),description:String(x.description||''),parentId:String(x.parentId||''),createdAt:String(x.createdAt||'')}));
@@ -965,7 +965,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
       const paid = tasks.filter(t=>t.amountPerPerson>0).reduce((sum,t)=>sum+Object.entries(t.statuses).filter(([k])=>ids.has(k)).reduce((a,[,v])=>a+(typeof v==='number'&&Number.isFinite(v)?Math.max(0,v):v===true?t.amountPerPerson:0),0),0);
       adj -= paid;
     }
-    return {version:1,taskCash:true,parents:p,children:c,tasks,transactions,balanceAdjustment:adj,credits:cleanMoneyMap(s.credits),fund:Array.isArray(s.fund)?s.fund.filter(e=>e&&typeof e.pid==='string'&&['in','pay','out'].includes(e.kind)&&Number(e.amount)>0).map(e=>({id:String(e.id||makeId()),pid:e.pid,kind:e.kind,amount:Math.round(Number(e.amount)*100)/100,date:/^\d{4}-\d{2}-\d{2}$/.test(e.date||'')?e.date:'',at:String(e.at||''),note:String(e.note||'').slice(0,200),src:String(e.src||''),taskId:String(e.taskId||'')})):[],transfers:Array.isArray(s.transfers)?s.transfers.filter(x=>x&&typeof x.pid==='string'&&typeof x.from==='string').map(x=>({id:String(x.id||makeId()),pid:x.pid,from:x.from,parts:(Array.isArray(x.parts)?x.parts:[]).filter(q=>q&&typeof q.to==='string'&&Number(q.amount)>0).map(q=>({to:q.to,amount:Number(q.amount)})),credit:Math.max(0,Number(x.credit)||0),at:String(x.at||'')})):[],seriesLast:Object.fromEntries(Object.entries(s.seriesLast&&typeof s.seriesLast==='object'?s.seriesLast:{}).filter(([k,v])=>typeof v==='string'&&/^\d{4}-\d{2}$/.test(v))),payNote:String(s.payNote||'').slice(0,300),notes:String(s.notes||'').slice(0,10000),createdAt:s.createdAt||new Date().toISOString()};
+    return {version:1,taskCash:true,parents:p,children:c,tasks,transactions,balanceAdjustment:adj,credits:cleanMoneyMap(s.credits),fund:Array.isArray(s.fund)?s.fund.filter(e=>e&&typeof e.pid==='string'&&p.some(q=>q.id===e.pid)&&['in','pay','out'].includes(e.kind)&&Number(e.amount)>0).map(e=>({id:String(e.id||makeId()),pid:e.pid,kind:e.kind,amount:Math.round(Number(e.amount)*100)/100,date:/^\d{4}-\d{2}-\d{2}$/.test(e.date||'')?e.date:'',at:String(e.at||''),note:String(e.note||'').slice(0,200),src:String(e.src||''),taskId:String(e.taskId||'')})):[],transfers:Array.isArray(s.transfers)?s.transfers.filter(x=>x&&typeof x.pid==='string'&&typeof x.from==='string').map(x=>({id:String(x.id||makeId()),pid:x.pid,from:x.from,parts:(Array.isArray(x.parts)?x.parts:[]).filter(q=>q&&typeof q.to==='string'&&Number(q.amount)>0).map(q=>({to:q.to,amount:Number(q.amount)})),credit:Math.max(0,Number(x.credit)||0),at:String(x.at||'')})):[],seriesLast:Object.fromEntries(Object.entries(s.seriesLast&&typeof s.seriesLast==='object'?s.seriesLast:{}).filter(([k,v])=>typeof v==='string'&&/^\d{4}-\d{2}$/.test(v))),payNote:String(s.payNote||'').slice(0,300),notes:String(s.notes||'').slice(0,10000),createdAt:s.createdAt||new Date().toISOString()};
   }
   function loadLocal() {
     try {
@@ -1065,7 +1065,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
     $('taskWhoSummary').textContent=taskFormExcluded.size?`Участвуют ${on} из ${state.parents.length}. Нажмите на имя, чтобы вернуть или убрать человека — у исключённых задача не будет висеть долгом.`:'Касается всех. Нажмите на имя, если человек уже выполнил задачу или не должен её делать.';
   }
   function setTaskFormMode(task=null) {
-    taskFormExcluded=new Set(task?.excluded||[]); renderTaskWho(); if($('taskRepeat')) $('taskRepeat').checked=!!task?.repeat;
+    taskFormExcluded=new Set(task?task.excluded||[]:state.parents.filter(p=>p.frozen).map(p=>p.id)); renderTaskWho(); if($('taskRepeat')) $('taskRepeat').checked=!!task?.repeat;
     editingTaskId = task?.id || null;
     $('taskTitle').value=task?.title||'';
     $('taskDescription').value=task?.description||'';
@@ -1236,7 +1236,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   function renderRoster() {
     const tbody=$('rosterBody');
     if(!state.parents.length){tbody.innerHTML='<tr><td colspan="3" class="empty-cell">Состав группы пока пуст.</td></tr>';return;}
-    tbody.innerHTML=state.parents.map(p=>`<tr><td data-label="Родитель">${esc(p.name)}${p.leader?'<span class="leader-badge">👑 Руководитель</span>':''}</td><td data-label="Ребёнок">${esc(childForParent(p)?.name||'—')}</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">Изменить</button><button type="button" class="btn small ${p.leader?'leader-on':''}" data-toggle-leader="${esc(p.id)}" aria-pressed="${p.leader?'true':'false'}">${p.leader?'👑 Снять руководителя':'👑 Сделать руководителем'}</button><button type="button" class="btn small danger" data-delete-family="${esc(p.id)}">Удалить</button></div></td></tr>`).join('');
+    tbody.innerHTML=state.parents.map(p=>`<tr><td data-label="Родитель">${esc(p.name)}${p.leader?'<span class="leader-badge">👑 Руководитель</span>':''}${p.frozen?'<span class="leader-badge" style="opacity:.85">❄ Заморожен</span>':''}</td><td data-label="Ребёнок">${esc(childForParent(p)?.name||'—')}</td><td data-label="Действия"><div class="mobile-row-actions" style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" data-edit-parent="${esc(p.id)}">Изменить</button><button type="button" class="btn small ${p.leader?'leader-on':''}" data-toggle-leader="${esc(p.id)}" aria-pressed="${p.leader?'true':'false'}">${p.leader?'👑 Снять руководителя':'👑 Сделать руководителем'}</button><button type="button" class="btn small ${p.frozen?'leader-on':''}" data-toggle-freeze="${esc(p.id)}" aria-pressed="${p.frozen?'true':'false'}" title="Заморозить: остаётся во всех текущих задачах, но не добавляется в новые">${p.frozen?'❄ Разморозить':'❄ Заморозить'}</button><button type="button" class="btn small danger" data-delete-family="${esc(p.id)}">Удалить</button></div></td></tr>`).join('');
   }
   function renderParentSelect() {
     const select=$('txParent'); const current=select.value;
@@ -1476,7 +1476,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   $('openBalanceFormBtn').addEventListener('click',()=>openFormDrawer('Текущий баланс счёта',$('balanceAdjustPanel'),'balanceTarget'));
   $('closeModal').addEventListener('click',closeModal);$('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});$('modalBody').addEventListener('click',e=>{if(e.target.closest('[data-modal-cancel]'))closeModal();});
 
-  $('taskForm').addEventListener('submit',e=>{e.preventDefault();const title=$('taskTitle').value.trim();if(!title){showToast('Укажите название задачи',true);return;}const data={title,description:$('taskDescription').value.trim(),dueDate:$('taskDue').value,amountPerPerson:Math.max(0,Number($('taskAmount').value)||0),excluded:state.parents.filter(p=>taskFormExcluded.has(p.id)).map(p=>p.id),repeat:$('taskRepeat').checked};if(state.parents.length&&data.excluded.length===state.parents.length){showToast('Оставьте в задаче хотя бы одного человека',true);return;}const wasEdit=!!editingTaskId;if(wasEdit){const t=state.tasks.find(x=>x.id===editingTaskId);if(t){if(Number(t.amountPerPerson)>0&&data.amountPerPerson===0){t.statuses=t.statuses||{};state.parents.forEach(p=>{t.statuses[p.id]=taskParentDone(t,p.id);});}Object.assign(t,data);if(t.repeat&&!t.series)t.series=t.id;}}else{const statuses={};state.parents.forEach(p=>statuses[p.id]=false);const nt={id:makeId(),month:currentMonth(),...data,statuses,carried:{},credited:{},createdAt:new Date().toISOString()};nt.series=nt.id;state.tasks.push(nt);applyCredits(nt);}setTaskFormMode();markChanged(wasEdit?'Задача обновлена':'Задача добавлена');closeDrawerFor($('taskFormPanel'));showToast(wasEdit?'Изменения задачи сохранены':'Задача добавлена');});
+  $('taskForm').addEventListener('submit',e=>{e.preventDefault();const title=$('taskTitle').value.trim();if(!title){showToast('Укажите название задачи',true);return;}const data={title,description:$('taskDescription').value.trim(),dueDate:$('taskDue').value,amountPerPerson:Math.max(0,Number($('taskAmount').value)||0),excluded:state.parents.filter(p=>taskFormExcluded.has(p.id)).map(p=>p.id),repeat:$('taskRepeat').checked};if(state.parents.length&&data.excluded.length===state.parents.length){showToast('Оставьте в задаче хотя бы одного человека',true);return;}const wasEdit=!!editingTaskId;if(wasEdit){const t=state.tasks.find(x=>x.id===editingTaskId);if(t){if(Number(t.amountPerPerson)>0&&data.amountPerPerson===0){t.statuses=t.statuses||{};state.parents.forEach(p=>{t.statuses[p.id]=taskParentDone(t,p.id);});}Object.assign(t,data);if(t.repeat&&!t.series)t.series=t.id;}}else{const statuses={};state.parents.forEach(p=>statuses[p.id]=false);const nt={id:makeId(),month:currentMonth(),...data,statuses,carried:{},credited:{},createdAt:new Date().toISOString()};nt.autoExcluded=data.excluded.filter(id=>getParent(id)?.frozen);nt.series=nt.id;state.tasks.push(nt);applyCredits(nt);}setTaskFormMode();markChanged(wasEdit?'Задача обновлена':'Задача добавлена');closeDrawerFor($('taskFormPanel'));showToast(wasEdit?'Изменения задачи сохранены':'Задача добавлена');});
   $('cancelTaskEdit').addEventListener('click',()=>{setTaskFormMode();closeDrawerFor($('taskFormPanel'));});
   $('hideCompletedTasks').addEventListener('change',e=>{hideCompletedTasks=e.target.checked;renderTasks();});
   $('tasksList').addEventListener('change',e=>{
@@ -1766,7 +1766,9 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   }
   function cloneTaskTo(src,month,keepRepeat){
     const statuses={}; state.parents.forEach(p=>statuses[p.id]=false);
-    const nt={id:makeId(),month,title:retitle(src.title,month),description:src.description,dueDate:shiftDue(src.dueDate,src.month,month),amountPerPerson:src.amountPerPerson,customAmounts:{...(src.customAmounts||{})},statuses,excluded:(src.excluded||[]).filter(id=>getParent(id)&&!(src.autoExcluded||[]).includes(id)),autoExcluded:[],repeat:!!keepRepeat,series:'',carried:{},credited:{},createdAt:new Date().toISOString()};
+    const manualEx=(src.excluded||[]).filter(id=>getParent(id)&&!(src.autoExcluded||[]).includes(id));
+    const frozenIds=state.parents.filter(p=>p.frozen).map(p=>p.id);
+    const nt={id:makeId(),month,title:retitle(src.title,month),description:src.description,dueDate:shiftDue(src.dueDate,src.month,month),amountPerPerson:src.amountPerPerson,customAmounts:{...(src.customAmounts||{})},statuses,excluded:[...new Set([...manualEx,...frozenIds])],autoExcluded:frozenIds.filter(id=>!manualEx.includes(id)),repeat:!!keepRepeat,series:'',carried:{},credited:{},createdAt:new Date().toISOString()};
     nt.series=keepRepeat?(src.series||src.id):nt.id;
     applyCredits(nt);
     return nt;
@@ -1923,6 +1925,13 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   });
 
 
+  $('rosterBody').addEventListener('click',e=>{
+    const b=e.target.closest('[data-toggle-freeze]'); if(!b) return;
+    const par=getParent(b.dataset.toggleFreeze); if(!par) return;
+    par.frozen=!par.frozen;
+    markChanged(par.frozen?'Родитель заморожен':'Родитель разморожен');
+    showToast(par.frozen?`❄ ${par.name} заморожен(а): остаётся в текущих задачах, в новые не добавляется`:`${par.name} разморожен(а): снова попадает в новые задачи`);
+  });
   /* ===== Руководитель комитета ===== */
   $('rosterBody').addEventListener('click',e=>{
     const b=e.target.closest('[data-toggle-leader]'); if(!b) return;
