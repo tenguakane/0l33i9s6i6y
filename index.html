@@ -954,9 +954,10 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
     return !!s && s.version === 1 && Array.isArray(s.parents) && Array.isArray(s.children) && Array.isArray(s.tasks) && Array.isArray(s.transactions);
   }
   function normalizeState(s) {
-    const p = s.parents.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),childId:String(x.childId||''),leader:x.leader===true}));
-    const c = s.children.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,name:String(x.name||'Без имени'),birthday:/^\d{4}-\d{2}-\d{2}$/.test(x.birthday||'')?x.birthday:'',giftPreferences:String(x.giftPreferences||''),foodPreferences:String(x.foodPreferences||'')}));
-    const tasks = s.tasks.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,month:/^\d{4}-\d{2}$/.test(x.month||'')?x.month:monthKey(),title:String(x.title||'Без названия'),description:String(x.description||''),dueDate:/^\d{4}-\d{2}-\d{2}$/.test(x.dueDate||'')?x.dueDate:'',amountPerPerson:Number.isFinite(Number(x.amountPerPerson))&&x.amountPerPerson!==''?Math.max(0,Number(x.amountPerPerson)):0,statuses:x.statuses&&typeof x.statuses==='object'?x.statuses:{},excluded:Array.isArray(x.excluded)?x.excluded.filter(v=>typeof v==='string'):[],repeat:x.repeat===true,series:typeof x.series==='string'?x.series:'',carried:cleanMoneyMap(x.carried),credited:cleanMoneyMap(x.credited),customAmounts:cleanAmountMap(x.customAmounts),fundPaid:cleanMoneyMap(x.fundPaid),toFund:cleanMoneyMap(x.toFund),createdAt:String(x.createdAt||'')}));
+    const p = s.parents.filter(x => x && typeof x.id === 'string' && !/тропкин/i.test(String(x.name||''))).map(x => ({id:x.id,name:String(x.name||'Без имени'),childId:String(x.childId||''),leader:x.leader===true}));
+    const goneKids = new Set(s.parents.filter(x => x && /тропкин/i.test(String(x.name||''))).map(x => x.childId));
+    const c = s.children.filter(x => x && typeof x.id === 'string' && !goneKids.has(x.id)).map(x => ({id:x.id,name:String(x.name||'Без имени'),birthday:/^\d{4}-\d{2}-\d{2}$/.test(x.birthday||'')?x.birthday:'',giftPreferences:String(x.giftPreferences||''),foodPreferences:String(x.foodPreferences||'')}));
+    const tasks = s.tasks.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,month:/^\d{4}-\d{2}$/.test(x.month||'')?x.month:monthKey(),title:String(x.title||'Без названия'),description:String(x.description||''),dueDate:/^\d{4}-\d{2}-\d{2}$/.test(x.dueDate||'')?x.dueDate:'',amountPerPerson:Number.isFinite(Number(x.amountPerPerson))&&x.amountPerPerson!==''?Math.max(0,Number(x.amountPerPerson)):0,statuses:x.statuses&&typeof x.statuses==='object'?x.statuses:{},excluded:Array.isArray(x.excluded)?x.excluded.filter(v=>typeof v==='string'):[],autoExcluded:Array.isArray(x.autoExcluded)?x.autoExcluded.filter(v=>typeof v==='string'):[],repeat:x.repeat===true,series:typeof x.series==='string'?x.series:'',carried:cleanMoneyMap(x.carried),credited:cleanMoneyMap(x.credited),customAmounts:cleanAmountMap(x.customAmounts),fundPaid:cleanMoneyMap(x.fundPaid),toFund:cleanMoneyMap(x.toFund),createdAt:String(x.createdAt||'')}));
     const transactions = s.transactions.filter(x => x && typeof x.id === 'string').map(x => ({id:x.id,date:/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:localDate(),type:x.type==='expense'?'expense':'income',amount:Math.max(0,Number(x.amount)||0),description:String(x.description||''),parentId:String(x.parentId||''),createdAt:String(x.createdAt||'')}));
     const balanceAdjustment = Number.isFinite(Number(s.balanceAdjustment)) && s.balanceAdjustment !== '' && s.balanceAdjustment !== null ? Number(s.balanceAdjustment) : 0;
     let adj = balanceAdjustment;
@@ -1029,7 +1030,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   function isLeader(parentId) { return !!getParent(parentId)?.leader; }
   function taskParentDone(task,parentId) {
     if(isLeader(parentId)) return true;
-    if(Number(task.amountPerPerson)>0) return taskPaidAmount(task,parentId)>=taskRequired(task,parentId);
+    if(Number(task.amountPerPerson)>0) return taskPaidAmount(task,parentId)>=taskRequired(task,parentId)-0.005;
     return task.statuses?.[parentId]===true;
   }
   // Родители, которых задача не касается, не считаются должниками и не входят в план сбора.
@@ -1315,11 +1316,12 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   function editParent(parentId) {
     const p=getParent(parentId); if(!p)return; const c=childForParent(p);
     openModal('Данные семьи',`<form id="parentEditForm"><div class="form-grid"><div class="field span-all"><label for="editParentName">Имя родителя</label><input id="editParentName" required maxlength="100" value="${esc(p.name)}"></div><div class="field span-all"><label for="editChildName">Имя ребёнка</label><input id="editChildName" maxlength="100" value="${esc(c?.name||'')}"></div></div><div class="form-actions"><button class="btn" type="button" data-modal-cancel>Отмена</button><button class="btn primary" type="submit">Сохранить</button></div></form>`);
-    $('parentEditForm').addEventListener('submit',e=>{e.preventDefault();const pn=$('editParentName').value.trim(), cn=$('editChildName').value.trim();if(!pn){showToast('Укажите имя родителя',true);return;}p.name=pn;if(c) c.name=cn||'Без имени';else if(cn){const child={id:makeId(),name:cn,birthday:'',giftPreferences:'',foodPreferences:''};state.children.push(child);p.childId=child.id;}closeModal();markChanged('Данные семьи обновлены');showToast('Данные семьи сохранены');});
+    $('parentEditForm').addEventListener('submit',e=>{e.preventDefault();const pn=$('editParentName').value.trim(), cn=$('editChildName').value.trim();if(!pn){showToast('Укажите имя родителя',true);return;}p.name=pn;if(c&&!cn){state.children=state.children.filter(x=>x.id!==c.id);p.childId='';}else if(c) c.name=cn;else if(cn){const child={id:makeId(),name:cn,birthday:'',giftPreferences:'',foodPreferences:''};state.children.push(child);p.childId=child.id;}closeModal();markChanged('Данные семьи обновлены');showToast('Данные семьи сохранены');});
   }
   function editChild(childId) {
     const c=getChild(childId); if(!c)return;
-    openModal('Данные ребёнка',`<form id="childEditForm"><div class="form-grid"><div class="field span-all"><label for="editKidName">Имя ребёнка</label><input id="editKidName" required maxlength="100" value="${esc(c.name)}"></div><div class="field span-all"><label for="editKidBirthday">Дата рождения</label><input id="editKidBirthday" type="date" value="${esc(c.birthday)}"></div><div class="field span-all"><label for="editKidGift">Предпочтения в подарках</label><textarea id="editKidGift" maxlength="1600" placeholder="Любимые игрушки, персонажи, цвета, интересы, что лучше не дарить">${esc(c.giftPreferences||'')}</textarea><div class="hint">Идеи для будущих подарков и особенности ребёнка.</div></div><div class="field span-all"><label for="editKidFood">Предпочтения в еде</label><textarea id="editKidFood" maxlength="1600" placeholder="Любимые блюда, нелюбимые продукты, аллергии или ограничения">${esc(c.foodPreferences||'')}</textarea><div class="hint">Укажите любимую еду, продукты, которых следует избегать, и другие важные особенности.</div></div></div><div class="form-actions"><button class="btn" type="button" data-modal-cancel>Отмена</button><button class="btn primary" type="submit">Сохранить</button></div></form>`);
+    openModal('Данные ребёнка',`<form id="childEditForm"><div class="form-grid"><div class="field span-all"><label for="editKidName">Имя ребёнка</label><input id="editKidName" required maxlength="100" value="${esc(c.name)}"></div><div class="field span-all"><label for="editKidBirthday">Дата рождения</label><input id="editKidBirthday" type="date" value="${esc(c.birthday)}"></div><div class="field span-all"><label for="editKidGift">Предпочтения в подарках</label><textarea id="editKidGift" maxlength="1600" placeholder="Любимые игрушки, персонажи, цвета, интересы, что лучше не дарить">${esc(c.giftPreferences||'')}</textarea><div class="hint">Идеи для будущих подарков и особенности ребёнка.</div></div><div class="field span-all"><label for="editKidFood">Предпочтения в еде</label><textarea id="editKidFood" maxlength="1600" placeholder="Любимые блюда, нелюбимые продукты, аллергии или ограничения">${esc(c.foodPreferences||'')}</textarea><div class="hint">Укажите любимую еду, продукты, которых следует избегать, и другие важные особенности.</div></div></div><div class="form-actions"><button class="btn danger" type="button" id="deleteKidBtn" style="margin-right:auto">Удалить имя ребёнка</button><button class="btn" type="button" data-modal-cancel>Отмена</button><button class="btn primary" type="submit">Сохранить</button></div></form>`);
+    $('deleteKidBtn').addEventListener('click',()=>{if(!confirm(`Удалить ребёнка «${c.name}»? Родитель останется в списке, дата рождения и предпочтения будут стёрты.`))return;state.children=state.children.filter(x=>x.id!==c.id);state.parents.forEach(pp=>{if(pp.childId===c.id)pp.childId='';});closeModal();markChanged('Ребёнок удалён');showToast('Имя ребёнка удалено');});
     $('childEditForm').addEventListener('submit',e=>{e.preventDefault();c.name=$('editKidName').value.trim()||'Без имени';c.birthday=$('editKidBirthday').value;c.giftPreferences=$('editKidGift').value.trim();c.foodPreferences=$('editKidFood').value.trim();closeModal();markChanged('Данные ребёнка обновлены');showToast('Данные ребёнка сохранены');});
   }
   function addFamily() {
@@ -1341,7 +1343,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
       if(cName){const c={id:makeId(),name:cName,birthday:$('newChildBirthday').value,giftPreferences:'',foodPreferences:''};state.children.push(c);childId=c.id;}
       const p={id:makeId(),name:pName,childId,leader:lead};state.parents.push(p);
       const inOld=lead||!!$('newInOldTasks')?.checked;
-      state.tasks.forEach(t=>{t.statuses=t.statuses||{};if(!(p.id in t.statuses))t.statuses[p.id]=false;if(!inOld){t.excluded=[...new Set([...(t.excluded||[]),p.id])];}});
+      state.tasks.forEach(t=>{t.statuses=t.statuses||{};if(!(p.id in t.statuses))t.statuses[p.id]=false;if(!inOld){t.excluded=[...new Set([...(t.excluded||[]),p.id])];t.autoExcluded=[...new Set([...(t.autoExcluded||[]),p.id])];}});
       closeModal();markChanged('Состав группы обновлён');
       showToast(lead?`👑 ${pName} добавлен(а) руководителем — во всех задачах отмечен(а) выполнившим`:`Семья добавлена${inOld?' и включена в созданные задачи':' · в старых задачах её нет'}`);});
   }
@@ -1639,7 +1641,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   });
   function setTaskExcluded(taskId,parentId,excluded){
     const t=state.tasks.find(x=>x.id===taskId); if(!t||!getParent(parentId)) return;
-    const set=new Set(t.excluded||[]); excluded?set.add(parentId):set.delete(parentId); t.excluded=[...set];
+    const set=new Set(t.excluded||[]); excluded?set.add(parentId):set.delete(parentId); t.excluded=[...set]; t.autoExcluded=(t.autoExcluded||[]).filter(id=>id!==parentId);
     markChanged(excluded?'Человек убран из задачи':'Человек возвращён в задачу');
     showToast(excluded?`«${t.title}» больше не касается: ${getParent(parentId).name}`:`${getParent(parentId).name} снова участвует в «${t.title}»`);
   }
@@ -1755,7 +1757,7 @@ body.guest-mode .fund-act,body.guest-mode .fund-total-only,body.guest-mode .fund
   }
   function cloneTaskTo(src,month,keepRepeat){
     const statuses={}; state.parents.forEach(p=>statuses[p.id]=false);
-    const nt={id:makeId(),month,title:retitle(src.title,month),description:src.description,dueDate:shiftDue(src.dueDate,src.month,month),amountPerPerson:src.amountPerPerson,customAmounts:{...(src.customAmounts||{})},statuses,excluded:(src.excluded||[]).filter(id=>getParent(id)),repeat:!!keepRepeat,series:'',carried:{},credited:{},createdAt:new Date().toISOString()};
+    const nt={id:makeId(),month,title:retitle(src.title,month),description:src.description,dueDate:shiftDue(src.dueDate,src.month,month),amountPerPerson:src.amountPerPerson,customAmounts:{...(src.customAmounts||{})},statuses,excluded:(src.excluded||[]).filter(id=>getParent(id)&&!(src.autoExcluded||[]).includes(id)),autoExcluded:[],repeat:!!keepRepeat,series:'',carried:{},credited:{},createdAt:new Date().toISOString()};
     nt.series=keepRepeat?(src.series||src.id):nt.id;
     applyCredits(nt);
     return nt;
